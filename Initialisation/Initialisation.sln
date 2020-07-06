@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Initialisation", "Initialis
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bussiness_ALERT_TO_API", "Bussiness_ALERT_TO_API\Bussiness_ALERT_TO_API.csproj", "{D9F38A57-43CA-42C4-B554-8462FF805399}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bussiness_To_DB", "Bussiness_To_DB_Alert\Bussiness_To_DB.csproj", "{1F4091A3-78E6-4836-9BF5-6062B11EF892}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{D9F38A57-43CA-42C4-B554-8462FF805399}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9F38A57-43CA-42C4-B554-8462FF805399}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9F38A57-43CA-42C4-B554-8462FF805399}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F4091A3-78E6-4836-9BF5-6062B11EF892}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F4091A3-78E6-4836-9BF5-6062B11EF892}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F4091A3-78E6-4836-9BF5-6062B11EF892}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F4091A3-78E6-4836-9BF5-6062B11EF892}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
