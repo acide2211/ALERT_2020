@@ -3,18 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessToDBAlert;
 using NLog;
+
 namespace Initialisation
 {
-    class Program
+    public class Program
     {
+        #region Déclaration des variables 
+        // Variable qui permet d'interagir avec la dll de la base de données
+        
+        //Variable qui permet de crée les logs
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
+        #endregion
 
         static void Main(string[] args)
         {
+            ManagerDB managerDB;
             try
             {
-                Logger.Info("Hello world");
+                Logger.Info("Programme Init");
+                managerDB = new ManagerDB(Logger);
+
                 System.Console.ReadKey();
             }
             catch (Exception ex)

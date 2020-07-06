@@ -64,5 +64,11 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BusinessToDBAlert\BusinessToDBAlert.csproj">
+      <Project>{CF498F36-96B3-4A18-83E8-9F4D9A4CAE13}</Project>
+      <Name>BusinessToDBAlert</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
