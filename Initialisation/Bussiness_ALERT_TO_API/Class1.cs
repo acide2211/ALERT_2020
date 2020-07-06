@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Business_To_Alert_API
+namespace Bussiness_ALERT_TO_API
 {
     public class Class1
     {
