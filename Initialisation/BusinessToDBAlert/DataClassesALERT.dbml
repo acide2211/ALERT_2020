@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="ALERT" Class="DataClassesALERTDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=192.168.81.131;Initial Catalog=ALERT;User ID=sa" SettingsObjectName="BusinessToDBAlert.Properties.Settings" SettingsPropertyName="ALERTConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Alarme" Member="Alarme">
+    <Type Name="Alarme">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Code" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MessageLong" Type="System.String" DbType="VarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="MessageCourt" Type="System.String" DbType="VarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="TypeAlarmeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="StationId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Alarme_AlarmeMasquee" Member="AlarmeMasquee" ThisKey="Id" OtherKey="AlarmeId" Type="AlarmeMasquee" />
+      <Association Name="Station_Alarme" Member="Station" ThisKey="StationId" OtherKey="Id" Type="Station" IsForeignKey="true" />
+      <Association Name="TypeAlarme_Alarme" Member="TypeAlarme" ThisKey="TypeAlarmeId" OtherKey="Id" Type="TypeAlarme" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TypeStation" Member="TypeStation">
+    <Type Name="TypeStation">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Descrition" Type="System.String" DbType="VarChar(128)" CanBeNull="true" />
+      <Column Name="TypeAbreger" Type="System.String" DbType="VarChar(12)" CanBeNull="true" />
+      <Association Name="TypeStation_Station" Member="Station" ThisKey="Id" OtherKey="TypeStationId" Type="Station" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AlarmeMasquee" Member="AlarmeMasquee">
+    <Type Name="AlarmeMasquee">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DateDebut" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="DateFin" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Comment" Type="System.String" DbType="VarChar(1024)" CanBeNull="true" />
+      <Column Name="PersonneId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AlarmeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Alarme_AlarmeMasquee" Member="Alarme" ThisKey="AlarmeId" OtherKey="Id" Type="Alarme" IsForeignKey="true" />
+      <Association Name="Personne_AlarmeMasquee" Member="Personne" ThisKey="PersonneId" OtherKey="Id" Type="Personne" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Annee" Member="Annee">
+    <Type Name="Annee">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Annee" Member="Annee1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SiecleId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Annee_Mois" Member="Mois" ThisKey="Id" OtherKey="AnneeId" Type="Mois" />
+      <Association Name="Siecle_Annee" Member="Siecle" ThisKey="SiecleId" OtherKey="Id" Type="Siecle" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Commune" Member="Commune">
+    <Type Name="Commune">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Nom" Type="System.String" DbType="VarChar(128)" CanBeNull="true" />
+      <Column Name="CodePostal" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Commune_Station" Member="Station" ThisKey="Id" OtherKey="CommuneId" Type="Station" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Configuration" Member="Configuration">
+    <Type Name="Configuration">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Cle" Type="System.String" DbType="VarChar(1024) NOT NULL" CanBeNull="false" />
+      <Column Name="Value" Type="System.String" DbType="VarChar(1024) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DriverConfig" Member="DriverConfig">
+    <Type Name="DriverConfig">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Prioriter" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AutoAck" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Adresse" Type="System.String" DbType="VarChar(1024)" CanBeNull="true" />
+      <Column Name="CountAck" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CountTry" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Final" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="TimeToAck" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TimeToRetry" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Valide" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="PersonneId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TypeDriverId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Personne_DriverConfig" Member="Personne" ThisKey="PersonneId" OtherKey="Id" Type="Personne" IsForeignKey="true" />
+      <Association Name="TypeDriver_DriverConfig" Member="TypeDriver" ThisKey="TypeDriverId" OtherKey="Id" Type="TypeDriver" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.HorsService" Member="HorsService">
+    <Type Name="HorsService">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DateDebut" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="DateFin" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="PersonneId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Personne_HorsService" Member="Personne" ThisKey="PersonneId" OtherKey="Id" Type="Personne" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Jour" Member="Jour">
+    <Type Name="Jour">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Numero" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="JourSemaineId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MoisId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Jour_Tranche" Member="Tranche" ThisKey="Id" OtherKey="JourId" Type="Tranche" />
+      <Association Name="JourSemaine_Jour" Member="JourSemaine" ThisKey="JourSemaineId" OtherKey="Id" Type="JourSemaine" IsForeignKey="true" />
+      <Association Name="Mois_Jour" Member="Mois" ThisKey="MoisId" OtherKey="Id" Type="Mois" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.JourSemaine" Member="JourSemaine">
+    <Type Name="JourSemaine">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Jour" Type="System.String" DbType="VarChar(128)" CanBeNull="true" />
+      <Column Name="Numero" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="JourSemaine_Jour" Member="Jour1" ThisKey="Id" OtherKey="JourSemaineId" Type="Jour" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ModeIntervention" Member="ModeIntervention">
+    <Type Name="ModeIntervention">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DateDebut" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="DateFin" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="PersonneId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="StationId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Personne_ModeIntervention" Member="Personne" ThisKey="PersonneId" OtherKey="Id" Type="Personne" IsForeignKey="true" />
+      <Association Name="Station_ModeIntervention" Member="Station" ThisKey="StationId" OtherKey="Id" Type="Station" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Mois" Member="Mois">
+    <Type Name="Mois">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Mois" Member="Mois1" Type="System.String" DbType="VarChar(128)" CanBeNull="true" />
+      <Column Name="Numero" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AnneeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Mois_Jour" Member="Jour" ThisKey="Id" OtherKey="MoisId" Type="Jour" />
+      <Association Name="Annee_Mois" Member="Annee" ThisKey="AnneeId" OtherKey="Id" Type="Annee" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Periode" Member="Periode">
+    <Type Name="Periode">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Nom" Type="System.String" DbType="VarChar(128)" CanBeNull="true" />
+      <Association Name="Periode_Tranche" Member="Tranche" ThisKey="Id" OtherKey="PeriodeId" Type="Tranche" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Personne" Member="Personne">
+    <Type Name="Personne">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Nom" Type="System.String" DbType="VarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="Prenom" Type="System.String" DbType="VarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="RoleId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Personne_AlarmeMasquee" Member="AlarmeMasquee" ThisKey="Id" OtherKey="PersonneId" Type="AlarmeMasquee" />
+      <Association Name="Personne_DriverConfig" Member="DriverConfig" ThisKey="Id" OtherKey="PersonneId" Type="DriverConfig" />
+      <Association Name="Personne_HorsService" Member="HorsService" ThisKey="Id" OtherKey="PersonneId" Type="HorsService" />
+      <Association Name="Personne_ModeIntervention" Member="ModeIntervention" ThisKey="Id" OtherKey="PersonneId" Type="ModeIntervention" />
+      <Association Name="Personne_Prioriter" Member="Prioriter" ThisKey="Id" OtherKey="PersonneId" Type="Prioriter" />
+      <Association Name="Personne_StationMasquee" Member="StationMasquee" ThisKey="Id" OtherKey="PersonneId" Type="StationMasquee" />
+      <Association Name="Role_Personne" Member="Role" ThisKey="RoleId" OtherKey="Id" Type="Role" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Prioriter" Member="Prioriter">
+    <Type Name="Prioriter">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Prioriter" Member="Prioriter1" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NumeroSecteur" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RoleId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SecteurId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PersonneId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Personne_Prioriter" Member="Personne" ThisKey="PersonneId" OtherKey="Id" Type="Personne" IsForeignKey="true" />
+      <Association Name="Role_Prioriter" Member="Role" ThisKey="RoleId" OtherKey="Id" Type="Role" IsForeignKey="true" />
+      <Association Name="Secteur_Prioriter" Member="Secteur" ThisKey="SecteurId" OtherKey="Id" Type="Secteur" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Role" Member="Role">
+    <Type Name="Role">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Nom" Type="System.String" DbType="VarChar(128) NOT NULL" CanBeNull="false" />
+      <Association Name="Role_Personne" Member="Personne" ThisKey="Id" OtherKey="RoleId" Type="Personne" />
+      <Association Name="Role_Prioriter" Member="Prioriter" ThisKey="Id" OtherKey="RoleId" Type="Prioriter" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Secteur" Member="Secteur">
+    <Type Name="Secteur">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Nom" Type="System.String" DbType="VarChar(128)" CanBeNull="true" />
+      <Column Name="Nombre" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Secteur_Prioriter" Member="Prioriter" ThisKey="Id" OtherKey="SecteurId" Type="Prioriter" />
+      <Association Name="Secteur_Station" Member="Station" ThisKey="Id" OtherKey="SecteurId" Type="Station" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Siecle" Member="Siecle">
+    <Type Name="Siecle">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Numero" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Siecle_Annee" Member="Annee" ThisKey="Id" OtherKey="SiecleId" Type="Annee" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Station" Member="Station">
+    <Type Name="Station">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Nom" Type="System.String" DbType="VarChar(128)" CanBeNull="true" />
+      <Column Name="AbregerTBOX" Type="System.String" DbType="VarChar(128)" CanBeNull="true" />
+      <Column Name="CodeStation" Type="System.String" DbType="VarChar(128)" CanBeNull="true" />
+      <Column Name="Adresse" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="TelephoneStation" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Telephoneautomate" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="URL" Type="System.String" DbType="VarChar(2048)" CanBeNull="true" />
+      <Column Name="Coordonnee" Type="System.String" DbType="VarChar(2048)" CanBeNull="true" />
+      <Column Name="NumeroSecteur" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SecteurId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CommuneId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TypeStationId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Station_Alarme" Member="Alarme" ThisKey="Id" OtherKey="StationId" Type="Alarme" />
+      <Association Name="Station_ModeIntervention" Member="ModeIntervention" ThisKey="Id" OtherKey="StationId" Type="ModeIntervention" />
+      <Association Name="Station_StationMasquee" Member="StationMasquee" ThisKey="Id" OtherKey="StationId" Type="StationMasquee" />
+      <Association Name="Commune_Station" Member="Commune" ThisKey="CommuneId" OtherKey="Id" Type="Commune" IsForeignKey="true" />
+      <Association Name="Secteur_Station" Member="Secteur" ThisKey="SecteurId" OtherKey="Id" Type="Secteur" IsForeignKey="true" />
+      <Association Name="TypeStation_Station" Member="TypeStation" ThisKey="TypeStationId" OtherKey="Id" Type="TypeStation" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.StationMasquee" Member="StationMasquee">
+    <Type Name="StationMasquee">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DateDebut" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="DateFin" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Comment" Type="System.String" DbType="VarChar(1024)" CanBeNull="true" />
+      <Column Name="PersonneId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="StationId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Personne_StationMasquee" Member="Personne" ThisKey="PersonneId" OtherKey="Id" Type="Personne" IsForeignKey="true" />
+      <Association Name="Station_StationMasquee" Member="Station" ThisKey="StationId" OtherKey="Id" Type="Station" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Tranche" Member="Tranche">
+    <Type Name="Tranche">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Numero" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="JourId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PeriodeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TypeAlarmeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Jour_Tranche" Member="Jour" ThisKey="JourId" OtherKey="Id" Type="Jour" IsForeignKey="true" />
+      <Association Name="Periode_Tranche" Member="Periode" ThisKey="PeriodeId" OtherKey="Id" Type="Periode" IsForeignKey="true" />
+      <Association Name="TypeAlarme_Tranche" Member="TypeAlarme" ThisKey="TypeAlarmeId" OtherKey="Id" Type="TypeAlarme" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TypeAlarme" Member="TypeAlarme">
+    <Type Name="TypeAlarme">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Libelle" Type="System.String" DbType="VarChar(128)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(12)" CanBeNull="true" />
+      <Association Name="TypeAlarme_Alarme" Member="Alarme" ThisKey="Id" OtherKey="TypeAlarmeId" Type="Alarme" />
+      <Association Name="TypeAlarme_Tranche" Member="Tranche" ThisKey="Id" OtherKey="TypeAlarmeId" Type="Tranche" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TypeDriver" Member="TypeDriver">
+    <Type Name="TypeDriver">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Numero" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Association Name="TypeDriver_DriverConfig" Member="DriverConfig" ThisKey="Id" OtherKey="TypeDriverId" Type="DriverConfig" />
+    </Type>
+  </Table>
+</Database>
