@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using BusinessToAlert;
 using BusinessToDBAlert;
 using NLog;
 
@@ -21,11 +23,15 @@ namespace Initialisation
         static void Main(string[] args)
         {
             ManagerDB managerDB;
+            ManagerAlert managerAlert;
             try
             {
                 Logger.Info("Programme Init");
                 managerDB = new ManagerDB(Logger);
+                managerAlert = new ManagerAlert(Logger);
+                managerAlert.LoginAlertWS();
 
+                Thread.Sleep(5000);
                 System.Console.ReadKey();
             }
             catch (Exception ex)

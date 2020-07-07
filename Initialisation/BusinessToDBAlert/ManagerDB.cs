@@ -17,11 +17,26 @@ namespace BusinessToDBAlert
         //Variable qui permet de faire la connexions a la base de données
         private DataClassesALERTDataContext _alertDBContext;
         //dictionaire qui contient les informations de configuration
-        private Dictionary<String, String> _configurations;
+        public Dictionary<String, String> _configurations { get; private set; }
 
         private NLog.Logger Logger;
         #endregion
 
+        public ManagerDB()
+        {
+            // Creation de la connexions avec la base de données
+
+            _alertDBContext = new DataClassesALERTDataContext();
+
+      
+
+            //Récupération de la configuration
+
+            GetConfigurationInfo();
+
+         
+
+        }
         public ManagerDB(NLog.Logger Logger)
         {
             // Synchronisation des système de log
@@ -38,8 +53,9 @@ namespace BusinessToDBAlert
             GetConfigurationInfo();
 
             Logger.Info("Récupération des informations de configuration");
+           
 
-            Console.ReadKey();
+            
             //try
             //{
             //    Logger.Info("Base de données");
