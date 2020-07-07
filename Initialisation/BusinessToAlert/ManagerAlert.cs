@@ -28,7 +28,7 @@ namespace BusinessToAlert
         {
             // Synchronisation des système de log
             this.Logger = Logger;
-            _managerDB = new ManagerDB();
+            _managerDB = ManagerDB.getInstance(Logger);
 
         }
 

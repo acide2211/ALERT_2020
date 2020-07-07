@@ -27,10 +27,10 @@ namespace Initialisation
             try
             {
                 Logger.Info("Programme Init");
-                managerDB = new ManagerDB(Logger);
+                managerDB = ManagerDB.getInstance(Logger);
                 managerAlert = new ManagerAlert(Logger);
                 managerAlert.LoginAlertWS();
-
+                System.Console.ReadKey();
                 Thread.Sleep(5000);
                 System.Console.ReadKey();
             }
