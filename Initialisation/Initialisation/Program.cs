@@ -28,7 +28,7 @@ namespace Initialisation
             {
                 Logger.Info("Programme Init");
                 managerDB = ManagerDB.getInstance(Logger);
-                managerAlert = new ManagerAlert(Logger);
+                managerAlert = ManagerAlert.getInstance(Logger);
                 managerAlert.LoginAlertWS();
                 System.Console.ReadKey();
                 Thread.Sleep(5000);
