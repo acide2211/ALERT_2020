@@ -24,7 +24,6 @@ namespace ManagerDBTest
         {
             List<Secteur> secteurs = _managerDB.GetSecteurs();
             Assert.IsNotNull(secteurs);
-
         }
         [TestMethod]
         public void TestGetSecteursByName()
@@ -36,8 +35,23 @@ namespace ManagerDBTest
             name = "plateau de herves";
             secteur = _managerDB.GetSecteurByName(name);
             Assert.IsNull(secteur);
+        }
 
+        [TestMethod]
+        public void TestGetRoles()
+        {
+            List<Role> roles = _managerDB.GetRoles();
+            Assert.IsNotNull(roles);
+        }
 
+        [TestMethod]       
+        public void TestGetRoleByName()
+        {
+            string name;
+
+            name = "ContreMaitre";
+            Role role = _managerDB.GetRoleByName(name);
+            Assert.IsNotNull(role);
         }
     }
 }

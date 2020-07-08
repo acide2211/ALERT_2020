@@ -151,12 +151,12 @@ namespace BusinessToDBAlert
         /// </summary>
         /// <param name="nomSecteur"></param>
         /// <returns>Retourne le secteur qui porte le nom ou retourne null si pas trouver</returns>
-        public Secteur GetRoleByName(string nomRole)
+        public Role GetRoleByName(string nomRole)
         {
             nomRole = nomRole.ToUpper();
 
-            Table<Secteur> roleTable = _alertDBContext.GetTable<Secteur>();
-            List<Secteur> roleTrouvers = (from role in roleTable
+            Table<Role> roleTable = _alertDBContext.GetTable<Role>();
+            List<Role> roleTrouvers = (from role in roleTable
                                              where role.Nom.Equals(nomRole)
                                              select role).ToList();
             if (roleTrouvers.Count != 1)
