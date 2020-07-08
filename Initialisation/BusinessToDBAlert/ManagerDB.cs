@@ -92,5 +92,47 @@ namespace BusinessToDBAlert
                                select config).ToDictionary(t => t.Cle, t => t.Value);
         }
 
+        #region Gestion Secteur
+        /// <summary>
+        /// Permet de récupérer la lise de tout les secteurs 
+        /// </summary>
+        /// <returns>List des secteurs</returns>
+        public List<Secteur> GetSecteurs()
+        {
+            Table<Secteur> tableSecteur = _alertDBContext.GetTable<Secteur>();
+            List<Secteur> secteurs = (from secteur in tableSecteur select secteur).ToList();
+            return secteurs;
+        }
+        /// <summary>
+        /// Permet de trouver un secteur particulier
+        /// </summary>
+        /// <param name="nomSecteur"></param>
+        /// <returns>Retourne le secteur qui porte le nom ou retourne null si pas trouver</returns>
+        public Secteur GetSecteurByName(string nomSecteur)
+        {
+            nomSecteur = nomSecteur.ToUpper();
+
+            Table<Secteur> secteurTable = _alertDBContext.GetTable<Secteur>();
+            List<Secteur> secteurTrouvers = (from secteur in secteurTable
+                                             where secteur.Nom.Equals(nomSecteur)
+                                             select secteur).ToList();
+            if (secteurTrouvers.Count != 1)
+            {
+                Logger.Info("Recherche d'un secteur qui n'est pas connu " + nomSecteur);
+                return null;
+            }
+            return secteurTrouvers.First(); ;
+        }
+        /// <summary>
+        /// Permet de récupérer la liste des secteurs de manière asychrone 
+        /// </summary>
+        /// <returns>Retourne la liste des secteurs </returns>
+        public async Task<List<Secteur>> GetListSecteursAsync()
+        {
+            List<Secteur> Secteurs = this.GetSecteurs();
+            return Secteurs;
+        }
+
+        #endregion
     }
 }
