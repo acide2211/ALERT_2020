@@ -134,5 +134,48 @@ namespace BusinessToDBAlert
         }
 
         #endregion
+
+        #region Gestion Role
+        /// <summary>
+        /// Permet de récupérer la lise de tout les secteurs 
+        /// </summary>
+        /// <returns>List des secteurs</returns>
+        public List<Role> GetRoles()
+        {
+            Table<Role> tableRole = _alertDBContext.GetTable<Role>();
+            List<Role> roles = (from role in tableRole select role).ToList();
+            return roles;
+        }
+        /// <summary>
+        /// Permet de trouver un secteur particulier
+        /// </summary>
+        /// <param name="nomSecteur"></param>
+        /// <returns>Retourne le secteur qui porte le nom ou retourne null si pas trouver</returns>
+        public Secteur GetRoleByName(string nomRole)
+        {
+            nomRole = nomRole.ToUpper();
+
+            Table<Secteur> roleTable = _alertDBContext.GetTable<Secteur>();
+            List<Secteur> roleTrouvers = (from role in roleTable
+                                             where role.Nom.Equals(nomRole)
+                                             select role).ToList();
+            if (roleTrouvers.Count != 1)
+            {
+                Logger.Info("Recherche d'un secteur qui n'est pas connu " + nomRole);
+                return null;
+            }
+            return roleTrouvers.First(); ;
+        }
+        /// <summary>
+        /// Permet de récupérer la liste des secteurs de manière asychrone 
+        /// </summary>
+        /// <returns>Retourne la liste des secteurs </returns>
+        public async Task<List<Role>> GetListRolesAsync()
+        {
+            List<Role> Roles = this.GetRoles();
+            return Roles;
+        }
+
+        #endregion
     }
 }
