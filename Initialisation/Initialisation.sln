@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessToAlert", "Business
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessToDBAlert", "BusinessToDBAlert\BusinessToDBAlert.csproj", "{CF498F36-96B3-4A18-83E8-9F4D9A4CAE13}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagerDBTest", "ManagerDBTest\ManagerDBTest.csproj", "{4D136F18-F2D7-4CBF-B30E-0F9D59CFAFDC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{CF498F36-96B3-4A18-83E8-9F4D9A4CAE13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF498F36-96B3-4A18-83E8-9F4D9A4CAE13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF498F36-96B3-4A18-83E8-9F4D9A4CAE13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D136F18-F2D7-4CBF-B30E-0F9D59CFAFDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D136F18-F2D7-4CBF-B30E-0F9D59CFAFDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D136F18-F2D7-4CBF-B30E-0F9D59CFAFDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D136F18-F2D7-4CBF-B30E-0F9D59CFAFDC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
