@@ -15,9 +15,9 @@ namespace BusinessToDBAlert
     {
         #region Déclaration des variables 
         //Varible du singleton
-        private static ManagerDB instance = null;
+        private static ManagerDB _instance = null;
         //Permet d'éciter d'avoir deux instance
-        private static readonly object padlock = new object();
+        private static readonly object _padlock = new object();
         //Variable qui permet de faire la connexions a la base de données
         private DataClassesALERTDataContext _alertDBContext;
         //dictionaire qui contient les informations de configuration
@@ -26,16 +26,22 @@ namespace BusinessToDBAlert
         private NLog.Logger Logger { get; set; }
         #endregion
 
+        #region Constructeur
+        /// <summary>
+        /// Fonction qui permet de récupérer l'instance de ManagerDB
+        /// </summary>
+        /// <param name="Logger"></param>
+        /// <returns></returns>
         public static ManagerDB getInstance(NLog.Logger Logger = null)
         {
-            lock (padlock)
+            lock (_padlock)
             {
-                if (instance == null)
+                if (_instance == null)
                 {
                     if (Logger != null)
                     {
                         // Synchronisation des système de log                       
-                        instance = new ManagerDB(Logger);
+                        _instance = new ManagerDB(Logger);
                     }
                     else
                     {
@@ -43,7 +49,7 @@ namespace BusinessToDBAlert
                     }
                     
                 }
-                return instance;
+                return _instance;
             }
         }
 
@@ -77,6 +83,7 @@ namespace BusinessToDBAlert
             //}
         }
 
+        #endregion
         private void GetConfigurationInfo()
         {
             Table<Configuration> configuration = _alertDBContext.GetTable<Configuration>();

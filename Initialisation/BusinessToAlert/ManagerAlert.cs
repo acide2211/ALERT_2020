@@ -15,23 +15,48 @@ namespace BusinessToAlert
     public class ManagerAlert
     {
         #region Déclaration des variables 
+        //Varible du singleton
+        private static ManagerAlert _instance = null;
+        //Permet d'éciter d'avoir deux instance
+        private static readonly object _padlock = new object();
         // Class qui gère la db
         private ManagerDB _managerDB;
         // Token de connexion
         private LoginResponseBody _loginResponseBody { get; set; }
 
-
         private NLog.Logger Logger;
         #endregion
+        #region Constructeur
+        public static ManagerAlert getInstance(NLog.Logger Logger = null)
+        {
+            lock (_padlock)
+            {
+                if (_instance == null)
+                {
+                    if (Logger != null)
+                    {
+                        // Synchronisation des système de log                       
+                        _instance = new ManagerAlert(Logger);
+                    }
+                    else
+                    {
+                        throw new Exception("Le Logger n'est pas initialiser");
+                    }
 
-        public ManagerAlert(NLog.Logger Logger)
+                }
+                return _instance;
+            }
+        }
+
+
+        private ManagerAlert(NLog.Logger Logger)
         {
             // Synchronisation des système de log
             this.Logger = Logger;
             _managerDB = ManagerDB.getInstance(Logger);
 
         }
-
+        #endregion
         public void LoginAlertWS()
         {
             string Login = _managerDB._configurations["LOGIN"];
@@ -50,7 +75,7 @@ namespace BusinessToAlert
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 _loginResponseBody = JsonConvert.DeserializeObject<LoginResponseBody>(response.Content, new LoginResponseBodyConverter());
-                 Logger.Info("Login Réussi");
+                Logger.Info("Login Réussi");
             }
             else
             {
@@ -58,5 +83,7 @@ namespace BusinessToAlert
             }
 
         }
+
+
     }
 }
