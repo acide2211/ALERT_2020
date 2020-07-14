@@ -13,6 +13,14 @@ using Alert.Api.Remote.Entities;
 
 namespace BusinessToAlert
 {
+
+    public enum EnumHTMLVerbe
+    {
+        POST,
+        GET,
+        PUT,
+        DELETE
+    }
     public class ManagerAlert
     {
         #region Déclaration des variables 
@@ -215,6 +223,41 @@ namespace BusinessToAlert
 
         #endregion
 
+        //ESSAI AVEC un deleger
+
+        public void CallGroup(List<CallGroupDTO> callGroupDTOs, EnumHTMLVerbe enumHTML )
+        {
+            // On crée la liste avec toutes les tâches que l'on va lancer
+            List<Task> tasks = new List<Task>();
+
+            //La on crée une une task qui elle va faire la requete PUT aupres de l'api
+            foreach (CallGroupDTO item in callGroupDTOs)
+            {
+                Task t;
+                switch (enumHTML)
+                {
+                    case EnumHTMLVerbe.POST:
+                        t = Task.Run(() => POSTCallGroup (item));
+                        break;
+                    case EnumHTMLVerbe.GET:
+                        break;
+                    case EnumHTMLVerbe.PUT:
+                        t = Task.Run(() => PUTCallGroup(item));
+                        break;
+                    case EnumHTMLVerbe.DELETE:
+                        break;
+                    default:
+                        break;
+                }
+                
+                tasks.Add(t);
+
+            }
+
+            // On attend que toute les tache soit bien finie
+            Task.WaitAll(tasks.ToArray());
+
+        }
 
         #endregion
 
