@@ -111,17 +111,9 @@ namespace BusinessToAlert
                 Logger.Error("Erreur dans la fonction CallGroup ");
                 throw new Exception("Erreur lors de la réquête vers API Alert");
             }
+            
 
             return _callGroups;
-
-            if (response.StatusCode != HttpStatusCode.OK)
-            {
-                Logger.Error("Erreur dans la fonction CallGroup ");
-            }
-
-
-
-
         }
 
 

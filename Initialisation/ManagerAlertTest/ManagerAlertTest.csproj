@@ -5,11 +5,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4D136F18-F2D7-4CBF-B30E-0F9D59CFAFDC}</ProjectGuid>
+    <ProjectGuid>{E9A54FAA-6F28-4C90-91C3-FFDB2CF20912}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ManagerDBTest</RootNamespace>
-    <AssemblyName>ManagerDBTest</AssemblyName>
+    <RootNamespace>ManagerAlertTest</RootNamespace>
+    <AssemblyName>ManagerAlertTest</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -39,6 +39,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Alert.Api.Remote.Entities">
+      <HintPath>D:\ALAIN\TRAVAIL\One drive\OneDrive - AIDE\Procedure\Procédure ranger\09 Alert Nouvelle Organnisation\Programmation\API\Alert.Api.Remote.Entities.dll</HintPath>
+    </Reference>
+    <Reference Include="Alert.Api.Remote.REST.Clients">
+      <HintPath>D:\ALAIN\TRAVAIL\One drive\OneDrive - AIDE\Procedure\Procédure ranger\09 Alert Nouvelle Organnisation\Programmation\API\Alert.Api.Remote.REST.Clients.dll</HintPath>
+    </Reference>
+    <Reference Include="Alert.Api.Remote.REST.Entities">
+      <HintPath>D:\ALAIN\TRAVAIL\One drive\OneDrive - AIDE\Procedure\Procédure ranger\09 Alert Nouvelle Organnisation\Programmation\API\Alert.Api.Remote.REST.Entities.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.1.3.2\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
@@ -60,7 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ManagerDBTest.cs" />
+    <Compile Include="ManagerAlertTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -74,11 +83,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BusinessToAlert\BusinessToAlert.csproj">
-      <Project>{06cf6a2a-d6e8-49fe-b9e4-b0bfa21d4869}</Project>
+      <Project>{06CF6A2A-D6E8-49FE-B9E4-B0BFA21D4869}</Project>
       <Name>BusinessToAlert</Name>
     </ProjectReference>
     <ProjectReference Include="..\BusinessToDBAlert\BusinessToDBAlert.csproj">
-      <Project>{cf498f36-96b3-4a18-83e8-9f4d9a4cae13}</Project>
+      <Project>{CF498F36-96B3-4A18-83E8-9F4D9A4CAE13}</Project>
       <Name>BusinessToDBAlert</Name>
     </ProjectReference>
   </ItemGroup>

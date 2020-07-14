@@ -49,7 +49,7 @@ namespace ManagerDBTest
         {
             string name;
 
-            name = "ContreMaitre";
+            name = "CONTREMAITRE";
             Role role = _managerDB.GetRoleByName(name);
             Assert.IsNotNull(role);
         }

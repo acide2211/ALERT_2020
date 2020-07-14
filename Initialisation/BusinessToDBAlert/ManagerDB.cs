@@ -160,8 +160,9 @@ namespace BusinessToDBAlert
             nomRole = nomRole.ToUpper();
 
             Table<Role> roleTable = _alertDBContext.GetTable<Role>();
+
             List<Role> roleTrouvers = (from role in roleTable
-                                             where role.Nom.Equals(nomRole)
+                                             where role.Nom  == nomRole
                                              select role).ToList();
             if (roleTrouvers.Count != 1)
             {
