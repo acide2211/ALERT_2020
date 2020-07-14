@@ -84,6 +84,8 @@ namespace BusinessToDBAlert
         }
 
         #endregion
+
+        #region Configuration
         private void GetConfigurationInfo()
         {
             Table<Configuration> configuration = _alertDBContext.GetTable<Configuration>();
@@ -91,6 +93,8 @@ namespace BusinessToDBAlert
             _configurations = (from config in configuration
                                select config).ToDictionary(t => t.Cle, t => t.Value);
         }
+
+        #endregion
 
         #region Gestion Secteur
         /// <summary>
