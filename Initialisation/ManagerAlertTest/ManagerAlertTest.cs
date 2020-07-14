@@ -26,8 +26,11 @@ namespace ManagerAlertTest
         {
             _managerAlert.LoginAlertWS();
             // Récupération des callGroup dans alert
-            PagingCollectionDTO<CallGroupDTO> pagingCollectionDTOs = _managerAlert.GetCallGroupDTO();
+            PagingCollectionDTO<CallGroupDTO> pagingCollectionDTOs = _managerAlert.GETCallGroupDTO();
             List<CallGroupDTO> callgroups = pagingCollectionDTOs.Items.ToList();
+
+            Assert.IsNotNull(callgroups);
+            Assert.AreNotEqual(callgroups.Count, 0);
 
         }
     }

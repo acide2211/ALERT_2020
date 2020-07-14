@@ -88,8 +88,11 @@ namespace BusinessToAlert
 
         #endregion
         #region CallGroup
-
-        public PagingCollectionDTO<CallGroupDTO> GetCallGroupDTO()
+        /// <summary>
+        /// Fonction qui permet de récupérer tout les call group qui existe dans alert
+        /// </summary>
+        /// <returns></returns>
+        public PagingCollectionDTO<CallGroupDTO> GETCallGroupDTO()
         {
             // Déclarration de la variable de réception
             PagingCollectionDTO<CallGroupDTO> _callGroups = new PagingCollectionDTO<CallGroupDTO>();
@@ -106,15 +109,111 @@ namespace BusinessToAlert
             IRestResponse response = client.Execute(request);
             _callGroups = JsonConvert.DeserializeObject<PagingCollectionDTO<CallGroupDTO>>(response.Content);
 
+            // Controle si la réponse a été refusée par le serveur
             if (response.StatusCode != HttpStatusCode.OK)
             {
-                Logger.Error("Erreur dans la fonction CallGroup ");
-                throw new Exception("Erreur lors de la réquête vers API Alert");
+                Logger.Error("Erreur dans la fonction GETCallGroupDTO " + response.StatusCode);
+                throw new Exception("Erreur lors de la réquête vers GET API Alert" + response.StatusCode);
             }
-            
-
+            // return
             return _callGroups;
         }
+
+        #region CallGroup POST
+        /// <summary>
+        /// Fonction qui permet de crée un nouveau Groupe d'appelle
+        /// </summary>
+        /// <param name="CallGroup"> Object qui contient les informations du groupe d'appelle </param>
+        public void POSTCallGroup(CallGroupDTO CallGroup)
+        {
+            // Construction de la requête
+            string url = _managerDB._configurations["URL"] + "/callgroups";
+            RestClient client = new RestClient(url);
+            RestRequest request = new RestRequest(Method.POST);
+            request.AddHeader("Authorization", _loginResponseBody.TokenType + " " + _loginResponseBody.AccessToken);
+            request.AddJsonBody(CallGroup);
+            // Attende de la réponse de la requête
+            IRestResponse response = client.Execute(request);
+
+            // Controle si la réponse a été refusée par le serveur
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                Logger.Error("Erreur dans la fonction POSTCreateCallGroup " + response.StatusCode);
+                throw new Exception("Erreur lors de la réquête vers API Alert" + response.StatusCode);
+            }
+        }
+
+        /// <summary>
+        /// Fonction qui permet de crée un tableau de CallGroup
+        /// </summary>
+        /// <param name="callGroupDTOs">Object qui contient les informations du groupe d'appelle</param>
+        public void CreateCallGroup(List<CallGroupDTO> callGroupDTOs)
+        {
+            // On crée la liste avec toutes les tâches que l'on va lancer
+            List<Task> tasks = new List<Task>();
+
+            foreach (CallGroupDTO item in callGroupDTOs)
+            {
+                //La on crée une une task qui elle va faire la requete POST aupres de l'api
+                Task t = Task.Run(() => POSTCallGroup(item));
+                tasks.Add(t);
+
+            }
+
+            // On attend que toute les tache soit bien finie
+            Task.WaitAll(tasks.ToArray());
+        }
+        #endregion
+
+        #region CallGroup PUT
+        /// <summary>
+        /// Fonction qui permet de modifier un callgroup qui existe déjà
+        /// </summary>
+        /// <param name="callGroupDTO">Object qui contient les informations du groupe d'appelle</param>
+        private void PUTCallGroup(CallGroupDTO callGroupDTO)
+        {
+            // Construction de la requête
+            string url = _managerDB._configurations["URL"] + "/callgroups/" + callGroupDTO.Id;
+            RestClient client = new RestClient(url);
+            RestRequest request = new RestRequest(Method.PUT);
+            request.AddHeader("Authorization", _loginResponseBody.TokenType + " " + _loginResponseBody.AccessToken);
+            request.AddJsonBody(callGroupDTO);
+
+            // Attende de la réponse de la requête
+            IRestResponse response = client.Execute(request);
+
+            // Controle si la réponse a été refusée par le serveur
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                Logger.Error("Erreur dans la fonction PUTCallGroup " + response.StatusCode);
+                throw new Exception("Erreur lors de la réquête vers API Alert" + response.StatusCode);
+            }
+
+        }
+
+        /// <summary>
+        /// Fonction qui permet de crée un tableau de CallGroup
+        /// </summary>
+        /// <param name="callGroupDTOs">Object qui contient les informations du groupe d'appelle</param>
+        public void PUTCallGroup(List<CallGroupDTO> callGroupDTOs)
+        {
+            // On crée la liste avec toutes les tâches que l'on va lancer
+            List<Task> tasks = new List<Task>();
+
+            //La on crée une une task qui elle va faire la requete PUT aupres de l'api
+            foreach (CallGroupDTO item in callGroupDTOs)
+            {
+                Task t = Task.Run(() => PUTCallGroup(item));
+                tasks.Add(t);
+
+            }
+
+            // On attend que toute les tache soit bien finie
+            Task.WaitAll(tasks.ToArray());
+
+        }
+
+        #endregion
 
 
         #endregion
