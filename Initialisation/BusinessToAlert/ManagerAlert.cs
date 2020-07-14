@@ -9,6 +9,7 @@ using RestSharp;
 using System.Net;
 using Newtonsoft.Json;
 using Alert.Api.Remote.REST.Clients.Converters;
+using Alert.Api.Remote.Entities;
 
 namespace BusinessToAlert
 {
@@ -57,6 +58,7 @@ namespace BusinessToAlert
 
         }
         #endregion
+        #region Login
         public void LoginAlertWS()
         {
             string Login = _managerDB._configurations["LOGIN"];
@@ -83,6 +85,48 @@ namespace BusinessToAlert
             }
 
         }
+
+        #endregion
+        #region CallGroup
+
+        public PagingCollectionDTO<CallGroupDTO> GetCollectionDTO()
+        {
+            // Déclarration de la variable de réception
+            PagingCollectionDTO<CallGroupDTO> _callGroups = new PagingCollectionDTO<CallGroupDTO>();
+
+            // Construction de la requête
+            string url = _managerDB._configurations["URL"] + "callgroups";
+            RestClient client = new RestClient(url);
+            RestRequest request = new RestRequest(Method.GET);
+
+            request.AddHeader("Authorization", _loginResponseBody.TokenType + " " + _loginResponseBody.AccessToken);
+            request.AddHeader("Content-Type", "application/json");
+
+            // Attende de la réponse de la requête
+            IRestResponse response = client.Execute(request);
+            _callGroups = JsonConvert.DeserializeObject<PagingCollectionDTO<CallGroupDTO>>(response.Content);
+
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                Logger.Error("Erreur dans la fonction CallGroup ");
+                throw new Exception("Erreur lors de la réquête vers API Alert");
+            }
+
+            return _callGroups;
+
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                Logger.Error("Erreur dans la fonction CallGroup ");
+            }
+
+
+
+
+        }
+
+
+        #endregion
+
 
 
     }
