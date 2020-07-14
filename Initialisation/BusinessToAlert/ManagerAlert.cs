@@ -89,7 +89,7 @@ namespace BusinessToAlert
         #endregion
         #region CallGroup
 
-        public PagingCollectionDTO<CallGroupDTO> GetCollectionDTO()
+        public PagingCollectionDTO<CallGroupDTO> GetCallGroupDTO()
         {
             // Déclarration de la variable de réception
             PagingCollectionDTO<CallGroupDTO> _callGroups = new PagingCollectionDTO<CallGroupDTO>();
