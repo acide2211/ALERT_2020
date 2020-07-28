@@ -95,12 +95,12 @@ namespace BusinessToAlert
         }
 
         #endregion
-        #region CallGroup
+        #region CallGroup GET
         /// <summary>
         /// Fonction qui permet de récupérer tout les call group qui existe dans alert
         /// </summary>
         /// <returns></returns>
-        public PagingCollectionDTO<CallGroupDTO> GETCallGroupDTO()
+        public PagingCollectionDTO<CallGroupDTO> GETCallGroup()
         {
             // Déclarration de la variable de réception
             PagingCollectionDTO<CallGroupDTO> _callGroups = new PagingCollectionDTO<CallGroupDTO>();
@@ -126,7 +126,7 @@ namespace BusinessToAlert
             // return
             return _callGroups;
         }
-
+        #endregion
         #region CallGroup POST
         /// <summary>
         /// Fonction qui permet de crée un nouveau Groupe d'appelle
@@ -172,7 +172,6 @@ namespace BusinessToAlert
             Task.WaitAll(tasks.ToArray());
         }
         #endregion
-
         #region CallGroup PUT
         /// <summary>
         /// Fonction qui permet de modifier un callgroup qui existe déjà
@@ -222,18 +221,51 @@ namespace BusinessToAlert
         }
 
         #endregion
+        #region CallGroup DELETE
 
-        //ESSAI AVEC un deleger
+        private void DELETECallGroup(CallGroupDTO callGroup)
+        {
+            // Construction de la requête
+            string url = _managerDB._configurations["URL"] + "/callgroups/" + callGroup.Id.ToString();
+            RestClient client = new RestClient(url);
+            RestRequest request = new RestRequest(Method.DELETE);
+            request.AddHeader("Authorization", _loginResponseBody.TokenType + " " + _loginResponseBody.AccessToken);
+        /*    // IRestResponse response = client.Execute(request);
+            client.ExecuteTaskAsync(request);
+            // System.Console.WriteLine("Delete call group " + callGroupId + " Status : " + response.Content);
+            */
 
-        public void CallGroup(List<CallGroupDTO> callGroupDTOs, EnumHTMLVerbe enumHTML )
+            // Attende de la réponse de la requête
+          /*  IRestResponse response = client.Execute(request);
+
+            // Controle si la réponse a été refusée par le serveur
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                Logger.Error("Erreur dans la fonction GETCallGroupDTO " + response.StatusCode);
+                throw new Exception("Erreur lors de la réquête vers GET API Alert" + response.StatusCode);
+            }*/
+
+            client.ExecuteTaskAsync(request);
+
+        }
+        #endregion
+
+
+        /// <summary>
+        /// Fonction qui permet depuis un tableau de CallGroup de faire l'action définie dans l'énumération
+        /// </summary>
+        /// <param name="callGroupDTOs"></param>
+        /// <param name="enumHTML"></param>
+        public void ManagerCallGroups(List<CallGroupDTO> callGroupDTOs, EnumHTMLVerbe enumHTML )
         {
             // On crée la liste avec toutes les tâches que l'on va lancer
             List<Task> tasks = new List<Task>();
 
+            #region CallGroup
             //La on crée une une task qui elle va faire la requete PUT aupres de l'api
             foreach (CallGroupDTO item in callGroupDTOs)
             {
-                Task t;
+                Task t = null;
                 switch (enumHTML)
                 {
                     case EnumHTMLVerbe.POST:
@@ -245,6 +277,7 @@ namespace BusinessToAlert
                         t = Task.Run(() => PUTCallGroup(item));
                         break;
                     case EnumHTMLVerbe.DELETE:
+                        t = Task.Run(() => DELETECallGroup(item));
                         break;
                     default:
                         break;
@@ -253,13 +286,14 @@ namespace BusinessToAlert
                 tasks.Add(t);
 
             }
+            #endregion
 
             // On attend que toute les tache soit bien finie
             Task.WaitAll(tasks.ToArray());
 
         }
 
-        #endregion
+        
 
 
 
