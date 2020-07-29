@@ -16,8 +16,17 @@ namespace Initialisation
         private readonly ManagerDB _managerDB;
         private readonly ManagerAlert _managerAlert;
         private readonly NLog.Logger _logger;
-        private List<CallGroupDTO> callGroupDeletes = new List<CallGroupDTO>();
+        /// <summary>
+        /// Liste des CallGroup qui devrons être supprimer d'alert
+        /// </summary>
+        private List<CallGroupDTO> callGroupDeletes = new List<CallGroupDTO>(); 
+        /// <summary>
+        /// Liste des CallGroup qui devrons être ajouter dans alert
+        /// </summary>
         private List<CallGroupDTO> callGroupNew = new List<CallGroupDTO>();
+        /// <summary>
+        /// Liste des Call Groups qui sont connu dans alert.
+        /// </summary>
         private List<CallGroupDTO> callGroups;
 
         #endregion
@@ -254,7 +263,13 @@ namespace Initialisation
 
 
         }
-
+        /// <summary>
+        /// Méthode qui permet de rechrche dans la liste des CallGroup qui vienne d'alert si 
+        /// Le Call Group existe déja alors il est retirer de la liste des CallGroup à Supprimer
+        /// Si il n'est pas dans la liste alors on l'ajoutera dans la liste des CallGroup à Créee
+        /// </summary>
+        /// <param name="searchCallGroupName"></param>
+        /// <returns></returns>
         private bool SearchCallGroupByName(string searchCallGroupName)
         {
             bool trouverCallGroup = false;   
@@ -273,6 +288,11 @@ namespace Initialisation
             return trouverCallGroup;
         }
 
+        /// <summary>
+        /// Méthode qui permet de chercher dans la liste de call Group qui est dans ALERT
+        /// Si un autre CallGroup porte se nom ou pas 
+        /// </summary>
+        /// <param name="i">indexe de possition dans   la liste CallGroups</param>
         private void SearchAddDeleteCallGroupList(int i)
         {
             bool trouverCallGroupDelete = false;
@@ -291,6 +311,11 @@ namespace Initialisation
             
         }
 
+        /// <summary>
+        /// Fonction qui permet de crée un Call Group avec comme nom le passez en paramètre
+        /// et ajout dans une liste d'ajout des callGroups
+        /// </summary>
+        /// <param name="searchCallGroupName"> Nom du call group </param>
         private void AddNewCallGroupList(string searchCallGroupName)
         {
             CallGroupDTO callGroupDTO = new CallGroupDTO();
