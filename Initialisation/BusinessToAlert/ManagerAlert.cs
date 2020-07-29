@@ -152,6 +152,8 @@ namespace BusinessToAlert
                 Logger.Error("Erreur dans la fonction POSTCreateCallGroup " + response.StatusCode);
                 throw new Exception("Erreur lors de la réquête vers API Alert" + response.StatusCode);
             }
+
+            Logger.Debug("Insert la fonction POSTCreateCallGroup " + CallGroup.Name);
         }
 
         /// <summary>
@@ -229,26 +231,23 @@ namespace BusinessToAlert
         private void DELETECallGroup(CallGroupDTO callGroup)
         {
             // Construction de la requête
-            string url = _managerDB._configurations["URL"] + "/callgroups/" + callGroup.Id.ToString();
+            string url = _managerDB._configurations["URL"] + "callgroups/" + callGroup.Id.ToString();
             RestClient client = new RestClient(url);
             RestRequest request = new RestRequest(Method.DELETE);
             request.AddHeader("Authorization", _loginResponseBody.TokenType + " " + _loginResponseBody.AccessToken);
-        /*    // IRestResponse response = client.Execute(request);
-            client.ExecuteTaskAsync(request);
-            // System.Console.WriteLine("Delete call group " + callGroupId + " Status : " + response.Content);
-            */
 
             // Attende de la réponse de la requête
-          /*  IRestResponse response = client.Execute(request);
+            IRestResponse response = client.Execute(request);
 
             // Controle si la réponse a été refusée par le serveur
             if (response.StatusCode != HttpStatusCode.OK)
             {
                 Logger.Error("Erreur dans la fonction GETCallGroupDTO " + response.StatusCode);
                 throw new Exception("Erreur lors de la réquête vers GET API Alert" + response.StatusCode);
-            }*/
+            }
 
-            client.ExecuteTaskAsync(request);
+            Logger.Debug("Delete la fonction DELETECallGroup " + callGroup.Name);
+
 
         }
         #endregion
