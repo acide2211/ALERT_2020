@@ -142,6 +142,7 @@
       <Association Name="Personne_HorsService" Member="HorsService" ThisKey="Id" OtherKey="PersonneId" Type="HorsService" />
       <Association Name="Personne_ModeIntervention" Member="ModeIntervention" ThisKey="Id" OtherKey="PersonneId" Type="ModeIntervention" />
       <Association Name="Personne_Prioriter" Member="Prioriter" ThisKey="Id" OtherKey="PersonneId" Type="Prioriter" />
+      <Association Name="Personne_SecteurPersonne" Member="SecteurPersonne" ThisKey="Id" OtherKey="PersonneId" Type="SecteurPersonne" />
       <Association Name="Personne_StationMasquee" Member="StationMasquee" ThisKey="Id" OtherKey="PersonneId" Type="StationMasquee" />
       <Association Name="Role_Personne" Member="Role" ThisKey="RoleId" OtherKey="Id" Type="Role" IsForeignKey="true" />
     </Type>
@@ -163,6 +164,8 @@
     <Type Name="Role">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Nom" Type="System.String" DbType="VarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="ActifAlert" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="NumeroSequence" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="Role_Personne" Member="Personne" ThisKey="Id" OtherKey="RoleId" Type="Personne" />
       <Association Name="Role_Prioriter" Member="Prioriter" ThisKey="Id" OtherKey="RoleId" Type="Prioriter" />
     </Type>
@@ -171,9 +174,21 @@
     <Type Name="Secteur">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Nom" Type="System.String" DbType="VarChar(128)" CanBeNull="true" />
+      <Column Name="Abreger" Type="System.String" DbType="VarChar(128)" CanBeNull="true" />
       <Column Name="Nombre" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ActifAlert" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="Secteur_Prioriter" Member="Prioriter" ThisKey="Id" OtherKey="SecteurId" Type="Prioriter" />
+      <Association Name="Secteur_SecteurPersonne" Member="SecteurPersonne" ThisKey="Id" OtherKey="SecteurId" Type="SecteurPersonne" />
       <Association Name="Secteur_Station" Member="Station" ThisKey="Id" OtherKey="SecteurId" Type="Station" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SecteurPersonne" Member="SecteurPersonne">
+    <Type Name="SecteurPersonne">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PersonneId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SecteurId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Personne_SecteurPersonne" Member="Personne" ThisKey="PersonneId" OtherKey="Id" Type="Personne" IsForeignKey="true" />
+      <Association Name="Secteur_SecteurPersonne" Member="Secteur" ThisKey="SecteurId" OtherKey="Id" Type="Secteur" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Siecle" Member="Siecle">

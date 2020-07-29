@@ -81,6 +81,9 @@ namespace BusinessToDBAlert
     partial void InsertSecteur(Secteur instance);
     partial void UpdateSecteur(Secteur instance);
     partial void DeleteSecteur(Secteur instance);
+    partial void InsertSecteurPersonne(SecteurPersonne instance);
+    partial void UpdateSecteurPersonne(SecteurPersonne instance);
+    partial void DeleteSecteurPersonne(SecteurPersonne instance);
     partial void InsertSiecle(Siecle instance);
     partial void UpdateSiecle(Siecle instance);
     partial void DeleteSiecle(Siecle instance);
@@ -264,6 +267,14 @@ namespace BusinessToDBAlert
 			get
 			{
 				return this.GetTable<Secteur>();
+			}
+		}
+		
+		public System.Data.Linq.Table<SecteurPersonne> SecteurPersonne
+		{
+			get
+			{
+				return this.GetTable<SecteurPersonne>();
 			}
 		}
 		
@@ -2983,6 +2994,8 @@ namespace BusinessToDBAlert
 		
 		private EntitySet<Prioriter> _Prioriter;
 		
+		private EntitySet<SecteurPersonne> _SecteurPersonne;
+		
 		private EntitySet<StationMasquee> _StationMasquee;
 		
 		private EntityRef<Role> _Role;
@@ -3008,6 +3021,7 @@ namespace BusinessToDBAlert
 			this._HorsService = new EntitySet<HorsService>(new Action<HorsService>(this.attach_HorsService), new Action<HorsService>(this.detach_HorsService));
 			this._ModeIntervention = new EntitySet<ModeIntervention>(new Action<ModeIntervention>(this.attach_ModeIntervention), new Action<ModeIntervention>(this.detach_ModeIntervention));
 			this._Prioriter = new EntitySet<Prioriter>(new Action<Prioriter>(this.attach_Prioriter), new Action<Prioriter>(this.detach_Prioriter));
+			this._SecteurPersonne = new EntitySet<SecteurPersonne>(new Action<SecteurPersonne>(this.attach_SecteurPersonne), new Action<SecteurPersonne>(this.detach_SecteurPersonne));
 			this._StationMasquee = new EntitySet<StationMasquee>(new Action<StationMasquee>(this.attach_StationMasquee), new Action<StationMasquee>(this.detach_StationMasquee));
 			this._Role = default(EntityRef<Role>);
 			OnCreated();
@@ -3162,6 +3176,19 @@ namespace BusinessToDBAlert
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Personne_SecteurPersonne", Storage="_SecteurPersonne", ThisKey="Id", OtherKey="PersonneId")]
+		public EntitySet<SecteurPersonne> SecteurPersonne
+		{
+			get
+			{
+				return this._SecteurPersonne;
+			}
+			set
+			{
+				this._SecteurPersonne.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Personne_StationMasquee", Storage="_StationMasquee", ThisKey="Id", OtherKey="PersonneId")]
 		public EntitySet<StationMasquee> StationMasquee
 		{
@@ -3284,6 +3311,18 @@ namespace BusinessToDBAlert
 		}
 		
 		private void detach_Prioriter(Prioriter entity)
+		{
+			this.SendPropertyChanging();
+			entity.Personne = null;
+		}
+		
+		private void attach_SecteurPersonne(SecteurPersonne entity)
+		{
+			this.SendPropertyChanging();
+			entity.Personne = this;
+		}
+		
+		private void detach_SecteurPersonne(SecteurPersonne entity)
 		{
 			this.SendPropertyChanging();
 			entity.Personne = null;
@@ -3617,6 +3656,10 @@ namespace BusinessToDBAlert
 		
 		private string _Nom;
 		
+		private bool _ActifAlert;
+		
+		private System.Nullable<int> _NumeroSequence;
+		
 		private EntitySet<Personne> _Personne;
 		
 		private EntitySet<Prioriter> _Prioriter;
@@ -3629,6 +3672,10 @@ namespace BusinessToDBAlert
     partial void OnIdChanged();
     partial void OnNomChanging(string value);
     partial void OnNomChanged();
+    partial void OnActifAlertChanging(bool value);
+    partial void OnActifAlertChanged();
+    partial void OnNumeroSequenceChanging(System.Nullable<int> value);
+    partial void OnNumeroSequenceChanged();
     #endregion
 		
 		public Role()
@@ -3674,6 +3721,46 @@ namespace BusinessToDBAlert
 					this._Nom = value;
 					this.SendPropertyChanged("Nom");
 					this.OnNomChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActifAlert", DbType="Bit NOT NULL")]
+		public bool ActifAlert
+		{
+			get
+			{
+				return this._ActifAlert;
+			}
+			set
+			{
+				if ((this._ActifAlert != value))
+				{
+					this.OnActifAlertChanging(value);
+					this.SendPropertyChanging();
+					this._ActifAlert = value;
+					this.SendPropertyChanged("ActifAlert");
+					this.OnActifAlertChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NumeroSequence", DbType="Int")]
+		public System.Nullable<int> NumeroSequence
+		{
+			get
+			{
+				return this._NumeroSequence;
+			}
+			set
+			{
+				if ((this._NumeroSequence != value))
+				{
+					this.OnNumeroSequenceChanging(value);
+					this.SendPropertyChanging();
+					this._NumeroSequence = value;
+					this.SendPropertyChanged("NumeroSequence");
+					this.OnNumeroSequenceChanged();
 				}
 			}
 		}
@@ -3759,9 +3846,15 @@ namespace BusinessToDBAlert
 		
 		private string _Nom;
 		
+		private string _Abreger;
+		
 		private System.Nullable<int> _Nombre;
 		
+		private bool _ActifAlert;
+		
 		private EntitySet<Prioriter> _Prioriter;
+		
+		private EntitySet<SecteurPersonne> _SecteurPersonne;
 		
 		private EntitySet<Station> _Station;
 		
@@ -3773,13 +3866,18 @@ namespace BusinessToDBAlert
     partial void OnIdChanged();
     partial void OnNomChanging(string value);
     partial void OnNomChanged();
+    partial void OnAbregerChanging(string value);
+    partial void OnAbregerChanged();
     partial void OnNombreChanging(System.Nullable<int> value);
     partial void OnNombreChanged();
+    partial void OnActifAlertChanging(bool value);
+    partial void OnActifAlertChanged();
     #endregion
 		
 		public Secteur()
 		{
 			this._Prioriter = new EntitySet<Prioriter>(new Action<Prioriter>(this.attach_Prioriter), new Action<Prioriter>(this.detach_Prioriter));
+			this._SecteurPersonne = new EntitySet<SecteurPersonne>(new Action<SecteurPersonne>(this.attach_SecteurPersonne), new Action<SecteurPersonne>(this.detach_SecteurPersonne));
 			this._Station = new EntitySet<Station>(new Action<Station>(this.attach_Station), new Action<Station>(this.detach_Station));
 			OnCreated();
 		}
@@ -3824,6 +3922,26 @@ namespace BusinessToDBAlert
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Abreger", DbType="VarChar(128)")]
+		public string Abreger
+		{
+			get
+			{
+				return this._Abreger;
+			}
+			set
+			{
+				if ((this._Abreger != value))
+				{
+					this.OnAbregerChanging(value);
+					this.SendPropertyChanging();
+					this._Abreger = value;
+					this.SendPropertyChanged("Abreger");
+					this.OnAbregerChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Nombre", DbType="Int")]
 		public System.Nullable<int> Nombre
 		{
@@ -3844,6 +3962,26 @@ namespace BusinessToDBAlert
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActifAlert", DbType="Bit NOT NULL")]
+		public bool ActifAlert
+		{
+			get
+			{
+				return this._ActifAlert;
+			}
+			set
+			{
+				if ((this._ActifAlert != value))
+				{
+					this.OnActifAlertChanging(value);
+					this.SendPropertyChanging();
+					this._ActifAlert = value;
+					this.SendPropertyChanged("ActifAlert");
+					this.OnActifAlertChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Secteur_Prioriter", Storage="_Prioriter", ThisKey="Id", OtherKey="SecteurId")]
 		public EntitySet<Prioriter> Prioriter
 		{
@@ -3854,6 +3992,19 @@ namespace BusinessToDBAlert
 			set
 			{
 				this._Prioriter.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Secteur_SecteurPersonne", Storage="_SecteurPersonne", ThisKey="Id", OtherKey="SecteurId")]
+		public EntitySet<SecteurPersonne> SecteurPersonne
+		{
+			get
+			{
+				return this._SecteurPersonne;
+			}
+			set
+			{
+				this._SecteurPersonne.Assign(value);
 			}
 		}
 		
@@ -3902,6 +4053,18 @@ namespace BusinessToDBAlert
 			entity.Secteur = null;
 		}
 		
+		private void attach_SecteurPersonne(SecteurPersonne entity)
+		{
+			this.SendPropertyChanging();
+			entity.Secteur = this;
+		}
+		
+		private void detach_SecteurPersonne(SecteurPersonne entity)
+		{
+			this.SendPropertyChanging();
+			entity.Secteur = null;
+		}
+		
 		private void attach_Station(Station entity)
 		{
 			this.SendPropertyChanging();
@@ -3912,6 +4075,198 @@ namespace BusinessToDBAlert
 		{
 			this.SendPropertyChanging();
 			entity.Secteur = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.SecteurPersonne")]
+	public partial class SecteurPersonne : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _PersonneId;
+		
+		private int _SecteurId;
+		
+		private EntityRef<Personne> _Personne;
+		
+		private EntityRef<Secteur> _Secteur;
+		
+    #region Définitions de méthodes d'extensibilité
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnPersonneIdChanging(int value);
+    partial void OnPersonneIdChanged();
+    partial void OnSecteurIdChanging(int value);
+    partial void OnSecteurIdChanged();
+    #endregion
+		
+		public SecteurPersonne()
+		{
+			this._Personne = default(EntityRef<Personne>);
+			this._Secteur = default(EntityRef<Secteur>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PersonneId", DbType="Int NOT NULL")]
+		public int PersonneId
+		{
+			get
+			{
+				return this._PersonneId;
+			}
+			set
+			{
+				if ((this._PersonneId != value))
+				{
+					if (this._Personne.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPersonneIdChanging(value);
+					this.SendPropertyChanging();
+					this._PersonneId = value;
+					this.SendPropertyChanged("PersonneId");
+					this.OnPersonneIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SecteurId", DbType="Int NOT NULL")]
+		public int SecteurId
+		{
+			get
+			{
+				return this._SecteurId;
+			}
+			set
+			{
+				if ((this._SecteurId != value))
+				{
+					if (this._Secteur.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnSecteurIdChanging(value);
+					this.SendPropertyChanging();
+					this._SecteurId = value;
+					this.SendPropertyChanged("SecteurId");
+					this.OnSecteurIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Personne_SecteurPersonne", Storage="_Personne", ThisKey="PersonneId", OtherKey="Id", IsForeignKey=true)]
+		public Personne Personne
+		{
+			get
+			{
+				return this._Personne.Entity;
+			}
+			set
+			{
+				Personne previousValue = this._Personne.Entity;
+				if (((previousValue != value) 
+							|| (this._Personne.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Personne.Entity = null;
+						previousValue.SecteurPersonne.Remove(this);
+					}
+					this._Personne.Entity = value;
+					if ((value != null))
+					{
+						value.SecteurPersonne.Add(this);
+						this._PersonneId = value.Id;
+					}
+					else
+					{
+						this._PersonneId = default(int);
+					}
+					this.SendPropertyChanged("Personne");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Secteur_SecteurPersonne", Storage="_Secteur", ThisKey="SecteurId", OtherKey="Id", IsForeignKey=true)]
+		public Secteur Secteur
+		{
+			get
+			{
+				return this._Secteur.Entity;
+			}
+			set
+			{
+				Secteur previousValue = this._Secteur.Entity;
+				if (((previousValue != value) 
+							|| (this._Secteur.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Secteur.Entity = null;
+						previousValue.SecteurPersonne.Remove(this);
+					}
+					this._Secteur.Entity = value;
+					if ((value != null))
+					{
+						value.SecteurPersonne.Add(this);
+						this._SecteurId = value.Id;
+					}
+					else
+					{
+						this._SecteurId = default(int);
+					}
+					this.SendPropertyChanged("Secteur");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 	

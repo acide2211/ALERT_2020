@@ -24,20 +24,33 @@ namespace Initialisation
         {
             ManagerDB managerDB;
             ManagerAlert managerAlert;
+            InitialisationControler initialisationControler;
             try
             {
                 Logger.Info("Programme Init");
                 managerDB = ManagerDB.getInstance(Logger);
                 managerAlert = ManagerAlert.getInstance(Logger);
+
+                initialisationControler = new InitialisationControler(managerDB, managerAlert, Logger);
+
+                // Connexions a Alert pour les Appelles API
                 managerAlert.LoginAlertWS();
+
+                // Création des calls groups
+                initialisationControler.CreateCallGroup();
+                Logger.Info("Creation des call group terminer");
+                
+
                 System.Console.ReadKey();
                 Thread.Sleep(5000);
                 System.Console.ReadKey();
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Goodbye cruel world");
+                Logger.Error(ex, "Erreur Fatal initialisation impossible.");
             }
+            Thread.Sleep(5000);
+            System.Console.ReadKey();
 
         }
     }

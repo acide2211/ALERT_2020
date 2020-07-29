@@ -89,6 +89,9 @@ namespace BusinessToAlert
             }
             else
             {
+                Logger.Error("Login Echoué");
+                Logger.Error("Responde Status Code " + response.StatusCode);
+                Logger.Error("Response body " + response.Content);
                 throw (new Exception("Problème lors de la connexion"));
             }
 

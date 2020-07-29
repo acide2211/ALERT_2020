@@ -101,7 +101,7 @@ namespace BusinessToDBAlert
         /// Permet de récupérer la lise de tout les secteurs 
         /// </summary>
         /// <returns>List des secteurs</returns>
-        public List<Secteur> GetSecteurs()
+        public List<Secteur> GETSecteurs()
         {
             Table<Secteur> tableSecteur = _alertDBContext.GetTable<Secteur>();
             List<Secteur> secteurs = (from secteur in tableSecteur select secteur).ToList();
@@ -112,7 +112,7 @@ namespace BusinessToDBAlert
         /// </summary>
         /// <param name="nomSecteur"></param>
         /// <returns>Retourne le secteur qui porte le nom ou retourne null si pas trouver</returns>
-        public Secteur GetSecteurByName(string nomSecteur)
+        public Secteur GETSecteurByName(string nomSecteur)
         {
             nomSecteur = nomSecteur.ToUpper();
 
@@ -131,9 +131,9 @@ namespace BusinessToDBAlert
         /// Permet de récupérer la liste des secteurs de manière asychrone 
         /// </summary>
         /// <returns>Retourne la liste des secteurs </returns>
-        public async Task<List<Secteur>> GetListSecteursAsync()
+        public async Task<List<Secteur>> GETListSecteursAsync()
         {
-            List<Secteur> Secteurs = this.GetSecteurs();
+            List<Secteur> Secteurs = this.GETSecteurs();
             return Secteurs;
         }
 
@@ -141,10 +141,10 @@ namespace BusinessToDBAlert
 
         #region Gestion Role
         /// <summary>
-        /// Permet de récupérer la lise de tout les secteurs 
+        /// Permet de récupérer la lise de tout les rôles 
         /// </summary>
-        /// <returns>List des secteurs</returns>
-        public List<Role> GetRoles()
+        /// <returns>List des rôles</returns>
+        public List<Role> GETRoles()
         {
             Table<Role> tableRole = _alertDBContext.GetTable<Role>();
             List<Role> roles = (from role in tableRole select role).ToList();
@@ -155,7 +155,7 @@ namespace BusinessToDBAlert
         /// </summary>
         /// <param name="nomSecteur"></param>
         /// <returns>Retourne le secteur qui porte le nom ou retourne null si pas trouver</returns>
-        public Role GetRoleByName(string nomRole)
+        public Role GETRoleByName(string nomRole)
         {
             nomRole = nomRole.ToUpper();
 
@@ -175,11 +175,26 @@ namespace BusinessToDBAlert
         /// Permet de récupérer la liste des secteurs de manière asychrone 
         /// </summary>
         /// <returns>Retourne la liste des secteurs </returns>
-        public async Task<List<Role>> GetListRolesAsync()
+        public async Task<List<Role>> GETListRolesAsync()
         {
-            List<Role> Roles = this.GetRoles();
+            List<Role> Roles = this.GETRoles();
             return Roles;
         }
+
+        #endregion
+
+        #region Gestion Type d'alarme
+        /// <summary>
+        /// Permet de récupérer la lise de tout les types d'alarme
+        /// </summary>
+        /// <returns>List des Type d'alarme </returns>
+        public List<TypeAlarme> GETTypeAlarmes ()
+        {
+            Table<TypeAlarme> tableTypeAlarme = _alertDBContext.GetTable<TypeAlarme>();
+            List<TypeAlarme> typeAlarmes = (from role in tableTypeAlarme select role).ToList();
+            return typeAlarmes;
+        }
+
 
         #endregion
     }
