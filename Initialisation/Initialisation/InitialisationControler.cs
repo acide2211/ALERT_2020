@@ -16,6 +16,9 @@ namespace Initialisation
         private readonly ManagerDB _managerDB;
         private readonly ManagerAlert _managerAlert;
         private readonly NLog.Logger _logger;
+        private List<CallGroupDTO> callGroupDeletes = new List<CallGroupDTO>();
+        private List<CallGroupDTO> callGroupNew = new List<CallGroupDTO>();
+        private List<CallGroupDTO> callGroups;
 
         #endregion
 
@@ -55,11 +58,12 @@ namespace Initialisation
 
         public void CreateCallGroup()
         {
-            List<CallGroupDTO> callGroupDelete = new List<CallGroupDTO>();
+            
             List<Secteur> secteurs = new List<Secteur>();
             List<Role> roles = new List<Role>();
             List<TypeAlarme> typeAlarmes = new List<TypeAlarme>();
-            List<CallGroupDTO> callGroupNew = new List<CallGroupDTO>();
+            callGroupNew = new List<CallGroupDTO>();
+            callGroupDeletes = new List<CallGroupDTO>();
 
             string searchCallGroupName;
             bool trouverCallGroup;
@@ -67,14 +71,14 @@ namespace Initialisation
             bool premierPassageSecteur;
 
             //Récupération de la liste des call group dans alert
-            List<CallGroupDTO> callGroups = _managerAlert.GETCallGroup().Items.ToList();
+            callGroups = _managerAlert.GETCallGroup().Items.ToList();
 
             // Création de la liste des call group a supprimer.
             // Copie de la première liste 
 
             foreach (CallGroupDTO itemCallGroup in callGroups)
             {
-                callGroupDelete.Add(itemCallGroup);
+                callGroupDeletes.Add(itemCallGroup);
             }
 
             //Récupération de tout les secteurs ;
@@ -117,11 +121,11 @@ namespace Initialisation
                                                 trouverCallGroup = true;
                                                 trouverCallGroupDelete = false;
                                                 // Retirer des callGroup que l'on doit supprimer
-                                                for (int j = 0; trouverCallGroupDelete == false & j < callGroupDelete.Count; j++)
+                                                for (int j = 0; trouverCallGroupDelete == false & j < callGroupDeletes.Count; j++)
                                                 {
-                                                    if (callGroupDelete[j].Id == callGroups[i].Id)
+                                                    if (callGroupDeletes[j].Id == callGroups[i].Id)
                                                     {
-                                                        callGroupDelete.RemoveAt(j);
+                                                        callGroupDeletes.RemoveAt(j);
                                                         trouverCallGroupDelete = true;
                                                         _logger.Debug("Suppression de la liste de suppression call group");
                                                         _logger.Debug("Call group Id" + callGroups[i].Id + " Nom : " + callGroups[i].Name );
@@ -133,13 +137,7 @@ namespace Initialisation
                                         // Le call group n'existe pas dans alert donc on initialise un callgroup et on l'ajoute dans la liste a ajouter
                                         if (trouverCallGroup == false)
                                         {
-                                            CallGroupDTO callGroupDTO = new CallGroupDTO();
-                                            callGroupDTO.Name = searchCallGroupName;
-
-                                            callGroupNew.Add(callGroupDTO);
-                                            _logger.Debug("Ajout du call group dans la liste a ajouter");
-                                            _logger.Debug("Nom : " + callGroupDTO.Name);
-
+                                            AddNewCallGroupList( searchCallGroupName);
                                         }
 
                                     }
@@ -162,11 +160,11 @@ namespace Initialisation
                                         trouverCallGroup = true;
                                         trouverCallGroupDelete = false;
                                         // Retirer des callGroup que l'on doit supprimer
-                                        for (int j = 0; trouverCallGroupDelete == false & j < callGroupDelete.Count; j++)
+                                        for (int j = 0; trouverCallGroupDelete == false & j < callGroupDeletes.Count; j++)
                                         {
-                                            if (callGroupDelete[j].Id == callGroups[i].Id)
+                                            if (callGroupDeletes[j].Id == callGroups[i].Id)
                                             {
-                                                callGroupDelete.RemoveAt(j);
+                                                callGroupDeletes.RemoveAt(j);
                                                 trouverCallGroupDelete = true;
                                                 _logger.Debug("Suppression de la liste de suppression call group");
                                                 _logger.Debug("Call group Id" + callGroups[i].Id + " Nom : " + callGroups[i].Name);
@@ -180,12 +178,7 @@ namespace Initialisation
                                 // Le call group n'existe pas dans alert donc on initialise un callgroup et on l'ajoute dans la liste a ajouter
                                 if (trouverCallGroup == false)
                                 {
-                                    CallGroupDTO callGroupDTO = new CallGroupDTO();
-                                    callGroupDTO.Name = searchCallGroupName;
-
-                                    callGroupNew.Add(callGroupDTO);
-                                    _logger.Debug("Ajout du call group dans la liste a ajouter");
-                                    _logger.Debug("Nom : " + callGroupDTO.Name);
+                                    AddNewCallGroupList( searchCallGroupName);
 
                                 }
 
@@ -205,11 +198,11 @@ namespace Initialisation
                                         trouverCallGroup = true;
                                         trouverCallGroupDelete = false;
                                         // Retirer des callGroup que l'on doit supprimer
-                                        for (int j = 0; trouverCallGroupDelete == false & j < callGroupDelete.Count; j++)
+                                        for (int j = 0; trouverCallGroupDelete == false & j < callGroupDeletes.Count; j++)
                                         {
-                                            if (callGroupDelete[j].Id == callGroups[i].Id)
+                                            if (callGroupDeletes[j].Id == callGroups[i].Id)
                                             {
-                                                callGroupDelete.RemoveAt(j);
+                                                callGroupDeletes.RemoveAt(j);
                                                 trouverCallGroupDelete = true;
                                                 _logger.Debug("Suppression de la liste de suppression call group");
                                                 _logger.Debug("Call group Id" + callGroups[i].Id + " Nom : " + callGroups[i].Name);
@@ -223,12 +216,7 @@ namespace Initialisation
                                 // Le call group n'existe pas dans alert donc on initialise un callgroup et on l'ajoute dans la liste a ajouter
                                 if (trouverCallGroup == false)
                                 {
-                                    CallGroupDTO callGroupDTO = new CallGroupDTO();
-                                    callGroupDTO.Name = searchCallGroupName;
-
-                                    callGroupNew.Add(callGroupDTO);
-                                    _logger.Debug("Ajout du call group dans la liste a ajouter");
-                                    _logger.Debug("Nom : " + callGroupDTO.Name);
+                                    AddNewCallGroupList( searchCallGroupName);
 
                                 }
 
@@ -249,45 +237,61 @@ namespace Initialisation
                     // Recherche dans la liste des callGroups si le nom de call group est trouver
                     trouverCallGroup = false;
 
-                    for (int i = 0; trouverCallGroup == false & i < callGroups.Count; i++)
-                    {
-                        if (callGroups[i].Name.Equals(searchCallGroupName))
-                        {
-                            trouverCallGroup = true;
-                            trouverCallGroupDelete = false;
-                            // Retirer des callGroup que l'on doit supprimer
-                            for (int j = 0; trouverCallGroupDelete == false & j < callGroupDelete.Count; j++)
-                            {
-                                if (callGroupDelete[j].Id == callGroups[i].Id)
-                                {
-                                    callGroupDelete.RemoveAt(j);
-                                    trouverCallGroupDelete = true;
-                                    _logger.Debug("Suppression de la liste de suppression call group");
-                                    _logger.Debug("Call group Id" + callGroups[i].Id + " Nom : " + callGroups[i].Name);
-                                }
-
-                            }
-                        }
-
-                    }
-
+                   // Recherche si le GroupByName est connu d'alert ou pas et vérifier si il faudrait faire des suppressions
+                    trouverCallGroup = SearchCallGroupByName(searchCallGroupName);
                     // Le call group n'existe pas dans alert donc on initialise un callgroup et on l'ajoute dans la liste a ajouter
                     if (trouverCallGroup == false)
                     {
-                        CreateCallGroupNew(callGroupNew, searchCallGroupName);
+                        AddNewCallGroupList(searchCallGroupName);
 
                     }
                 }
             }
 
             _managerAlert.ManagerCallGroups(callGroupNew, EnumHTMLVerbe.POST);
-            _managerAlert.ManagerCallGroups(callGroupDelete, EnumHTMLVerbe.DELETE);
-            Console.ReadKey();
+            _managerAlert.ManagerCallGroups(callGroupDeletes, EnumHTMLVerbe.DELETE);
+          //  Console.ReadKey();
 
 
         }
 
-        private void CreateCallGroupNew(List<CallGroupDTO> callGroupNew, string searchCallGroupName)
+        private bool SearchCallGroupByName(string searchCallGroupName)
+        {
+            bool trouverCallGroup = false;   
+            
+            for (int i = 0; trouverCallGroup == false & i < callGroups.Count; i++)
+            {
+                if (callGroups[i].Name.Equals(searchCallGroupName))
+                {
+                    trouverCallGroup = true;
+                   
+                    // Retirer des callGroup que l'on doit supprimer
+                    SearchAddDeleteCallGroupList(i);
+                }
+
+            }
+            return trouverCallGroup;
+        }
+
+        private void SearchAddDeleteCallGroupList(int i)
+        {
+            bool trouverCallGroupDelete = false;
+            for (int j = 0; trouverCallGroupDelete == false & j < callGroupDeletes.Count; j++)
+            {
+                if (callGroupDeletes[j].Id == callGroups[i].Id)
+                {
+                    callGroupDeletes.RemoveAt(j);
+                    trouverCallGroupDelete = true;
+                    _logger.Debug("Suppression de la liste de suppression call group");
+                    _logger.Debug("Call group Id" + callGroups[i].Id + " Nom : " + callGroups[i].Name);
+                }
+
+            }
+
+            
+        }
+
+        private void AddNewCallGroupList(string searchCallGroupName)
         {
             CallGroupDTO callGroupDTO = new CallGroupDTO();
             callGroupDTO.Name = searchCallGroupName;
