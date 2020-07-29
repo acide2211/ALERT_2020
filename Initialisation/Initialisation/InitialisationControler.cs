@@ -94,9 +94,9 @@ namespace Initialisation
                 premierPassageSecteur = false;
                 if (secteurItem.ActifAlert == true)
                 {
-                    
+
                     foreach (Role roleItem in roles)
-                    {                       
+                    {
                         if (roleItem.ActifAlert == true)
                         {
                             if (roleItem.NumeroGroupe == 1)
@@ -123,8 +123,8 @@ namespace Initialisation
                                                     {
                                                         callGroupDelete.RemoveAt(j);
                                                         trouverCallGroupDelete = true;
-                                                        _logger.Debug("Suppression du call group");
-                                                        _logger.Debug("Nom : " + callGroups[i].Name + "call group Id" + callGroups[i].Id);
+                                                        _logger.Debug("Suppression de la liste de suppression call group");
+                                                        _logger.Debug("Call group Id" + callGroups[i].Id + " Nom : " + callGroups[i].Name );
                                                     }
 
                                                 }
@@ -148,7 +148,7 @@ namespace Initialisation
                             }
                             if (roleItem.NumeroGroupe == 2)
                             {
-                               // premierPassageRole = true;
+                                // premierPassageRole = true;
 
                                 searchCallGroupName = secteurItem.Abreger + "_" + roleItem.Nom;
 
@@ -168,8 +168,8 @@ namespace Initialisation
                                             {
                                                 callGroupDelete.RemoveAt(j);
                                                 trouverCallGroupDelete = true;
-                                                _logger.Debug("Suppression du call group");
-                                                _logger.Debug("Nom : " + callGroups[i].Name + "call group Id" + callGroups[i].Id);
+                                                _logger.Debug("Suppression de la liste de suppression call group");
+                                                _logger.Debug("Call group Id" + callGroups[i].Id + " Nom : " + callGroups[i].Name);
                                             }
 
                                         }
@@ -190,10 +190,9 @@ namespace Initialisation
                                 }
 
                             }
-                            if (premierPassageSecteur == false && roleItem.NumeroGroupe == 3)
-                            {
-                                premierPassageSecteur = true;
 
+                            if (roleItem.NumeroGroupe == 3)
+                            {
                                 searchCallGroupName = secteurItem.Abreger + "_" + roleItem.Nom;
 
                                 // Recherche dans la liste des callGroups si le nom de call group est trouver
@@ -212,8 +211,8 @@ namespace Initialisation
                                             {
                                                 callGroupDelete.RemoveAt(j);
                                                 trouverCallGroupDelete = true;
-                                                _logger.Debug("Suppression du call group");
-                                                _logger.Debug("Nom : " + callGroups[i].Name + "call group Id" + callGroups[i].Id);
+                                                _logger.Debug("Suppression de la liste de suppression call group");
+                                                _logger.Debug("Call group Id" + callGroups[i].Id + " Nom : " + callGroups[i].Name);
                                             }
 
                                         }
@@ -235,16 +234,13 @@ namespace Initialisation
 
                             }
                         }
-
-
-
                     }
 
                 }
             }
 
             // Pour le group 4
-            foreach(Role roleItem in roles)
+            foreach (Role roleItem in roles)
             {
                 if (roleItem.NumeroGroupe == 4)
                 {
@@ -266,8 +262,8 @@ namespace Initialisation
                                 {
                                     callGroupDelete.RemoveAt(j);
                                     trouverCallGroupDelete = true;
-                                    _logger.Debug("Suppression du call group");
-                                    _logger.Debug("Nom : " + callGroups[i].Name + "call group Id" + callGroups[i].Id);
+                                    _logger.Debug("Suppression de la liste de suppression call group");
+                                    _logger.Debug("Call group Id" + callGroups[i].Id + " Nom : " + callGroups[i].Name);
                                 }
 
                             }
@@ -278,12 +274,7 @@ namespace Initialisation
                     // Le call group n'existe pas dans alert donc on initialise un callgroup et on l'ajoute dans la liste a ajouter
                     if (trouverCallGroup == false)
                     {
-                        CallGroupDTO callGroupDTO = new CallGroupDTO();
-                        callGroupDTO.Name = searchCallGroupName;
-
-                        callGroupNew.Add(callGroupDTO);
-                        _logger.Debug("Ajout du call group dans la liste a ajouter");
-                        _logger.Debug("Nom : " + callGroupDTO.Name);
+                        CreateCallGroupNew(callGroupNew, searchCallGroupName);
 
                     }
                 }
@@ -294,6 +285,16 @@ namespace Initialisation
             Console.ReadKey();
 
 
+        }
+
+        private void CreateCallGroupNew(List<CallGroupDTO> callGroupNew, string searchCallGroupName)
+        {
+            CallGroupDTO callGroupDTO = new CallGroupDTO();
+            callGroupDTO.Name = searchCallGroupName;
+
+            callGroupNew.Add(callGroupDTO);
+            _logger.Debug("Ajout du call group dans la liste a ajouter");
+            _logger.Debug("Nom : " + callGroupDTO.Name);
         }
 
         #endregion
