@@ -3660,6 +3660,8 @@ namespace BusinessToDBAlert
 		
 		private System.Nullable<int> _NumeroSequence;
 		
+		private System.Nullable<int> _NumeroGroupe;
+		
 		private EntitySet<Personne> _Personne;
 		
 		private EntitySet<Prioriter> _Prioriter;
@@ -3676,6 +3678,8 @@ namespace BusinessToDBAlert
     partial void OnActifAlertChanged();
     partial void OnNumeroSequenceChanging(System.Nullable<int> value);
     partial void OnNumeroSequenceChanged();
+    partial void OnNumeroGroupeChanging(System.Nullable<int> value);
+    partial void OnNumeroGroupeChanged();
     #endregion
 		
 		public Role()
@@ -3761,6 +3765,26 @@ namespace BusinessToDBAlert
 					this._NumeroSequence = value;
 					this.SendPropertyChanged("NumeroSequence");
 					this.OnNumeroSequenceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NumeroGroupe", DbType="Int")]
+		public System.Nullable<int> NumeroGroupe
+		{
+			get
+			{
+				return this._NumeroGroupe;
+			}
+			set
+			{
+				if ((this._NumeroGroupe != value))
+				{
+					this.OnNumeroGroupeChanging(value);
+					this.SendPropertyChanging();
+					this._NumeroGroupe = value;
+					this.SendPropertyChanged("NumeroGroupe");
+					this.OnNumeroGroupeChanged();
 				}
 			}
 		}

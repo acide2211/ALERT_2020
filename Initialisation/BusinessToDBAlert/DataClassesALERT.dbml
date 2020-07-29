@@ -166,6 +166,7 @@
       <Column Name="Nom" Type="System.String" DbType="VarChar(128) NOT NULL" CanBeNull="false" />
       <Column Name="ActifAlert" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="NumeroSequence" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NumeroGroupe" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="Role_Personne" Member="Personne" ThisKey="Id" OtherKey="RoleId" Type="Personne" />
       <Association Name="Role_Prioriter" Member="Prioriter" ThisKey="Id" OtherKey="RoleId" Type="Prioriter" />
     </Type>

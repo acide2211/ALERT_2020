@@ -30,7 +30,7 @@ namespace Initialisation
             // Contrôle des paramètres rentrés
             if (managerDB is null)
             {
-                throw new Exception("La variable manager DB est à une valeur null ") ;
+                throw new Exception("La variable manager DB est à une valeur null ");
             }
             if (managerAlert is null)
             {
@@ -64,14 +64,15 @@ namespace Initialisation
             string searchCallGroupName;
             bool trouverCallGroup;
             bool trouverCallGroupDelete;
+            bool premierPassageSecteur;
 
             //Récupération de la liste des call group dans alert
-            List<CallGroupDTO> callGroups = _managerAlert.GETCallGroup().Items.ToList(); 
+            List<CallGroupDTO> callGroups = _managerAlert.GETCallGroup().Items.ToList();
 
             // Création de la liste des call group a supprimer.
             // Copie de la première liste 
 
-            foreach(CallGroupDTO itemCallGroup in callGroups)
+            foreach (CallGroupDTO itemCallGroup in callGroups)
             {
                 callGroupDelete.Add(itemCallGroup);
             }
@@ -87,20 +88,22 @@ namespace Initialisation
             typeAlarmes = _managerDB.GETTypeAlarmes();
 
             // Parcour les différent secteur rôle et typeAlarme afin de composer le call group et voir si il existe dans la alert
-            
-            foreach(Secteur secteurItem in secteurs)
+
+            foreach (Secteur secteurItem in secteurs)
             {
-                if(secteurItem.ActifAlert == true)
+                premierPassageSecteur = false;
+                if (secteurItem.ActifAlert == true)
                 {
+                    
                     foreach (Role roleItem in roles)
-                    {
+                    {                       
                         if (roleItem.ActifAlert == true)
                         {
-                            if (roleItem.NumeroSequence == 1 )
+                            if (roleItem.NumeroGroupe == 1)
                             {
                                 foreach (TypeAlarme typeAlarmeItem in typeAlarmes)
                                 {
-                                    if(!typeAlarmeItem.Description.Equals("INCONNU"))
+                                    if (!typeAlarmeItem.Description.Equals("INCONNU"))
                                     {
                                         searchCallGroupName = secteurItem.Abreger + "_" + roleItem.Nom + "_" + typeAlarmeItem.Description;
 
@@ -129,25 +132,161 @@ namespace Initialisation
                                         }
                                         // Le call group n'existe pas dans alert donc on initialise un callgroup et on l'ajoute dans la liste a ajouter
                                         if (trouverCallGroup == false)
-                                            {
-                                                CallGroupDTO callGroupDTO = new CallGroupDTO();
-                                                callGroupDTO.Name = searchCallGroupName;
+                                        {
+                                            CallGroupDTO callGroupDTO = new CallGroupDTO();
+                                            callGroupDTO.Name = searchCallGroupName;
 
-                                                callGroupNew.Add(callGroupDTO);
-                                                _logger.Debug("Ajout du call group dans la liste a ajouter");
-                                                _logger.Debug("Nom : " + callGroupDTO.Name);
+                                            callGroupNew.Add(callGroupDTO);
+                                            _logger.Debug("Ajout du call group dans la liste a ajouter");
+                                            _logger.Debug("Nom : " + callGroupDTO.Name);
 
-                                            }
-                                        
+                                        }
+
                                     }
                                 }
+
                             }
-                            
+                            if (roleItem.NumeroGroupe == 2)
+                            {
+                               // premierPassageRole = true;
+
+                                searchCallGroupName = secteurItem.Abreger + "_" + roleItem.Nom;
+
+                                // Recherche dans la liste des callGroups si le nom de call group est trouver
+                                trouverCallGroup = false;
+
+                                for (int i = 0; trouverCallGroup == false & i < callGroups.Count; i++)
+                                {
+                                    if (callGroups[i].Name.Equals(searchCallGroupName))
+                                    {
+                                        trouverCallGroup = true;
+                                        trouverCallGroupDelete = false;
+                                        // Retirer des callGroup que l'on doit supprimer
+                                        for (int j = 0; trouverCallGroupDelete == false & j < callGroupDelete.Count; j++)
+                                        {
+                                            if (callGroupDelete[j].Id == callGroups[i].Id)
+                                            {
+                                                callGroupDelete.RemoveAt(j);
+                                                trouverCallGroupDelete = true;
+                                                _logger.Debug("Suppression du call group");
+                                                _logger.Debug("Nom : " + callGroups[i].Name + "call group Id" + callGroups[i].Id);
+                                            }
+
+                                        }
+                                    }
+
+                                }
+
+                                // Le call group n'existe pas dans alert donc on initialise un callgroup et on l'ajoute dans la liste a ajouter
+                                if (trouverCallGroup == false)
+                                {
+                                    CallGroupDTO callGroupDTO = new CallGroupDTO();
+                                    callGroupDTO.Name = searchCallGroupName;
+
+                                    callGroupNew.Add(callGroupDTO);
+                                    _logger.Debug("Ajout du call group dans la liste a ajouter");
+                                    _logger.Debug("Nom : " + callGroupDTO.Name);
+
+                                }
+
+                            }
+                            if (premierPassageSecteur == false && roleItem.NumeroGroupe == 3)
+                            {
+                                premierPassageSecteur = true;
+
+                                searchCallGroupName = secteurItem.Abreger + "_" + roleItem.Nom;
+
+                                // Recherche dans la liste des callGroups si le nom de call group est trouver
+                                trouverCallGroup = false;
+
+                                for (int i = 0; trouverCallGroup == false & i < callGroups.Count; i++)
+                                {
+                                    if (callGroups[i].Name.Equals(searchCallGroupName))
+                                    {
+                                        trouverCallGroup = true;
+                                        trouverCallGroupDelete = false;
+                                        // Retirer des callGroup que l'on doit supprimer
+                                        for (int j = 0; trouverCallGroupDelete == false & j < callGroupDelete.Count; j++)
+                                        {
+                                            if (callGroupDelete[j].Id == callGroups[i].Id)
+                                            {
+                                                callGroupDelete.RemoveAt(j);
+                                                trouverCallGroupDelete = true;
+                                                _logger.Debug("Suppression du call group");
+                                                _logger.Debug("Nom : " + callGroups[i].Name + "call group Id" + callGroups[i].Id);
+                                            }
+
+                                        }
+                                    }
+
+                                }
+
+                                // Le call group n'existe pas dans alert donc on initialise un callgroup et on l'ajoute dans la liste a ajouter
+                                if (trouverCallGroup == false)
+                                {
+                                    CallGroupDTO callGroupDTO = new CallGroupDTO();
+                                    callGroupDTO.Name = searchCallGroupName;
+
+                                    callGroupNew.Add(callGroupDTO);
+                                    _logger.Debug("Ajout du call group dans la liste a ajouter");
+                                    _logger.Debug("Nom : " + callGroupDTO.Name);
+
+                                }
+
+                            }
+                        }
+
+
+
+                    }
+
+                }
+            }
+
+            // Pour le group 4
+            foreach(Role roleItem in roles)
+            {
+                if (roleItem.NumeroGroupe == 4)
+                {
+                    searchCallGroupName = roleItem.Nom;
+
+                    // Recherche dans la liste des callGroups si le nom de call group est trouver
+                    trouverCallGroup = false;
+
+                    for (int i = 0; trouverCallGroup == false & i < callGroups.Count; i++)
+                    {
+                        if (callGroups[i].Name.Equals(searchCallGroupName))
+                        {
+                            trouverCallGroup = true;
+                            trouverCallGroupDelete = false;
+                            // Retirer des callGroup que l'on doit supprimer
+                            for (int j = 0; trouverCallGroupDelete == false & j < callGroupDelete.Count; j++)
+                            {
+                                if (callGroupDelete[j].Id == callGroups[i].Id)
+                                {
+                                    callGroupDelete.RemoveAt(j);
+                                    trouverCallGroupDelete = true;
+                                    _logger.Debug("Suppression du call group");
+                                    _logger.Debug("Nom : " + callGroups[i].Name + "call group Id" + callGroups[i].Id);
+                                }
+
+                            }
                         }
 
                     }
-                }
 
+                    // Le call group n'existe pas dans alert donc on initialise un callgroup et on l'ajoute dans la liste a ajouter
+                    if (trouverCallGroup == false)
+                    {
+                        CallGroupDTO callGroupDTO = new CallGroupDTO();
+                        callGroupDTO.Name = searchCallGroupName;
+
+                        callGroupNew.Add(callGroupDTO);
+                        _logger.Debug("Ajout du call group dans la liste a ajouter");
+                        _logger.Debug("Nom : " + callGroupDTO.Name);
+
+                    }
+                }
             }
 
             _managerAlert.ManagerCallGroups(callGroupNew, EnumHTMLVerbe.POST);
