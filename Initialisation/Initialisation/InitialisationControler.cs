@@ -12,9 +12,17 @@ namespace Initialisation
     public class InitialisationControler
     {
         #region Variables
-
+        /// <summary>
+        /// Attribut qui permet de faire les interaction avec la base de donnée
+        /// </summary>
         private readonly ManagerDB _managerDB;
+        /// <summary>
+        /// Attribut qui permet de faire les interaction avec le programme ALERT
+        /// </summary>
         private readonly ManagerAlert _managerAlert;
+        /// <summary>
+        /// Attribut qui permet de faire les log
+        /// </summary>
         private readonly NLog.Logger _logger;
         /// <summary>
         /// Liste des CallGroup qui devrons être supprimer d'alert
@@ -25,9 +33,18 @@ namespace Initialisation
         /// </summary>
         private List<CallGroupDTO> callGroupNew = new List<CallGroupDTO>();
         /// <summary>
+        /// Liste des CallGroup qui devrons être ajouter dans alert
+        /// </summary>
+        private List<CallGroupDTO> callGroupUpdate = new List<CallGroupDTO>();
+        /// <summary>
         /// Liste des Call Groups qui sont connu dans alert.
         /// </summary>
         private List<CallGroupDTO> callGroups;
+
+        /// <summary>
+        /// Liste des Roles qui sont dans la DB
+        /// </summary>
+        private List<Role> rolesDB = new List<Role>();
 
         #endregion
 
@@ -65,6 +82,13 @@ namespace Initialisation
 
         #region Création des Call Group
 
+        /// <summary>
+        /// Méthode qui permet de rechrche dans la liste des CallGroup qui vienne d'alert si 
+        /// Le Call Group existe déja alors il est retirer de la liste des CallGroup à Supprimer
+        /// Si il n'est pas dans la liste alors on l'ajoutera dans la liste des CallGroup à Créee
+        /// </summary>
+        /// <param name="searchCallGroupName"></param>
+        /// <returns></returns>
         public void CreateCallGroup()
         {
             
@@ -205,23 +229,19 @@ namespace Initialisation
 
 
         }
-        /// <summary>
-        /// Méthode qui permet de rechrche dans la liste des CallGroup qui vienne d'alert si 
-        /// Le Call Group existe déja alors il est retirer de la liste des CallGroup à Supprimer
-        /// Si il n'est pas dans la liste alors on l'ajoutera dans la liste des CallGroup à Créee
-        /// </summary>
-        /// <param name="searchCallGroupName"></param>
-        /// <returns></returns>
+
+        #region Méthode Outils Call Group
+
         private bool SearchCallGroupByName(string searchCallGroupName)
         {
-            bool trouverCallGroup = false;   
-            
+            bool trouverCallGroup = false;
+
             for (int i = 0; trouverCallGroup == false & i < callGroups.Count; i++)
             {
                 if (callGroups[i].Name.Equals(searchCallGroupName))
                 {
                     trouverCallGroup = true;
-                   
+
                     // Retirer des callGroup que l'on doit supprimer
                     SearchAddDeleteCallGroupList(i);
                 }
@@ -250,7 +270,7 @@ namespace Initialisation
 
             }
 
-            
+
         }
 
         /// <summary>
@@ -269,5 +289,42 @@ namespace Initialisation
         }
 
         #endregion
+
+        #endregion
+
+        #region Liaison des Call Group
+
+        public void LiaisonCallGroup ()
+        {
+            string callGroupName; 
+            //Remise à zero de la liste des updates 
+            callGroupUpdate = new List<CallGroupDTO>();
+
+            // Récupération de la liste des CallGroup
+            callGroups = _managerAlert.GETCallGroup().Items.ToList();
+
+            //Récupération de la liste des Roles depuis la DB pour connaitre la séquence
+            rolesDB = _managerDB.GETRoles();
+
+            // Pacours de la CallList
+            foreach (CallGroupDTO callGroupItem in callGroups)
+            {
+                callGroupName = callGroupItem.Name;
+
+
+
+            }
+
+        }
+
+        #region Outils Pour Liaison des Call Group
+
+
+
+        #endregion
+        #endregion
+
+
+
     }
 }
