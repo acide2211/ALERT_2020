@@ -50,6 +50,8 @@ namespace Initialisation
 
         #region Constante
 
+        private readonly int NOMBRESEQUENCEMAXROLE; 
+
         #endregion
 
         #region Constructeur
@@ -75,6 +77,7 @@ namespace Initialisation
             this._managerAlert = managerAlert;
             this._logger = logger;
 
+            this.NOMBRESEQUENCEMAXROLE = _managerDB.GETNombreSequenceMaxRole();
 
 
         }
@@ -296,7 +299,12 @@ namespace Initialisation
 
         public void LiaisonCallGroup ()
         {
-            string callGroupName; 
+            string callGroupName;
+            string callGroupNameNext;
+            string roleName;
+            Role roleNext= null;
+            CallGroupDTO callGroupNext = null;
+            int? numeroSequence;
             //Remise à zero de la liste des updates 
             callGroupUpdate = new List<CallGroupDTO>();
 
@@ -309,11 +317,89 @@ namespace Initialisation
             // Pacours de la CallList
             foreach (CallGroupDTO callGroupItem in callGroups)
             {
+                _logger.Debug("LiaisonCallGroup : " + callGroupItem.Name);
+                //Debug
+                if (callGroupItem.Name.Contains("PC_REFERENT"))
+                {
+                    Console.ReadKey();
+                }
+
+
+                callGroupNext = null;
                 callGroupName = callGroupItem.Name;
 
+                // Parcour de la liste des Role pour connaitre la séquence qu'il à
+                for (int i = 0; i < rolesDB.Count; i++)
+                {
+                    roleName = rolesDB[i].Nom;
+
+                    if(callGroupName.Contains(roleName))
+                    {
+                        numeroSequence = rolesDB[i].NumeroSequence;
+
+                        // Une liaison doit être établie
+                        if(numeroSequence != NOMBRESEQUENCEMAXROLE)
+                        {
+                            //Recherche du role ayant le numéro de sequence supérieur
+
+                            roleNext = null;
+                            for (int j = 0; roleNext == null & j < rolesDB.Count; j++)
+                            {
+                                if ( rolesDB[j].NumeroSequence == numeroSequence +1)
+                                {
+                                    roleNext = rolesDB[j];
+                                }
+                            }
+
+                            int indexStartCallGroup = callGroupName.IndexOf(roleName);
+                            callGroupNameNext = callGroupName.Substring(0,indexStartCallGroup) + roleNext.Nom;
+
+                            //Recherche du nouveau callGroup
+
+                            bool trouverCallGroup = false;
+                            // Recherche Le groupe suivant avec le nom correct
+                            for (int indexCallGroup = 0; trouverCallGroup == false & indexCallGroup < callGroups.Count; indexCallGroup++)
+                            {
+                                if (callGroups[indexCallGroup].Name.Equals(callGroupNameNext))
+                                {
+                                    callGroupNext = callGroups[indexCallGroup];
+                                    trouverCallGroup = true;
+                                }
+                            }
+                            // Si on a pas trouver avec le callGroup et Nom Role on cherche juste par le role Name
+                            if(trouverCallGroup == false)
+                            {
+                                for (int indexCallGroup = 0; trouverCallGroup == false & indexCallGroup < callGroups.Count; indexCallGroup++)
+                                {
+                                    if (callGroups[indexCallGroup].Name.Equals(roleNext.Nom))
+                                    {
+                                        callGroupNext = callGroups[indexCallGroup];
+                                        trouverCallGroup = true;
+                                    }
+                                }
+                            }
+
+                            if(callGroupItem.ReliefGroupId != callGroupNext.Id)
+                            {
+                                callGroupItem.ReliefGroupId = callGroupNext.Id;
+                                callGroupUpdate.Add(callGroupItem);
+                            }
+
+
+
+
+                            
+                        }
+                        
+                    }
+                }
 
 
             }
+
+            // Modification des CallGroup a Update
+            Console.ReadKey();
+            _managerAlert.ManagerCallGroups(callGroupUpdate, EnumHTMLVerbe.PUT);
 
         }
 

@@ -39,7 +39,9 @@ namespace Initialisation
                 // Création des calls groups
                 initialisationControler.CreateCallGroup();
                 Logger.Info("Creation des call group terminer");
-                
+                initialisationControler.LiaisonCallGroup();
+
+
 
                 System.Console.ReadKey();
                 Thread.Sleep(5000);

@@ -94,6 +94,31 @@ namespace BusinessToDBAlert
                                select config).ToDictionary(t => t.Cle, t => t.Value);
         }
 
+        public int GETNombreSequenceMaxRole()
+        {
+            string value = "";
+            int nombreSequenceMaxrole;
+            if (_configurations.TryGetValue("NOMBRESEQUENCEMAXROLE", out value))
+            {
+                // Convertion de la clé qui est en string en int 
+                try
+                {
+                    nombreSequenceMaxrole = Int32.Parse(value);
+                }catch(Exception e)
+                {
+                    throw new Exception("La cle NOMBRESEQUENCEMAXROLE n'est pas un nombre");
+                }
+               
+                return nombreSequenceMaxrole;
+            }
+            else
+            {
+                throw new Exception("La cle NOMBRESEQUENCEMAXROLE n'existe pas dans la base de données");
+            }
+
+
+        }
+
         #endregion
 
         #region Gestion Secteur
