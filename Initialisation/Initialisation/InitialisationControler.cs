@@ -318,12 +318,6 @@ namespace Initialisation
             foreach (CallGroupDTO callGroupItem in callGroups)
             {
                 _logger.Debug("LiaisonCallGroup : " + callGroupItem.Name);
-                //Debug
-                if (callGroupItem.Name.Contains("PC_REFERENT"))
-                {
-                    Console.ReadKey();
-                }
-
 
                 callGroupNext = null;
                 callGroupName = callGroupItem.Name;
@@ -383,12 +377,7 @@ namespace Initialisation
                             {
                                 callGroupItem.ReliefGroupId = callGroupNext.Id;
                                 callGroupUpdate.Add(callGroupItem);
-                            }
-
-
-
-
-                            
+                            }                           
                         }
                         
                     }
@@ -398,7 +387,7 @@ namespace Initialisation
             }
 
             // Modification des CallGroup a Update
-            Console.ReadKey();
+            
             _managerAlert.ManagerCallGroups(callGroupUpdate, EnumHTMLVerbe.PUT);
 
         }

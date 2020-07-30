@@ -37,13 +37,20 @@ namespace Initialisation
                 managerAlert.LoginAlertWS();
 
                 // Création des calls groups
+                Logger.Info("DEBUT : Creation des call group terminer");
                 initialisationControler.CreateCallGroup();
-                Logger.Info("Creation des call group terminer");
+                Logger.Info("FIN : Creation des call group terminer");
+
+                // Liaison entre les call groupe
+                Logger.Info("DEBUT : Creation des liaison entre les call group");
                 initialisationControler.LiaisonCallGroup();
+                Logger.Info("FIN : Creation des liaison entre les call group");
 
 
 
-                System.Console.ReadKey();
+
+
+                Logger.Info("FIN : Initialisation");
                 Thread.Sleep(5000);
                 System.Console.ReadKey();
             }
