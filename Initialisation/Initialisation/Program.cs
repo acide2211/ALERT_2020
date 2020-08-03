@@ -46,8 +46,11 @@ namespace Initialisation
                 initialisationControler.LiaisonCallGroup();
                 Logger.Info("FIN : Creation des liaison entre les call group");
 
+                // Création des utilisateurs dans alert
 
-
+                Logger.Info("DEBUT : Creation des utilisateurs");
+                initialisationControler.CreateUsers();
+                Logger.Info("FIN : Creation des utilisateurs");
 
 
                 Logger.Info("FIN : Initialisation");

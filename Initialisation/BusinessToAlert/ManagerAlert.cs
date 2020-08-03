@@ -258,7 +258,7 @@ namespace BusinessToAlert
         /// </summary>
         /// <param name="callGroupDTOs"></param>
         /// <param name="enumHTML"></param>
-        public void ManagerCallGroups(List<CallGroupDTO> callGroupDTOs, EnumHTMLVerbe enumHTML )
+        public void ManagerCallGroups(List<CallGroupDTO> callGroupDTOs, EnumHTMLVerbe enumHTML)
         {
             // On crée la liste avec toutes les tâches que l'on va lancer
             List<Task> tasks = new List<Task>();
@@ -271,7 +271,7 @@ namespace BusinessToAlert
                 switch (enumHTML)
                 {
                     case EnumHTMLVerbe.POST:
-                        t = Task.Run(() => POSTCallGroup (item));
+                        t = Task.Run(() => POSTCallGroup(item));
                         break;
                     case EnumHTMLVerbe.GET:
                         break;
@@ -284,7 +284,7 @@ namespace BusinessToAlert
                     default:
                         break;
                 }
-                
+
                 tasks.Add(t);
 
             }
@@ -295,9 +295,94 @@ namespace BusinessToAlert
 
         }
 
-        
+        #region User GET
+
+        #endregion
+        public PagingCollectionDTO<UserDTO> GETUsers()
+        {
+
+            // Déclarration de la variable de réception
+            PagingCollectionDTO<UserDTO> _users = new PagingCollectionDTO<UserDTO>();
+
+            // Construction de la requête
+            string url = _managerDB._configurations["URL"] + "users";
+            RestClient client = new RestClient(url);
+            RestRequest request = new RestRequest(Method.GET);
+
+            request.AddHeader("Authorization", _loginResponseBody.TokenType + " " + _loginResponseBody.AccessToken);
+            request.AddHeader("Content-Type", "application/json");
+
+            // Attende de la réponse de la requête
+            IRestResponse response = client.Execute(request);
+            _users = JsonConvert.DeserializeObject<PagingCollectionDTO<UserDTO>>(response.Content);
+
+            // Controle si la réponse a été refusée par le serveur
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                Logger.Error("Erreur dans la fonction GETUserDTO " + response.StatusCode);
+                throw new Exception("Erreur lors de la réquête vers GET API Alert" + response.StatusCode);
+            }
+            // return
+            return _users;
+
+        }
+
+        private void POSTUser(UserDTO UserDTO)
+        {
+            string url = _managerDB._configurations["URL"] + "/users";
+            RestClient client = new RestClient(url);
+            RestRequest request = new RestRequest(Method.POST);
+            request.AddHeader("Authorization", _loginResponseBody.TokenType + " " + _loginResponseBody.AccessToken);
+            request.AddJsonBody(UserDTO);
+            IRestResponse response = client.Execute(request);
+
+            // Controle si la réponse a été refusée par le serveur
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                Logger.Error("Erreur dans la fonction POSTCreateUsers " + response.StatusCode);
+                throw new Exception("Erreur lors de la réquête vers API Alert" + response.StatusCode);
+            }
+
+            Logger.Debug("Insert la fonction POSTCreateUsers " + UserDTO.Name);
+
+        }
 
 
+        public void ManagerUser(List<UserDTO> usersNew, EnumHTMLVerbe enumHTML)
+        {
+            // On crée la liste avec toutes les tâches que l'on va lancer
+            List<Task> tasks = new List<Task>();
 
+            #region CallGroup
+            //La on crée une une task qui elle va faire la requete PUT aupres de l'api
+            foreach (UserDTO item in usersNew)
+            {
+                Task t = null;
+                switch (enumHTML)
+                {
+                    case EnumHTMLVerbe.POST:
+                        t = Task.Run(() => POSTUser(item));
+                        break;
+                    case EnumHTMLVerbe.GET:
+                        break;
+                    case EnumHTMLVerbe.PUT:
+                     //   t = Task.Run(() => PUTCallGroup(item));
+                        break;
+                    case EnumHTMLVerbe.DELETE:
+                      //  t = Task.Run(() => DELETECallGroup(item));
+                        break;
+                    default:
+                        break;
+                }
+
+                tasks.Add(t);
+
+            }
+            #endregion
+
+            // On attend que toute les tache soit bien finie
+            Task.WaitAll(tasks.ToArray());
+
+        }
     }
 }

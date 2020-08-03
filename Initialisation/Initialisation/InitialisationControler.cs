@@ -48,10 +48,16 @@ namespace Initialisation
         /// </summary>
         private List<UserDTO> users;
 
+        private List<UserDTO> usersNew = new List<UserDTO>();
+
+        private List<UserDTO> usersUpdate = new List<UserDTO>();
+
         /// <summary>
         /// Liste des Roles qui sont dans la DB
         /// </summary>
         private List<Role> rolesDB = new List<Role>();
+
+        private List<Personne> personnes = new List<Personne>();
 
         #endregion
 
@@ -410,7 +416,133 @@ namespace Initialisation
 
         public void CreateUsers()
         {
-            // Récupération des User
+
+            UserDTO user = null;
+            bool userTrouver;
+            // Récupération des User qui son dans alert
+
+            users = _managerAlert.GETUsers().Items.ToList();
+
+            // Récupération des Personne qui sont dans la DB
+
+            personnes = _managerDB.GETPersonnes();
+
+            foreach(Personne personneItem in personnes)
+            {
+                userTrouver = false;
+                // Recherche si on trouver un user qui a le même nom et prenom
+                for(int i = 0; userTrouver == false & i < users.Count; i++)
+                {
+                    user = users[i];
+                    if(user.Name.Equals(personneItem.Nom) & user.FirstName.Equals(personneItem.Prenom))
+                    {
+                        userTrouver = true;
+                    }
+
+                }
+
+                // Controle si on a trouver user
+                if (userTrouver == false)
+                {
+                    // Création d'un user depuis une personne;
+                    user = new UserDTO();
+                    usersNew.Add(user);
+
+                    user.Name = personneItem.Nom;
+                    user.FirstName = personneItem.Prenom;
+
+                    // Mettre la personne en actif
+                    user.StatusId = 1;
+
+                    if(user.Numbers == null || user.Numbers.Count == 0)
+                    {
+                        user.Numbers = new List<NumberDTO>();
+
+                        foreach (DriverConfig personneDriverConfig in personneItem.DriverConfig)
+                        {
+                            NumberDTO number = new NumberDTO();
+                            number.AckAutoDefault = Convert.ToInt16(personneDriverConfig.AutoAck);
+                            number.Address = personneDriverConfig.Adresse;
+                            number.CountAck = Convert.ToInt16(personneDriverConfig.CountAck);
+                            number.CountTry = Convert.ToInt16(personneDriverConfig.CountTry);
+                            number.DriverId = Convert.ToUInt32(personneDriverConfig.TypeDriver.Numero);
+                            number.DriverName = personneDriverConfig.TypeDriver.Name;
+                            number.Final = personneDriverConfig.Final;
+                            number.Id = Convert.ToUInt32(personneDriverConfig.Prioriter);
+                            number.TimeToAck = Convert.ToInt16(personneDriverConfig.TimeToAck);
+                            number.TimeToRetry = Convert.ToInt16(personneDriverConfig.TimeToRetry);
+                            number.Valid = personneDriverConfig.Valide;
+                            user.Numbers.Add(number);
+                        }
+
+                    }
+                    else
+                    {
+                        if (user.Numbers.Count != personneItem.DriverConfig.Count)
+                        {
+                            List<NumberDTO> NumberDTODelete = new List<NumberDTO>();
+                            foreach (NumberDTO userDTONumberItem in user.Numbers)
+                            {
+
+                                bool trouver = false;
+                                int i = 0;
+                                while (i < personneItem.DriverConfig.Count && trouver == false)
+                                {
+
+                                    if (userDTONumberItem.DriverId == personneItem.DriverConfig[i].TypeDriver.Numero)
+                                    {
+                                        trouver = true; ;
+                                    }
+                                    i++;
+                                }
+
+                                if (trouver == false)
+                                {
+                                    NumberDTODelete.Add(userDTONumberItem);
+                                }
+                            }
+
+                            // Suppression des élémement de trop
+
+                            foreach (NumberDTO numberDTOItem in NumberDTODelete)
+                            {
+                                user.Numbers.Remove(numberDTOItem);
+                            }
+
+                        }
+                    }
+
+
+                }else
+                {
+                    // L'user existe dans alert et dans la base de données on va controler les driver info si ils sont correct
+                      foreach(NumberDTO numberItem in user.Numbers)
+                    {
+                        int i = 0;
+                        bool trouverCorrect = false; // Indique que le DriverConfig est le même dans alert et dans la DB.
+                        bool trouverIncorrect = false; // Indique que le DriverConfig existe dans alert mais il y a une différence avec la DB.
+                        bool trouver = false; // Indique que DriverConfig n'existe pas dans alert et donc il faut le mettre.
+
+                        while (i < personneItem.DriverConfig.Count && (trouver == false || trouverCorrect == false || trouverIncorrect))
+                        {
+                            if(personneItem.DriverConfig[i].TypeDriver.Numero == numberItem.DriverId)
+                            {
+
+                            }
+                            else
+                            {
+
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            _managerAlert.ManagerUser(usersNew,EnumHTMLVerbe.POST);
+
+            
+
         }
 
         #endregion

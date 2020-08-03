@@ -220,7 +220,26 @@ namespace BusinessToDBAlert
             return typeAlarmes;
         }
 
-
         #endregion
+
+
+        #region Personne
+        public List<Personne> GETPersonnes()
+        {
+            Table<Personne> tablePersonne = _alertDBContext.GetTable<Personne>();
+            List<Personne> personnes = (from personne in tablePersonne select personne).ToList();
+            return personnes;
+        }
+
+        public async Task<List<Personne>> GETListPersonnesAsync()
+        {
+            List<Personne> Personnes = this.GETPersonnes();
+            return Personnes;
+        }
+        #endregion
+
+
+
+
     }
 }
