@@ -24,6 +24,8 @@ namespace Initialisation
         /// Attribut qui permet de faire les log
         /// </summary>
         private readonly NLog.Logger _logger;
+
+
         /// <summary>
         /// Liste des CallGroup qui devrons être supprimer d'alert
         /// </summary>
@@ -40,6 +42,11 @@ namespace Initialisation
         /// Liste des Call Groups qui sont connu dans alert.
         /// </summary>
         private List<CallGroupDTO> callGroups;
+
+        /// <summary>
+        /// Liste des User qui sont connu dans alert.
+        /// </summary>
+        private List<UserDTO> users;
 
         /// <summary>
         /// Liste des Roles qui sont dans la DB
@@ -399,7 +406,14 @@ namespace Initialisation
         #endregion
         #endregion
 
+        #region Création des Utilisateurs
 
+        public void CreateUsers()
+        {
+            // Récupération des User
+        }
+
+        #endregion
 
     }
 }
