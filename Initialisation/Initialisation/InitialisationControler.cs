@@ -516,32 +516,34 @@ namespace Initialisation
                 }else
                 {
                     // L'user existe dans alert et dans la base de données on va controler les driver info si ils sont correct
-                      foreach(NumberDTO numberItem in user.Numbers)
+                    user.Numbers = new List<NumberDTO>();
+
+                    foreach (DriverConfig personneDriverConfig in personneItem.DriverConfig)
                     {
-                        int i = 0;
-                        bool trouverCorrect = false; // Indique que le DriverConfig est le même dans alert et dans la DB.
-                        bool trouverIncorrect = false; // Indique que le DriverConfig existe dans alert mais il y a une différence avec la DB.
-                        bool trouver = false; // Indique que DriverConfig n'existe pas dans alert et donc il faut le mettre.
-
-                        while (i < personneItem.DriverConfig.Count && (trouver == false || trouverCorrect == false || trouverIncorrect))
-                        {
-                            if(personneItem.DriverConfig[i].TypeDriver.Numero == numberItem.DriverId)
-                            {
-
-                            }
-                            else
-                            {
-
-                            }
-                        }
+                        NumberDTO number = new NumberDTO();
+                        number.AckAutoDefault = Convert.ToInt16(personneDriverConfig.AutoAck);
+                        number.Address = personneDriverConfig.Adresse;
+                        number.CountAck = Convert.ToInt16(personneDriverConfig.CountAck);
+                        number.CountTry = Convert.ToInt16(personneDriverConfig.CountTry);
+                        number.DriverId = Convert.ToUInt32(personneDriverConfig.TypeDriver.Numero);
+                        number.DriverName = personneDriverConfig.TypeDriver.Name;
+                        number.Final = personneDriverConfig.Final;
+                        number.Id = Convert.ToUInt32(personneDriverConfig.Prioriter);
+                        number.TimeToAck = Convert.ToInt16(personneDriverConfig.TimeToAck);
+                        number.TimeToRetry = Convert.ToInt16(personneDriverConfig.TimeToRetry);
+                        number.Valid = personneDriverConfig.Valide;
+                        user.Numbers.Add(number);
                     }
+                    usersUpdate.Add(user);
+
                 }
             }
 
 
             _managerAlert.ManagerUser(usersNew,EnumHTMLVerbe.POST);
+            _managerAlert.ManagerUser(usersUpdate, EnumHTMLVerbe.PUT);
 
-            
+
 
         }
 

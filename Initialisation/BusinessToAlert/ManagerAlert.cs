@@ -347,6 +347,27 @@ namespace BusinessToAlert
 
         }
 
+        private void PUTUser(UserDTO userDTO)
+        {
+            // Construction de la requête
+            string url = _managerDB._configurations["URL"] + "/users/" + userDTO.Id;
+            RestClient client = new RestClient(url);
+            RestRequest request = new RestRequest(Method.PUT);
+            request.AddHeader("Authorization", _loginResponseBody.TokenType + " " + _loginResponseBody.AccessToken);
+            request.AddJsonBody(userDTO);
+
+            // Attende de la réponse de la requête
+            IRestResponse response = client.Execute(request);
+
+            // Controle si la réponse a été refusée par le serveur
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                Logger.Error("Erreur dans la fonction PUTUser " + response.StatusCode);
+                throw new Exception("Erreur lors de la réquête vers API Alert" + response.StatusCode);
+            }
+
+        }
+
 
         public void ManagerUser(List<UserDTO> usersNew, EnumHTMLVerbe enumHTML)
         {
@@ -366,7 +387,7 @@ namespace BusinessToAlert
                     case EnumHTMLVerbe.GET:
                         break;
                     case EnumHTMLVerbe.PUT:
-                     //   t = Task.Run(() => PUTCallGroup(item));
+                        t = Task.Run(() => PUTUser(item));
                         break;
                     case EnumHTMLVerbe.DELETE:
                       //  t = Task.Run(() => DELETECallGroup(item));
