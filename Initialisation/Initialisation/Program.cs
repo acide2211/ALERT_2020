@@ -50,7 +50,10 @@ namespace Initialisation
 
                 Logger.Info("DEBUT : Creation des utilisateurs");
                 initialisationControler.CreateUsers();
-                Logger.Info("FIN : Creation des utilisateurs");
+                Logger.Info("FIN : Creation et update des utilisateurs");
+
+                // Création des TEAM
+
 
 
                 Logger.Info("FIN : Initialisation");

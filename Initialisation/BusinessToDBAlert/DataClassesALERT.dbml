@@ -169,6 +169,7 @@
       <Column Name="NumeroGroupe" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="Role_Personne" Member="Personne" ThisKey="Id" OtherKey="RoleId" Type="Personne" />
       <Association Name="Role_Prioriter" Member="Prioriter" ThisKey="Id" OtherKey="RoleId" Type="Prioriter" />
+      <Association Name="Role_Team" Member="Team" ThisKey="Id" OtherKey="RoleId" Type="Team" />
     </Type>
   </Table>
   <Table Name="dbo.Secteur" Member="Secteur">
@@ -232,6 +233,17 @@
       <Column Name="StationId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="Personne_StationMasquee" Member="Personne" ThisKey="PersonneId" OtherKey="Id" Type="Personne" IsForeignKey="true" />
       <Association Name="Station_StationMasquee" Member="Station" ThisKey="StationId" OtherKey="Id" Type="Station" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Team" Member="Team">
+    <Type Name="Team">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Nom" Type="System.String" DbType="VarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="ActifAlert" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ActifSPOPosition" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ColorTeam" Type="System.String" DbType="VarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="RoleId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Role_Team" Member="Role" ThisKey="RoleId" OtherKey="Id" Type="Role" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Tranche" Member="Tranche">

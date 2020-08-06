@@ -93,6 +93,9 @@ namespace BusinessToDBAlert
     partial void InsertStationMasquee(StationMasquee instance);
     partial void UpdateStationMasquee(StationMasquee instance);
     partial void DeleteStationMasquee(StationMasquee instance);
+    partial void InsertTeam(Team instance);
+    partial void UpdateTeam(Team instance);
+    partial void DeleteTeam(Team instance);
     partial void InsertTranche(Tranche instance);
     partial void UpdateTranche(Tranche instance);
     partial void DeleteTranche(Tranche instance);
@@ -299,6 +302,14 @@ namespace BusinessToDBAlert
 			get
 			{
 				return this.GetTable<StationMasquee>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Team> Team
+		{
+			get
+			{
+				return this.GetTable<Team>();
 			}
 		}
 		
@@ -3666,6 +3677,8 @@ namespace BusinessToDBAlert
 		
 		private EntitySet<Prioriter> _Prioriter;
 		
+		private EntitySet<Team> _Team;
+		
     #region Définitions de méthodes d'extensibilité
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -3686,6 +3699,7 @@ namespace BusinessToDBAlert
 		{
 			this._Personne = new EntitySet<Personne>(new Action<Personne>(this.attach_Personne), new Action<Personne>(this.detach_Personne));
 			this._Prioriter = new EntitySet<Prioriter>(new Action<Prioriter>(this.attach_Prioriter), new Action<Prioriter>(this.detach_Prioriter));
+			this._Team = new EntitySet<Team>(new Action<Team>(this.attach_Team), new Action<Team>(this.detach_Team));
 			OnCreated();
 		}
 		
@@ -3815,6 +3829,19 @@ namespace BusinessToDBAlert
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Role_Team", Storage="_Team", ThisKey="Id", OtherKey="RoleId")]
+		public EntitySet<Team> Team
+		{
+			get
+			{
+				return this._Team;
+			}
+			set
+			{
+				this._Team.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -3854,6 +3881,18 @@ namespace BusinessToDBAlert
 		}
 		
 		private void detach_Prioriter(Prioriter entity)
+		{
+			this.SendPropertyChanging();
+			entity.Role = null;
+		}
+		
+		private void attach_Team(Team entity)
+		{
+			this.SendPropertyChanging();
+			entity.Role = this;
+		}
+		
+		private void detach_Team(Team entity)
 		{
 			this.SendPropertyChanging();
 			entity.Role = null;
@@ -5204,6 +5243,229 @@ namespace BusinessToDBAlert
 						this._StationId = default(int);
 					}
 					this.SendPropertyChanged("Station");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Team")]
+	public partial class Team : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private string _Nom;
+		
+		private bool _ActifAlert;
+		
+		private int _ActifSPOPosition;
+		
+		private string _ColorTeam;
+		
+		private int _RoleId;
+		
+		private EntityRef<Role> _Role;
+		
+    #region Définitions de méthodes d'extensibilité
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnNomChanging(string value);
+    partial void OnNomChanged();
+    partial void OnActifAlertChanging(bool value);
+    partial void OnActifAlertChanged();
+    partial void OnActifSPOPositionChanging(int value);
+    partial void OnActifSPOPositionChanged();
+    partial void OnColorTeamChanging(string value);
+    partial void OnColorTeamChanged();
+    partial void OnRoleIdChanging(int value);
+    partial void OnRoleIdChanged();
+    #endregion
+		
+		public Team()
+		{
+			this._Role = default(EntityRef<Role>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Nom", DbType="VarChar(128) NOT NULL", CanBeNull=false)]
+		public string Nom
+		{
+			get
+			{
+				return this._Nom;
+			}
+			set
+			{
+				if ((this._Nom != value))
+				{
+					this.OnNomChanging(value);
+					this.SendPropertyChanging();
+					this._Nom = value;
+					this.SendPropertyChanged("Nom");
+					this.OnNomChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActifAlert", DbType="Bit NOT NULL")]
+		public bool ActifAlert
+		{
+			get
+			{
+				return this._ActifAlert;
+			}
+			set
+			{
+				if ((this._ActifAlert != value))
+				{
+					this.OnActifAlertChanging(value);
+					this.SendPropertyChanging();
+					this._ActifAlert = value;
+					this.SendPropertyChanged("ActifAlert");
+					this.OnActifAlertChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActifSPOPosition", DbType="Int NOT NULL")]
+		public int ActifSPOPosition
+		{
+			get
+			{
+				return this._ActifSPOPosition;
+			}
+			set
+			{
+				if ((this._ActifSPOPosition != value))
+				{
+					this.OnActifSPOPositionChanging(value);
+					this.SendPropertyChanging();
+					this._ActifSPOPosition = value;
+					this.SendPropertyChanged("ActifSPOPosition");
+					this.OnActifSPOPositionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ColorTeam", DbType="VarChar(128) NOT NULL", CanBeNull=false)]
+		public string ColorTeam
+		{
+			get
+			{
+				return this._ColorTeam;
+			}
+			set
+			{
+				if ((this._ColorTeam != value))
+				{
+					this.OnColorTeamChanging(value);
+					this.SendPropertyChanging();
+					this._ColorTeam = value;
+					this.SendPropertyChanged("ColorTeam");
+					this.OnColorTeamChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RoleId", DbType="Int NOT NULL")]
+		public int RoleId
+		{
+			get
+			{
+				return this._RoleId;
+			}
+			set
+			{
+				if ((this._RoleId != value))
+				{
+					if (this._Role.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnRoleIdChanging(value);
+					this.SendPropertyChanging();
+					this._RoleId = value;
+					this.SendPropertyChanged("RoleId");
+					this.OnRoleIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Role_Team", Storage="_Role", ThisKey="RoleId", OtherKey="Id", IsForeignKey=true)]
+		public Role Role
+		{
+			get
+			{
+				return this._Role.Entity;
+			}
+			set
+			{
+				Role previousValue = this._Role.Entity;
+				if (((previousValue != value) 
+							|| (this._Role.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Role.Entity = null;
+						previousValue.Team.Remove(this);
+					}
+					this._Role.Entity = value;
+					if ((value != null))
+					{
+						value.Team.Add(this);
+						this._RoleId = value.Id;
+					}
+					else
+					{
+						this._RoleId = default(int);
+					}
+					this.SendPropertyChanged("Role");
 				}
 			}
 		}
