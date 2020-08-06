@@ -53,8 +53,9 @@ namespace Initialisation
                 Logger.Info("FIN : Creation et update des utilisateurs");
 
                 // Création des TEAM
-
-
+                Logger.Info("DEBUT : Creation des teams");
+                initialisationControler.CreateTeams();
+                Logger.Info("FIN :  Creation des teams");
 
                 Logger.Info("FIN : Initialisation");
                 Thread.Sleep(5000);

@@ -191,7 +191,7 @@ namespace BusinessToDBAlert
                                              select role).ToList();
             if (roleTrouvers.Count != 1)
             {
-                Logger.Info("Recherche d'un secteur qui n'est pas connu " + nomRole);
+                Logger.Info("Recherche d'un role qui n'est pas connu " + nomRole);
                 return null;
             }
             return roleTrouvers.First(); ;
@@ -238,7 +238,32 @@ namespace BusinessToDBAlert
         }
         #endregion
 
+        #region Team
 
+        public List<Team> GETTeams()
+        {
+            Table<Team> tableTeam = _alertDBContext.GetTable<Team>();
+            List<Team> teams = (from team in tableTeam select team).ToList();
+            return teams;
+        }
+        /// <summary>
+        /// Permet de trouver un secteur particulier
+        /// </summary>
+        /// <param name="nomRole"></param>
+        /// <returns>Retourne le secteur qui porte le nom ou retourne null si pas trouver</returns>
+        public List<Team> GETTeamByRoleNames(string nomRole)
+        {
+            nomRole = nomRole.ToUpper();
+
+            Table<Team> teamTable = _alertDBContext.GetTable<Team>();
+            List<Team> teamTrouvers = (from team in teamTable
+                                       where team.Role.Nom.Equals(nomRole)
+                                             select team).ToList();
+
+            return teamTrouvers; 
+        }
+
+        #endregion
 
 
     }

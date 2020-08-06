@@ -52,12 +52,22 @@ namespace Initialisation
 
         private List<UserDTO> usersUpdate = new List<UserDTO>();
 
+        private List<TeamDTO> teamDTOs;
+
+        private List<TeamDTO> teamNewDTOs = new List<TeamDTO>();
+
+
+
         /// <summary>
         /// Liste des Roles qui sont dans la DB
         /// </summary>
         private List<Role> rolesDB = new List<Role>();
 
         private List<Personne> personnes = new List<Personne>();
+
+        private List<Team> teamDB = new List<Team>();
+
+
 
         #endregion
 
@@ -549,5 +559,90 @@ namespace Initialisation
 
         #endregion
 
+        #region Création des Teams
+
+        #endregion
+        public  void CreateTeams()
+        {
+            callGroups = _managerAlert.GETCallGroup().Items.ToList();
+            rolesDB = _managerDB.GETRoles();
+            Role roleCurrent = null;
+
+            teamNewDTOs = new List<TeamDTO>();
+
+            string callGroupName;
+            bool trouverRole = false;
+            bool trouverTeam = false;
+
+            // Parcour tous les call group pour trouver leur role
+
+            foreach ( CallGroupDTO callGroupItem in callGroups)
+            {
+                callGroupName = callGroupItem.Name;
+
+                // Recherche dans quel groupe il est 
+                trouverRole = false;
+
+                for (int roleIndex = 0; trouverRole == false &  roleIndex < rolesDB.Count; roleIndex ++)
+                {
+                    if(callGroupName.Contains(rolesDB[roleIndex].Nom))
+                    {
+                        roleCurrent = rolesDB[roleIndex];
+                        trouverRole = true;
+                    }
+                        
+                }
+
+                if(trouverRole == false)
+                {
+                    throw new Exception("Impossible de trouver un nom de role dans le callGroup, vérifier la DB");
+                }
+
+                teamDB = _managerDB.GETTeamByRoleNames(roleCurrent.Nom);
+
+                if(teamDB == null | teamDB.Count == 0)
+                {
+                    throw new Exception("Il n'y a pas de Team Lier au rôle veuilliez corriger la base de données");
+                }
+
+                // On récupérer les teams qui sont déjà dans le call group
+
+                teamDTOs = _managerAlert.GETTeamByCallGroup(callGroupItem.Id).Items.ToList() ;
+
+
+                foreach (Team teamDBItem in teamDB)
+                {
+                    trouverTeam = false;
+                    // recherche si dans le call group les team exist déjà.
+
+                  
+
+                    for(int teamDTOindex = 0; trouverTeam == false && teamDTOindex < teamDTOs.Count; teamDTOindex++)
+                    {
+                        if(teamDTOs[teamDTOindex].Name.Equals(teamDBItem.Nom))
+                        {
+                            trouverTeam = true;
+                        }
+                    }
+
+                    if (trouverTeam == false)
+                    {
+                        TeamDTO teamDTO = new TeamDTO();
+
+                        teamDTO.Name = teamDBItem.Nom;
+                        teamDTO.Color = teamDBItem.ColorTeam;
+                        teamDTO.CallGroupId = callGroupItem.Id;
+
+                        teamNewDTOs.Add(teamDTO);
+
+                    }
+                }
+
+            }
+
+            // Ajout des teams dans la base de données
+            _managerAlert.ManagerTeams(teamNewDTOs, EnumHTMLVerbe.POST);
+
+        }
     }
 }

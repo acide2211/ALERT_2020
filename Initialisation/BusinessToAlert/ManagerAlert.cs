@@ -374,7 +374,7 @@ namespace BusinessToAlert
             // On crée la liste avec toutes les tâches que l'on va lancer
             List<Task> tasks = new List<Task>();
 
-            #region CallGroup
+            #region User
             //La on crée une une task qui elle va faire la requete PUT aupres de l'api
             foreach (UserDTO item in usersNew)
             {
@@ -405,5 +405,97 @@ namespace BusinessToAlert
             Task.WaitAll(tasks.ToArray());
 
         }
+
+        #region Team 
+
+
+        public PagingCollectionDTO<TeamDTO> GETTeamByCallGroup(uint? callGroupId)
+        {
+            // Déclarration de la variable de réception
+            PagingCollectionDTO<TeamDTO> _teams = new PagingCollectionDTO<TeamDTO>();
+
+            // Construction de la requête
+            string url = _managerDB._configurations["URL"] + "callgroups/" + callGroupId + "/teams";
+            RestClient client = new RestClient(url);
+            RestRequest request = new RestRequest(Method.GET);
+
+            request.AddHeader("Authorization", _loginResponseBody.TokenType + " " + _loginResponseBody.AccessToken);
+            request.AddHeader("Content-Type", "application/json");
+
+            // Attende de la réponse de la requête
+            IRestResponse response = client.Execute(request);
+            _teams = JsonConvert.DeserializeObject<PagingCollectionDTO<TeamDTO>>(response.Content);
+
+            // Controle si la réponse a été refusée par le serveur
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                Logger.Error("Erreur dans la fonction GETTeamByCallGroup " + response.StatusCode);
+                throw new Exception("Erreur lors de la réquête vers GET API Alert" + response.StatusCode);
+            }
+            
+            return _teams;
+        }
+
+        private void POSTTeam(TeamDTO item)
+        {
+            string url = _managerDB._configurations["URL"] + "/teams";
+            RestClient client = new RestClient(url);
+            RestRequest request = new RestRequest(Method.POST);
+            request.AddHeader("Authorization", _loginResponseBody.TokenType + " " + _loginResponseBody.AccessToken);
+            request.AddJsonBody(item);
+            IRestResponse response = client.Execute(request);
+
+            // Controle si la réponse a été refusée par le serveur
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                Logger.Error("Erreur dans la fonction POSTTeam " + response.StatusCode);
+                throw new Exception("Erreur lors de la réquête vers API Alert" + response.StatusCode);
+            }
+
+            Logger.Debug("Insert la fonction POSTTeam " + item.Name);
+        }
+
+        public void ManagerTeams(List<TeamDTO> teamNewDTOs, EnumHTMLVerbe enumHTML)
+        {
+            // On crée la liste avec toutes les tâches que l'on va lancer
+            List<Task> tasks = new List<Task>();
+
+            #region Team
+            //La on crée une une task qui elle va faire la requete PUT aupres de l'api
+            foreach (TeamDTO item in teamNewDTOs)
+            {
+                Task t = null;
+                switch (enumHTML)
+                {
+                    case EnumHTMLVerbe.POST:
+                        t = Task.Run(() => POSTTeam(item));
+                        break;
+                    case EnumHTMLVerbe.GET:
+                        break;
+                    case EnumHTMLVerbe.PUT:
+                        //    t = Task.Run(() => PUTUser(item));
+                        break;
+                    case EnumHTMLVerbe.DELETE:
+                        //  t = Task.Run(() => DELETECallGroup(item));
+                        break;
+                    default:
+                        break;
+                }
+
+                tasks.Add(t);
+
+            }
+            #endregion
+
+            // On attend que toute les tache soit bien finie
+            Task.WaitAll(tasks.ToArray());
+        }
+
+
+
+        #endregion
+
+
+
     }
 }
