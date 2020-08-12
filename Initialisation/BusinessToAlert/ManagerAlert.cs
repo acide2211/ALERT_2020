@@ -314,7 +314,7 @@ namespace BusinessToAlert
 
             // Attende de la réponse de la requête
             IRestResponse response = client.Execute(request);
-            _users = JsonConvert.DeserializeObject<PagingCollectionDTO<UserDTO>>(response.Content);
+            
 
             // Controle si la réponse a été refusée par le serveur
             if (response.StatusCode != HttpStatusCode.OK)
@@ -322,9 +322,42 @@ namespace BusinessToAlert
                 Logger.Error("Erreur dans la fonction GETUserDTO " + response.StatusCode);
                 throw new Exception("Erreur lors de la réquête vers GET API Alert" + response.StatusCode);
             }
+
+            _users = JsonConvert.DeserializeObject<PagingCollectionDTO<UserDTO>>(response.Content);
             // return
             return _users;
 
+        }
+
+
+        public UserDTO GETUserById(uint? id)
+        {
+            // Déclarration de la variable de réception
+            UserDTO _users = new UserDTO();
+
+            // Construction de la requête
+            string url = _managerDB._configurations["URL"] + "users//" + id;
+            RestClient client = new RestClient(url);
+            RestRequest request = new RestRequest(Method.GET);
+
+            request.AddHeader("Authorization", _loginResponseBody.TokenType + " " + _loginResponseBody.AccessToken);
+            request.AddHeader("Content-Type", "application/json");
+
+            // Attende de la réponse de la requête
+            IRestResponse response = client.Execute(request);
+           
+
+            // Controle si la réponse a été refusée par le serveur
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                Logger.Error("Erreur dans la fonction GETUserById " + response.StatusCode);
+                throw new Exception("Erreur lors de la réquête vers GET API Alert" + response.StatusCode);
+            }
+
+            _users = JsonConvert.DeserializeObject<UserDTO>(response.Content);
+
+            // return
+            return _users;
         }
 
         private void POSTUser(UserDTO UserDTO)
@@ -455,6 +488,26 @@ namespace BusinessToAlert
             Logger.Debug("Insert la fonction POSTTeam " + item.Name);
         }
 
+        private void PUTTeam(TeamDTO teamDTO)
+        {
+            // Construction de la requête
+            string url = _managerDB._configurations["URL"] + "/teams/" + teamDTO.Id ;
+            RestClient client = new RestClient(url);
+            RestRequest request = new RestRequest(Method.PUT);
+            request.AddHeader("Authorization", _loginResponseBody.TokenType + " " + _loginResponseBody.AccessToken);
+            request.AddJsonBody(JsonConvert.SerializeObject(teamDTO));
+
+            // Attende de la réponse de la requête
+            IRestResponse response = client.Execute(request);
+
+            // Controle si la réponse a été refusée par le serveur
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                Logger.Error("Erreur dans la fonction PUTUser " + response.StatusCode);
+                throw new Exception("Erreur lors de la réquête vers API Alert" + response.StatusCode);
+            }
+        }
+
         public void ManagerTeams(List<TeamDTO> teamNewDTOs, EnumHTMLVerbe enumHTML)
         {
             // On crée la liste avec toutes les tâches que l'on va lancer
@@ -473,7 +526,7 @@ namespace BusinessToAlert
                     case EnumHTMLVerbe.GET:
                         break;
                     case EnumHTMLVerbe.PUT:
-                        //    t = Task.Run(() => PUTUser(item));
+                            t = Task.Run(() => PUTTeam(item));
                         break;
                     case EnumHTMLVerbe.DELETE:
                         //  t = Task.Run(() => DELETECallGroup(item));
@@ -490,6 +543,127 @@ namespace BusinessToAlert
             // On attend que toute les tache soit bien finie
             Task.WaitAll(tasks.ToArray());
         }
+
+
+
+        #region Member
+        public PagingCollectionDTO<MemberDTO> GETMemberByCallGroupId(uint? idCallGroup)
+        {
+
+            // Déclarration de la variable de réception
+            PagingCollectionDTO<MemberDTO> _members = new PagingCollectionDTO<MemberDTO>();
+
+            // Construction de la requête
+            string url = _managerDB._configurations["URL"] + "callgroups//" + idCallGroup + "//members";
+            RestClient client = new RestClient(url);
+            RestRequest request = new RestRequest(Method.GET);
+
+            request.AddHeader("Authorization", _loginResponseBody.TokenType + " " + _loginResponseBody.AccessToken);
+            request.AddHeader("Content-Type", "application/json");
+
+            // Attende de la réponse de la requête
+            IRestResponse response = client.Execute(request);
+
+
+            // Controle si la réponse a été refusée par le serveur
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                Logger.Error("Erreur dans la fonction GETMemberByCallGroupId " + response.StatusCode);
+                throw new Exception("Erreur lors de la réquête vers GET API Alert" + response.StatusCode);
+            }
+
+            _members = JsonConvert.DeserializeObject<PagingCollectionDTO<MemberDTO>>(response.Content);
+
+            return _members;
+
+        }
+
+        private void POSTMemberByCallGroup(MemberDTO member, CallGroupDTO callGroup)
+        {
+            string url = _managerDB._configurations["URL"] + "/callgroups/"+callGroup.Id + "/member";
+            RestClient client = new RestClient(url);
+            RestRequest request = new RestRequest(Method.POST);
+            request.AddHeader("Authorization", _loginResponseBody.TokenType + " " + _loginResponseBody.AccessToken);
+            request.AddHeader("content-type", "application/json");
+            request.AddBody(member);
+          //  request.RequestFormat = DataFormat.Json;
+          //  request.AddJsonBody(member);
+            request.AddParameter("memberId", member.Id.ToString());
+           
+
+            IRestResponse response = client.Execute(request);
+
+            // Controle si la réponse a été refusée par le serveur
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                Logger.Error("Erreur dans la fonction POSPOSTMemberByCallGroupTTeam " + response.StatusCode);
+                throw new Exception("Erreur lors de la réquête vers API Alert" + response.StatusCode);
+            }
+
+            Logger.Debug("Insert la fonction POSPOSTMemberByCallGroupTTeam " + member.Name);
+        }
+
+        private void DELETEMemberByCallGroup(MemberDTO member, CallGroupDTO callGroup)
+        {
+            string url = _managerDB._configurations["URL"] + "/callgroups/" + callGroup.Id + "/member";
+            RestClient client = new RestClient(url);
+            RestRequest request = new RestRequest(Method.DELETE);
+            request.AddHeader("Authorization", _loginResponseBody.TokenType + " " + _loginResponseBody.AccessToken);
+            //request.AddJsonBody(member.Id);
+            request.AddParameter("memberId", member.Id);
+            IRestResponse response = client.Execute(request);
+
+            // Controle si la réponse a été refusée par le serveur
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                Logger.Error("Erreur dans la fonction DELETEMemberByCallGroup " + response.StatusCode);
+                throw new Exception("Erreur lors de la réquête vers API Alert" + response.StatusCode);
+            }
+
+            Logger.Debug("Delete Member by CallName " + member.Name);
+            Logger.Debug("Delete Member " + member.Name);
+            Logger.Debug("Delete de CallName " + callGroup.Name);
+        }
+
+        public void ManagerMemberByCallGroup(List<MemberDTO> members, CallGroupDTO callGroupDTO, EnumHTMLVerbe enumHTML)
+        {
+            // On crée la liste avec toutes les tâches que l'on va lancer
+            List<Task> tasks = new List<Task>();
+
+            #region Team
+            //La on crée une une task qui elle va faire la requete PUT aupres de l'api
+            foreach (MemberDTO item in members)
+            {
+
+                Task t = null;
+                switch (enumHTML)
+                {
+                    case EnumHTMLVerbe.POST:
+                        t = Task.Run(() => POSTMemberByCallGroup(item, callGroupDTO));
+                        break;
+                    case EnumHTMLVerbe.GET:
+                        break;
+                    case EnumHTMLVerbe.PUT:
+                        //    t = Task.Run(() => PUTUser(item));
+                        break;
+                    case EnumHTMLVerbe.DELETE:
+                        t = Task.Run(() => DELETEMemberByCallGroup(item, callGroupDTO));
+                        break;
+                    default:
+                        break;
+                }
+
+                tasks.Add(t);
+
+            }
+            #endregion
+
+            // On attend que toute les tache soit bien finie
+            Task.WaitAll(tasks.ToArray());
+        }
+
+        #endregion
+
 
 
 

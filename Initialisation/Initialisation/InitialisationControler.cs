@@ -29,7 +29,7 @@ namespace Initialisation
         /// <summary>
         /// Liste des CallGroup qui devrons être supprimer d'alert
         /// </summary>
-        private List<CallGroupDTO> callGroupDeletes = new List<CallGroupDTO>(); 
+        private List<CallGroupDTO> callGroupDeletes = new List<CallGroupDTO>();
         /// <summary>
         /// Liste des CallGroup qui devrons être ajouter dans alert
         /// </summary>
@@ -73,7 +73,9 @@ namespace Initialisation
 
         #region Constante
 
-        private readonly int NOMBRESEQUENCEMAXROLE; 
+        private readonly int NOMBRESEQUENCEMAXROLE;
+
+
 
         #endregion
 
@@ -117,7 +119,7 @@ namespace Initialisation
         /// <returns></returns>
         public void CreateCallGroup()
         {
-            
+
             List<Secteur> secteurs = new List<Secteur>();
             List<Role> roles = new List<Role>();
             List<TypeAlarme> typeAlarmes = new List<TypeAlarme>();
@@ -178,7 +180,7 @@ namespace Initialisation
                                         // Le call group n'existe pas dans alert donc on initialise un callgroup et on l'ajoute dans la liste a ajouter
                                         if (trouverCallGroup == false)
                                         {
-                                            AddNewCallGroupList( searchCallGroupName);
+                                            AddNewCallGroupList(searchCallGroupName);
                                         }
 
                                     }
@@ -199,7 +201,7 @@ namespace Initialisation
                                 // Le call group n'existe pas dans alert donc on initialise un callgroup et on l'ajoute dans la liste a ajouter
                                 if (trouverCallGroup == false)
                                 {
-                                    AddNewCallGroupList( searchCallGroupName);
+                                    AddNewCallGroupList(searchCallGroupName);
 
                                 }
 
@@ -217,7 +219,7 @@ namespace Initialisation
                                 // Le call group n'existe pas dans alert donc on initialise un callgroup et on l'ajoute dans la liste a ajouter
                                 if (trouverCallGroup == false)
                                 {
-                                    AddNewCallGroupList( searchCallGroupName);
+                                    AddNewCallGroupList(searchCallGroupName);
 
                                 }
 
@@ -238,7 +240,7 @@ namespace Initialisation
                     // Recherche dans la liste des callGroups si le nom de call group est trouver
                     trouverCallGroup = false;
 
-                   // Recherche si le GroupByName est connu d'alert ou pas et vérifier si il faudrait faire des suppressions
+                    // Recherche si le GroupByName est connu d'alert ou pas et vérifier si il faudrait faire des suppressions
                     trouverCallGroup = SearchCallGroupByName(searchCallGroupName);
                     // Le call group n'existe pas dans alert donc on initialise un callgroup et on l'ajoute dans la liste a ajouter
                     if (trouverCallGroup == false)
@@ -251,7 +253,7 @@ namespace Initialisation
 
             _managerAlert.ManagerCallGroups(callGroupNew, EnumHTMLVerbe.POST);
             _managerAlert.ManagerCallGroups(callGroupDeletes, EnumHTMLVerbe.DELETE);
-          //  Console.ReadKey();
+            //  Console.ReadKey();
 
 
         }
@@ -320,12 +322,12 @@ namespace Initialisation
 
         #region Liaison des Call Group
 
-        public void LiaisonCallGroup ()
+        public void LiaisonCallGroup()
         {
             string callGroupName;
             string callGroupNameNext;
             string roleName;
-            Role roleNext= null;
+            Role roleNext = null;
             CallGroupDTO callGroupNext = null;
             int? numeroSequence;
             //Remise à zero de la liste des updates 
@@ -350,26 +352,26 @@ namespace Initialisation
                 {
                     roleName = rolesDB[i].Nom;
 
-                    if(callGroupName.Contains(roleName))
+                    if (callGroupName.Contains(roleName))
                     {
                         numeroSequence = rolesDB[i].NumeroSequence;
 
                         // Une liaison doit être établie
-                        if(numeroSequence != NOMBRESEQUENCEMAXROLE)
+                        if (numeroSequence != NOMBRESEQUENCEMAXROLE)
                         {
                             //Recherche du role ayant le numéro de sequence supérieur
 
                             roleNext = null;
                             for (int j = 0; roleNext == null & j < rolesDB.Count; j++)
                             {
-                                if ( rolesDB[j].NumeroSequence == numeroSequence +1)
+                                if (rolesDB[j].NumeroSequence == numeroSequence + 1)
                                 {
                                     roleNext = rolesDB[j];
                                 }
                             }
 
                             int indexStartCallGroup = callGroupName.IndexOf(roleName);
-                            callGroupNameNext = callGroupName.Substring(0,indexStartCallGroup) + roleNext.Nom;
+                            callGroupNameNext = callGroupName.Substring(0, indexStartCallGroup) + roleNext.Nom;
 
                             //Recherche du nouveau callGroup
 
@@ -384,7 +386,7 @@ namespace Initialisation
                                 }
                             }
                             // Si on a pas trouver avec le callGroup et Nom Role on cherche juste par le role Name
-                            if(trouverCallGroup == false)
+                            if (trouverCallGroup == false)
                             {
                                 for (int indexCallGroup = 0; trouverCallGroup == false & indexCallGroup < callGroups.Count; indexCallGroup++)
                                 {
@@ -396,13 +398,13 @@ namespace Initialisation
                                 }
                             }
 
-                            if(callGroupItem.ReliefGroupId != callGroupNext.Id)
+                            if (callGroupItem.ReliefGroupId != callGroupNext.Id)
                             {
                                 callGroupItem.ReliefGroupId = callGroupNext.Id;
                                 callGroupUpdate.Add(callGroupItem);
-                            }                           
+                            }
                         }
-                        
+
                     }
                 }
 
@@ -410,7 +412,7 @@ namespace Initialisation
             }
 
             // Modification des CallGroup a Update
-            
+
             _managerAlert.ManagerCallGroups(callGroupUpdate, EnumHTMLVerbe.PUT);
 
         }
@@ -437,14 +439,14 @@ namespace Initialisation
 
             personnes = _managerDB.GETPersonnes();
 
-            foreach(Personne personneItem in personnes)
+            foreach (Personne personneItem in personnes)
             {
                 userTrouver = false;
                 // Recherche si on trouver un user qui a le même nom et prenom
-                for(int i = 0; userTrouver == false & i < users.Count; i++)
+                for (int i = 0; userTrouver == false & i < users.Count; i++)
                 {
                     user = users[i];
-                    if(user.Name.Equals(personneItem.Nom) & user.FirstName.Equals(personneItem.Prenom))
+                    if (user.Name.Equals(personneItem.Nom) & user.FirstName.Equals(personneItem.Prenom))
                     {
                         userTrouver = true;
                     }
@@ -464,7 +466,7 @@ namespace Initialisation
                     // Mettre la personne en actif
                     user.StatusId = 1;
 
-                    if(user.Numbers == null || user.Numbers.Count == 0)
+                    if (user.Numbers == null || user.Numbers.Count == 0)
                     {
                         user.Numbers = new List<NumberDTO>();
 
@@ -523,7 +525,8 @@ namespace Initialisation
                     }
 
 
-                }else
+                }
+                else
                 {
                     // L'user existe dans alert et dans la base de données on va controler les driver info si ils sont correct
                     user.Numbers = new List<NumberDTO>();
@@ -550,7 +553,7 @@ namespace Initialisation
             }
 
 
-            _managerAlert.ManagerUser(usersNew,EnumHTMLVerbe.POST);
+            _managerAlert.ManagerUser(usersNew, EnumHTMLVerbe.POST);
             _managerAlert.ManagerUser(usersUpdate, EnumHTMLVerbe.PUT);
 
 
@@ -562,7 +565,7 @@ namespace Initialisation
         #region Création des Teams
 
         #endregion
-        public  void CreateTeams()
+        public void CreateTeams()
         {
             callGroups = _managerAlert.GETCallGroup().Items.ToList();
             rolesDB = _managerDB.GETRoles();
@@ -576,38 +579,38 @@ namespace Initialisation
 
             // Parcour tous les call group pour trouver leur role
 
-            foreach ( CallGroupDTO callGroupItem in callGroups)
+            foreach (CallGroupDTO callGroupItem in callGroups)
             {
                 callGroupName = callGroupItem.Name;
 
                 // Recherche dans quel groupe il est 
                 trouverRole = false;
 
-                for (int roleIndex = 0; trouverRole == false &  roleIndex < rolesDB.Count; roleIndex ++)
+                for (int roleIndex = 0; trouverRole == false & roleIndex < rolesDB.Count; roleIndex++)
                 {
-                    if(callGroupName.Contains(rolesDB[roleIndex].Nom))
+                    if (callGroupName.Contains(rolesDB[roleIndex].Nom))
                     {
                         roleCurrent = rolesDB[roleIndex];
                         trouverRole = true;
                     }
-                        
+
                 }
 
-                if(trouverRole == false)
+                if (trouverRole == false)
                 {
                     throw new Exception("Impossible de trouver un nom de role dans le callGroup, vérifier la DB");
                 }
 
                 teamDB = _managerDB.GETTeamByRoleNames(roleCurrent.Nom);
 
-                if(teamDB == null | teamDB.Count == 0)
+                if (teamDB == null | teamDB.Count == 0)
                 {
                     throw new Exception("Il n'y a pas de Team Lier au rôle veuilliez corriger la base de données");
                 }
 
                 // On récupérer les teams qui sont déjà dans le call group
 
-                teamDTOs = _managerAlert.GETTeamByCallGroup(callGroupItem.Id).Items.ToList() ;
+                teamDTOs = _managerAlert.GETTeamByCallGroup(callGroupItem.Id).Items.ToList();
 
 
                 foreach (Team teamDBItem in teamDB)
@@ -615,11 +618,11 @@ namespace Initialisation
                     trouverTeam = false;
                     // recherche si dans le call group les team exist déjà.
 
-                  
 
-                    for(int teamDTOindex = 0; trouverTeam == false && teamDTOindex < teamDTOs.Count; teamDTOindex++)
+
+                    for (int teamDTOindex = 0; trouverTeam == false && teamDTOindex < teamDTOs.Count; teamDTOindex++)
                     {
-                        if(teamDTOs[teamDTOindex].Name.Equals(teamDBItem.Nom))
+                        if (teamDTOs[teamDTOindex].Name.Equals(teamDBItem.Nom))
                         {
                             trouverTeam = true;
                         }
@@ -642,6 +645,125 @@ namespace Initialisation
 
             // Ajout des teams dans la base de données
             _managerAlert.ManagerTeams(teamNewDTOs, EnumHTMLVerbe.POST);
+
+        }
+        public void LiaisonTeamPersonne()
+        {
+            bool trouverMember;
+            bool trouverUser = false;
+
+
+            string nameSecteur;
+
+            List<TeamDTO> teamDTOs;
+
+            List<MemberDTO> memberDTOs;
+            List<MemberDTO> membersDelete = new List<MemberDTO>();
+            List<MemberDTO> membersNew = new List<MemberDTO>();
+
+            UserDTO userDTO = null;
+            // Récuperation du dernier CallGroup
+
+            callGroups = _managerAlert.GETCallGroup().Items.ToList();
+
+            //Retrouver le Abreger du secteur
+
+            nameSecteur = callGroups[0].Name.Substring(0, callGroups[0].Name.IndexOf('_'));
+
+            //Recherche Secteur
+            Secteur secteur = _managerDB.GETSecteurByAbreger(nameSecteur);
+
+            // Rechrche pour un call group
+
+            teamDTOs = _managerAlert.GETTeamByCallGroup(callGroups[0].Id).Items.ToList();
+
+            //Recherche des members connu dans alert
+
+            memberDTOs = _managerAlert.GETMemberByCallGroupId(callGroups[0].Id).Items.ToList();
+
+            //Retrouver le Abreger du secteur
+
+            nameSecteur = callGroups[0].Name.Substring(0, callGroups[0].Name.IndexOf('_'));
+
+            //Recherche le RoleDB par TeamDB
+
+            Role role = _managerDB.GETListRoleByTeamName(teamDTOs[0].Name);
+
+            // Récuperation des personnes par la prioriterqui sont dans le bon role et le bon secteur
+
+            List<Prioriter> prioriters = _managerDB.GETListPrioriterByRoleAndSecteur(role.Id, secteur.Id);
+
+            // Recherche des membres a delete du call group
+
+            foreach (MemberDTO itemMember in memberDTOs)
+            {
+                //Retrouver l'opérateur derrière le membre
+                try
+                {
+                    userDTO = _managerAlert.GETUserById(itemMember.Id);
+
+                    trouverMember = false;
+
+                    for (int i = 0; trouverMember == false && i < prioriters.Count; i++)
+                    {
+                        if (userDTO.Name == prioriters[i].Personne.Nom && userDTO.FirstName == prioriters[i].Personne.Nom)
+                        {
+                            trouverMember = true;
+                        }
+                    }
+
+                    if (trouverMember == false)
+                    {
+                        membersDelete.Add(itemMember);
+                    }
+                }
+                catch (Exception)
+                {
+
+
+                }
+
+            }
+
+            // Recherche des membres à ajouter
+            users = _managerAlert.GETUsers().Items.ToList();
+            foreach (Prioriter itemPropriter in prioriters)
+            {
+                trouverUser = false;
+
+                for (int i = 0; trouverUser == false && i < users.Count; i++)
+                {
+                    try
+                    {
+                        userDTO = users[i];
+
+                        if (itemPropriter.Personne.Nom == userDTO.Name && itemPropriter.Personne.Prenom == userDTO.FirstName)
+                        {
+                            trouverUser = true;
+                            MemberDTO memberNew = new MemberDTO();
+                            memberNew.Id = userDTO.Id;
+                            membersNew.Add(memberNew);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                }
+            }
+            if(trouverUser == false)
+            {
+                _logger.Error("Aucun user trouver");
+            }
+          
+            teamDTOs[0].Members = membersNew;
+           
+            _managerAlert.ManagerMemberByCallGroup(membersDelete, callGroups[0], EnumHTMLVerbe.DELETE);
+           
+            _managerAlert.ManagerTeams(teamDTOs, EnumHTMLVerbe.PUT);
+        
+
+       
 
         }
     }

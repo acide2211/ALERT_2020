@@ -152,6 +152,22 @@ namespace BusinessToDBAlert
             }
             return secteurTrouvers.First(); ;
         }
+
+        public Secteur GETSecteurByAbreger(string nameAbreger)
+        {
+            nameAbreger = nameAbreger.ToUpper();
+
+            Table<Secteur> secteurTable = _alertDBContext.GetTable<Secteur>();
+            List<Secteur> secteurTrouvers = (from secteur in secteurTable
+                                             where secteur.Abreger.Equals(nameAbreger)
+                                             select secteur).ToList();
+            if (secteurTrouvers.Count != 1)
+            {
+                Logger.Info("Recherche d'un secteur qui n'est pas connu " + nameAbreger);
+                return null;
+            }
+            return secteurTrouvers.First(); ;
+        }
         /// <summary>
         /// Permet de récupérer la liste des secteurs de manière asychrone 
         /// </summary>
@@ -262,6 +278,42 @@ namespace BusinessToDBAlert
 
             return teamTrouvers; 
         }
+
+
+
+
+        public Role GETListRoleByTeamName(string nomTeam)
+        {
+            nomTeam = nomTeam.ToUpper();
+
+            Table<Team> teamTable = _alertDBContext.GetTable<Team>();
+
+             List<Team> teamTrouvers = (from team in teamTable
+                                       where team.Nom.Equals(nomTeam)
+                                       select team).ToList();
+
+            if(teamTrouvers == null || teamTrouvers.Count > 1)
+            {
+                throw new Exception("Le nom de team n'est pas unique.");
+            }
+
+            
+            return teamTrouvers.First().Role; ;
+          
+        }
+
+        public List<Prioriter> GETListPrioriterByRoleAndSecteur(int roleId, int secteurId)
+        {
+            Table<Prioriter> prioriterTable = _alertDBContext.GetTable<Prioriter>();
+
+            List<Prioriter> prioriterTrouver = (from prioriter in prioriterTable
+                                       where prioriter.SecteurId.Equals(secteurId) && prioriter.RoleId.Equals(roleId)
+                                       select prioriter).ToList();
+
+            return prioriterTrouver ;
+        }
+
+
 
         #endregion
 
