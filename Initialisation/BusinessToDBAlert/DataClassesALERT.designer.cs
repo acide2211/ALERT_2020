@@ -3370,11 +3370,15 @@ namespace BusinessToDBAlert
 		
 		private int _PersonneId;
 		
+		private int _TeamId;
+		
 		private EntityRef<Personne> _Personne;
 		
 		private EntityRef<Role> _Role;
 		
 		private EntityRef<Secteur> _Secteur;
+		
+		private EntityRef<Team> _Team;
 		
     #region Définitions de méthodes d'extensibilité
     partial void OnLoaded();
@@ -3392,6 +3396,8 @@ namespace BusinessToDBAlert
     partial void OnSecteurIdChanged();
     partial void OnPersonneIdChanging(int value);
     partial void OnPersonneIdChanged();
+    partial void OnTeamIdChanging(int value);
+    partial void OnTeamIdChanged();
     #endregion
 		
 		public Prioriter()
@@ -3399,6 +3405,7 @@ namespace BusinessToDBAlert
 			this._Personne = default(EntityRef<Personne>);
 			this._Role = default(EntityRef<Role>);
 			this._Secteur = default(EntityRef<Secteur>);
+			this._Team = default(EntityRef<Team>);
 			OnCreated();
 		}
 		
@@ -3534,6 +3541,30 @@ namespace BusinessToDBAlert
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TeamId", DbType="Int NOT NULL")]
+		public int TeamId
+		{
+			get
+			{
+				return this._TeamId;
+			}
+			set
+			{
+				if ((this._TeamId != value))
+				{
+					if (this._Team.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTeamIdChanging(value);
+					this.SendPropertyChanging();
+					this._TeamId = value;
+					this.SendPropertyChanged("TeamId");
+					this.OnTeamIdChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Personne_Prioriter", Storage="_Personne", ThisKey="PersonneId", OtherKey="Id", IsForeignKey=true)]
 		public Personne Personne
 		{
@@ -3632,6 +3663,40 @@ namespace BusinessToDBAlert
 						this._SecteurId = default(int);
 					}
 					this.SendPropertyChanged("Secteur");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Team_Prioriter", Storage="_Team", ThisKey="TeamId", OtherKey="Id", IsForeignKey=true)]
+		public Team Team
+		{
+			get
+			{
+				return this._Team.Entity;
+			}
+			set
+			{
+				Team previousValue = this._Team.Entity;
+				if (((previousValue != value) 
+							|| (this._Team.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Team.Entity = null;
+						previousValue.Prioriter.Remove(this);
+					}
+					this._Team.Entity = value;
+					if ((value != null))
+					{
+						value.Prioriter.Add(this);
+						this._TeamId = value.Id;
+					}
+					else
+					{
+						this._TeamId = default(int);
+					}
+					this.SendPropertyChanged("Team");
 				}
 			}
 		}
@@ -5286,6 +5351,8 @@ namespace BusinessToDBAlert
 		
 		private int _RoleId;
 		
+		private EntitySet<Prioriter> _Prioriter;
+		
 		private EntityRef<Role> _Role;
 		
     #region Définitions de méthodes d'extensibilité
@@ -5308,6 +5375,7 @@ namespace BusinessToDBAlert
 		
 		public Team()
 		{
+			this._Prioriter = new EntitySet<Prioriter>(new Action<Prioriter>(this.attach_Prioriter), new Action<Prioriter>(this.detach_Prioriter));
 			this._Role = default(EntityRef<Role>);
 			OnCreated();
 		}
@@ -5436,6 +5504,19 @@ namespace BusinessToDBAlert
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Team_Prioriter", Storage="_Prioriter", ThisKey="Id", OtherKey="TeamId")]
+		public EntitySet<Prioriter> Prioriter
+		{
+			get
+			{
+				return this._Prioriter;
+			}
+			set
+			{
+				this._Prioriter.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Role_Team", Storage="_Role", ThisKey="RoleId", OtherKey="Id", IsForeignKey=true)]
 		public Role Role
 		{
@@ -5488,6 +5569,18 @@ namespace BusinessToDBAlert
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+		
+		private void attach_Prioriter(Prioriter entity)
+		{
+			this.SendPropertyChanging();
+			entity.Team = this;
+		}
+		
+		private void detach_Prioriter(Prioriter entity)
+		{
+			this.SendPropertyChanging();
+			entity.Team = null;
 		}
 	}
 	

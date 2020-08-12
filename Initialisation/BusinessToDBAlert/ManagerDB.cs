@@ -279,6 +279,23 @@ namespace BusinessToDBAlert
             return teamTrouvers; 
         }
 
+        public Team GETTeamByTeamNames(string nameTeam)
+        {
+            nameTeam = nameTeam.ToUpper();
+
+            Table<Team> teamTable = _alertDBContext.GetTable<Team>();
+            List<Team> teamTrouvers = (from team in teamTable
+                                       where team.Nom.Equals(nameTeam)
+                                       select team).ToList();
+
+            if (teamTrouvers == null || teamTrouvers.Count == 0)
+            {
+                throw new Exception("Il y a un problème au niveau de la table team avec le nom " + nameTeam);
+            }
+
+            return teamTrouvers.First(); ;
+        }
+
 
 
 
@@ -311,6 +328,17 @@ namespace BusinessToDBAlert
                                        select prioriter).ToList();
 
             return prioriterTrouver ;
+        }
+
+        public List<Prioriter> GETListPrioriterByRoleSecteurTeamName(int roleId, int secteurId, string name)
+        {
+            Table<Prioriter> prioriterTable = _alertDBContext.GetTable<Prioriter>();
+
+            List<Prioriter> prioriterTrouver = (from prioriter in prioriterTable
+                                                where prioriter.SecteurId.Equals(secteurId) && prioriter.RoleId.Equals(roleId) 
+                                                select prioriter).ToList();
+
+            return prioriterTrouver;
         }
 
 

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="ALERT" Class="DataClassesALERTDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=192.168.81.131;Initial Catalog=ALERT;User ID=sa" SettingsObjectName="BusinessToDBAlert.Properties.Settings" SettingsPropertyName="ALERTConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="AppSettings" ConnectionString="Data Source=192.168.87.128;Initial Catalog=ALERT;User ID=sa" SettingsObjectName="BusinessToDBAlert.Properties.Settings" SettingsPropertyName="ALERTConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Alarme" Member="Alarme">
     <Type Name="Alarme">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -155,9 +155,11 @@
       <Column Name="RoleId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="SecteurId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="PersonneId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TeamId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="Personne_Prioriter" Member="Personne" ThisKey="PersonneId" OtherKey="Id" Type="Personne" IsForeignKey="true" />
       <Association Name="Role_Prioriter" Member="Role" ThisKey="RoleId" OtherKey="Id" Type="Role" IsForeignKey="true" />
       <Association Name="Secteur_Prioriter" Member="Secteur" ThisKey="SecteurId" OtherKey="Id" Type="Secteur" IsForeignKey="true" />
+      <Association Name="Team_Prioriter" Member="Team" ThisKey="TeamId" OtherKey="Id" Type="Team" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Role" Member="Role">
@@ -243,6 +245,7 @@
       <Column Name="ActifSPOPosition" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="ColorTeam" Type="System.String" DbType="VarChar(128) NOT NULL" CanBeNull="false" />
       <Column Name="RoleId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Team_Prioriter" Member="Prioriter" ThisKey="Id" OtherKey="TeamId" Type="Prioriter" />
       <Association Name="Role_Team" Member="Role" ThisKey="RoleId" OtherKey="Id" Type="Role" IsForeignKey="true" />
     </Type>
   </Table>

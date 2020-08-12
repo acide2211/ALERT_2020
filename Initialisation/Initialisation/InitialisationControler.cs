@@ -689,7 +689,7 @@ namespace Initialisation
 
             Role role = _managerDB.GETListRoleByTeamName(teamDTOs[0].Name);
 
-            // Récuperation des personnes par la prioriterqui sont dans le bon role et le bon secteur
+            // Récuperation des personnes par la prioriter qui sont dans le bon role et le bon secteur
 
             List<Prioriter> prioriters = _managerDB.GETListPrioriterByRoleAndSecteur(role.Id, secteur.Id);
 
@@ -764,6 +764,157 @@ namespace Initialisation
         
 
        
+
+        }
+
+        public void LiaisonMemberToTeam()
+        {
+            callGroups = _managerAlert.GETCallGroup().Items.ToList();
+            //LiaisonMemberToTeamCallGroup(callGroups[0]);
+            foreach (CallGroupDTO itemCallGroup in callGroups)
+            {
+                Console.WriteLine("Debut :" + itemCallGroup.Name);
+                
+                
+                //Debug
+                if (!itemCallGroup.Name.Equals("DIRECTION"))
+                {
+                    Console.WriteLine("Debug :" + itemCallGroup.Name);
+                    LiaisonMemberToTeamCallGroup(itemCallGroup);
+                }
+               
+                Console.WriteLine("FIN : " + itemCallGroup.Name);
+            }
+        }
+
+        public void LiaisonMemberToTeamCallGroup(CallGroupDTO callGroup)
+        {
+
+            List<TeamDTO> teamDTOs;
+            List<MemberDTO> memberDTOs;
+            List<MemberDTO> membersDelete = new List<MemberDTO>();
+            List<MemberDTO> membersNew = new List<MemberDTO>();
+            string teamDTOName;
+           
+
+            users = _managerAlert.GETUsers().Items.ToList();
+            string nameSecteur = null;
+            //Retrouver Abreger du secteur
+            try
+            {
+                nameSecteur = callGroup.Name.Substring(0, callGroup.Name.IndexOf('_'));
+            }catch(Exception ex)
+            {
+                if (callGroup.Name.IndexOf('_')==-1)
+                {
+                    nameSecteur = callGroup.Name;
+                }
+            }
+           // nameSecteur = callGroup.Name.Substring(0, callGroup.Name.IndexOf('_'));
+
+            //Recherche Secteur
+            Secteur secteur = _managerDB.GETSecteurByAbreger(nameSecteur);
+
+            //Recherche des Teams du call group
+            teamDTOs = _managerAlert.GETTeamByCallGroup(callGroup.Id).Items.ToList();
+
+
+            for(int indexTeamDTO = 0; indexTeamDTO < teamDTOs.Count; indexTeamDTO++)
+            {
+                membersNew = new List<MemberDTO>();
+                membersDelete = new List<MemberDTO>();
+                //Recherche le RoleDB par TeamDB
+
+                Role role = _managerDB.GETListRoleByTeamName(teamDTOs[indexTeamDTO].Name);
+
+                // Récuperation des personnes par la prioriter qui sont dans le bon role et le bon secteur
+
+                List<Prioriter> prioriters = _managerDB.GETListPrioriterByRoleAndSecteur(role.Id, secteur.Id);
+              //  List<Prioriter> prioriters = _managerDB.GETListPrioriterByRoleSecteurTeamName(role.Id, secteur.Id, teamDTOs[indexTeamDTO].Name);
+                // Permet de supprimer les membre de la team
+                teamDTOs[indexTeamDTO].Members = new List<MemberDTO>();
+                _managerAlert.ManagerTeams(teamDTOs, EnumHTMLVerbe.PUT);
+
+                //Mise en place des membres dans la team par rapport à la Prioriter
+
+                // On regarde dans la table TeamDB si le spo doit être un membre
+                teamDTOName = teamDTOs[indexTeamDTO].Name;
+
+                //Recherche les Informations de la TeamDB
+                Team teamDB = _managerDB.GETTeamByTeamNames(teamDTOName);
+
+                if(teamDB.ActifSPOPosition == 1)
+                {
+                    // Rechercher l'utilisateur SPO
+
+                    membersNew.Add(searchMemberDTOByUserNameAndFirstName(secteur.Abreger, "SPO", users));
+
+                }
+                Console.WriteLine();
+                prioriters = prioriters.OrderBy(prioriter => prioriter.Prioriter1).ToList();
+
+                foreach (Prioriter itemPropriter in prioriters)
+                {
+                    membersNew.Add(searchMemberDTOByUserNameAndFirstName(itemPropriter.Personne.Nom, itemPropriter.Personne.Prenom, users));
+                    
+                }
+
+                if (teamDB.ActifSPOPosition == 2)
+                {
+                    // Rechercher l'utilisateur SPO
+
+                    membersNew.Add(searchMemberDTOByUserNameAndFirstName(secteur.Abreger, "SPO", users));
+
+                }
+                teamDTOs[0].Members = membersNew;
+                _managerAlert.ManagerTeams(teamDTOs, EnumHTMLVerbe.PUT);
+
+                
+                 
+
+
+            }
+
+
+        }
+
+        public MemberDTO searchMemberDTOByUserNameAndFirstName ( string name, string firstName , List<UserDTO> users = null)
+        {
+            // Si on ne passe pas la liste des users ou que celle-ci est vide alors on va la récupérer
+            if(users == null || users.Count == 0)
+            {
+                users = _managerAlert.GETUsers().Items.ToList();
+
+                if(users.Count == 0)
+                {
+                    throw new Exception("Impossible de chercher un user dans la liste d'alert car celle-ci est vide");
+                }
+            }
+
+            bool trouverUser = false;
+            UserDTO userDTO = null;
+
+            for (int i = 0; trouverUser == false && i < users.Count; i++)
+            {
+        
+                    userDTO = users[i];
+
+                    if (name == userDTO.Name && firstName == userDTO.FirstName)
+                    {
+                        trouverUser = true;
+                        MemberDTO memberNew = new MemberDTO();
+                        memberNew.Id = userDTO.Id;
+                        return memberNew;
+                    }
+           
+            }
+
+            if(trouverUser== false)
+            {
+                throw new Exception("Impossible de trouver un user dans alert qui porte le nom et prenom suivant veuilliez controller qu'il existe" + name + " " + firstName);
+            }
+            
+            return null;
 
         }
     }

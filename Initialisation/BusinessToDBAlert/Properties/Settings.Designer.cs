@@ -26,7 +26,7 @@ namespace BusinessToDBAlert.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=192.168.81.131;Initial Catalog=ALERT;User ID=sa;Password=Root2015")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=192.168.87.128;Initial Catalog=ALERT;User ID=sa;Password=Root2015")]
         public string ALERTConnectionString {
             get {
                 return ((string)(this["ALERTConnectionString"]));
