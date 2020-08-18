@@ -777,9 +777,12 @@ namespace Initialisation
                 
                 
                 //Debug
-                if (!itemCallGroup.Name.Equals("DIRECTION"))
+                if (itemCallGroup.Name.Equals("DIRECTION") || itemCallGroup.Name.Equals("NON-AVERTI"))
                 {
                     Console.WriteLine("Debug :" + itemCallGroup.Name);
+                    LiaisonMemberToTeamCallGroup(itemCallGroup);
+                }else
+                {
                     LiaisonMemberToTeamCallGroup(itemCallGroup);
                 }
                
@@ -788,10 +791,8 @@ namespace Initialisation
         }
 
         public void LiaisonMemberToTeamCallGroup(CallGroupDTO callGroup)
-        {
-
+        {           
             List<TeamDTO> teamDTOs;
-            List<MemberDTO> memberDTOs;
             List<MemberDTO> membersDelete = new List<MemberDTO>();
             List<MemberDTO> membersNew = new List<MemberDTO>();
             string teamDTOName;
@@ -808,10 +809,11 @@ namespace Initialisation
                 if (callGroup.Name.IndexOf('_')==-1)
                 {
                     nameSecteur = callGroup.Name;
+                    nameSecteur = "PC";
+
                 }
             }
-           // nameSecteur = callGroup.Name.Substring(0, callGroup.Name.IndexOf('_'));
-
+          
             //Recherche Secteur
             Secteur secteur = _managerDB.GETSecteurByAbreger(nameSecteur);
 
@@ -823,14 +825,15 @@ namespace Initialisation
             {
                 membersNew = new List<MemberDTO>();
                 membersDelete = new List<MemberDTO>();
+                
                 //Recherche le RoleDB par TeamDB
 
                 Role role = _managerDB.GETListRoleByTeamName(teamDTOs[indexTeamDTO].Name);
-
+               
                 // Récuperation des personnes par la prioriter qui sont dans le bon role et le bon secteur
 
-                List<Prioriter> prioriters = _managerDB.GETListPrioriterByRoleAndSecteur(role.Id, secteur.Id);
-              //  List<Prioriter> prioriters = _managerDB.GETListPrioriterByRoleSecteurTeamName(role.Id, secteur.Id, teamDTOs[indexTeamDTO].Name);
+
+                List<Prioriter> prioriters = _managerDB.GETListPrioriterByRoleSecteurTeamId(role.Id, secteur.Id, teamDTOs[indexTeamDTO].Name);
                 // Permet de supprimer les membre de la team
                 teamDTOs[indexTeamDTO].Members = new List<MemberDTO>();
                 _managerAlert.ManagerTeams(teamDTOs, EnumHTMLVerbe.PUT);
@@ -843,6 +846,7 @@ namespace Initialisation
                 //Recherche les Informations de la TeamDB
                 Team teamDB = _managerDB.GETTeamByTeamNames(teamDTOName);
 
+                //Permet de mettre le spo en premier si il y a besoin
                 if(teamDB.ActifSPOPosition == 1)
                 {
                     // Rechercher l'utilisateur SPO
@@ -850,28 +854,40 @@ namespace Initialisation
                     membersNew.Add(searchMemberDTOByUserNameAndFirstName(secteur.Abreger, "SPO", users));
 
                 }
-                Console.WriteLine();
+
                 prioriters = prioriters.OrderBy(prioriter => prioriter.Prioriter1).ToList();
 
                 foreach (Prioriter itemPropriter in prioriters)
                 {
                     membersNew.Add(searchMemberDTOByUserNameAndFirstName(itemPropriter.Personne.Nom, itemPropriter.Personne.Prenom, users));
                     
+                    //Permet de mettre les personnes en repli
+                    if(teamDB.ActifSPOPosition == 1 || itemPropriter.Prioriter1 != 1)
+                    {
+                        membersNew.Last().Relief = true;
+                       
+                    }
+
+
                 }
 
+                
+                //Permet de mettre le spo en dernier si il y a besoin
                 if (teamDB.ActifSPOPosition == 2)
                 {
                     // Rechercher l'utilisateur SPO
 
                     membersNew.Add(searchMemberDTOByUserNameAndFirstName(secteur.Abreger, "SPO", users));
+                    if (membersNew.Count > 1)
+                    {
+                        membersNew.Last().Relief = true;
+
+                    }
 
                 }
-                teamDTOs[0].Members = membersNew;
-                _managerAlert.ManagerTeams(teamDTOs, EnumHTMLVerbe.PUT);
-
+                teamDTOs[indexTeamDTO].Members = membersNew;
+                _managerAlert.ManagerTeams(teamDTOs, EnumHTMLVerbe.PUT);             
                 
-                 
-
 
             }
 

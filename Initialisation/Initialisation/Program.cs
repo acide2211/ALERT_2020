@@ -61,7 +61,7 @@ namespace Initialisation
                 Logger.Info("DEBUT : Creation des user team");
               // initialisationControler.LiaisonTeamPersonne();
 
-              //initialisationControler.LiaisonMemberToTeam();
+               initialisationControler.LiaisonMemberToTeam();
                 Logger.Info("FIN :  Creation des user teams");
 
                 Logger.Info("FIN : Initialisation");

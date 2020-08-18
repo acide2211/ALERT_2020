@@ -330,15 +330,27 @@ namespace BusinessToDBAlert
             return prioriterTrouver ;
         }
 
-        public List<Prioriter> GETListPrioriterByRoleSecteurTeamName(int roleId, int secteurId, string name)
+        public List<Prioriter> GETListPrioriterByRoleSecteurTeamId(int roleId, int secteurId, string teamName)
         {
             Table<Prioriter> prioriterTable = _alertDBContext.GetTable<Prioriter>();
 
             List<Prioriter> prioriterTrouver = (from prioriter in prioriterTable
-                                                where prioriter.SecteurId.Equals(secteurId) && prioriter.RoleId.Equals(roleId) 
+                                                where prioriter.SecteurId.Equals(secteurId) && prioriter.RoleId.Equals(roleId) && prioriter.Team.Nom.Equals(teamName)
                                                 select prioriter).ToList();
 
             return prioriterTrouver;
+        }
+
+        public List<Team> GETListTeamsByRoleId(int roleId)
+        {
+            Table<Team> teamTable = _alertDBContext.GetTable<Team>();
+
+            List<Team> teams = (from team in teamTable
+                                                where team.RoleId.Equals(roleId)
+                                                select team).ToList();
+
+
+            return teams;
         }
 
 
