@@ -32,10 +32,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Alert.Api.Remote.Entities">
-      <HintPath>D:\ALAIN\TRAVAIL\One drive\OneDrive - AIDE\Procedure\Procédure ranger\09 Alert Nouvelle Organnisation\Programmation\API\Alert.Api.Remote.Entities.dll</HintPath>
+      <HintPath>..\Librairie Externe\Alert.Api.Remote.Entities.dll</HintPath>
     </Reference>
     <Reference Include="Alert.Api.Remote.REST.Clients">
-      <HintPath>D:\ALAIN\TRAVAIL\One drive\OneDrive - AIDE\Procedure\Procédure ranger\09 Alert Nouvelle Organnisation\Programmation\API\Alert.Api.Remote.REST.Clients.dll</HintPath>
+      <HintPath>..\Librairie Externe\Alert.Api.Remote.REST.Clients.dll</HintPath>
+    </Reference>
+    <Reference Include="Alert.Api.Remote.REST.Entities">
+      <HintPath>..\Librairie Externe\Alert.Api.Remote.REST.Entities.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -73,17 +76,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Alert.Api.Remote.Entities.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Alert.Api.Remote.REST.Clients.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Alert.Api.Remote.REST.Entities.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
