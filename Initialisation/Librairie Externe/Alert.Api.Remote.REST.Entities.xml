@@ -1,0 +1,440 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Alert.Api.Remote.REST.Entities</name>
+    </assembly>
+    <members>
+        <member name="T:Alert.Api.Remote.REST.Entities.CallGroupsRequestBody">
+            <summary>
+            Represents a Call Groups request
+            </summary>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CallGroupsRequestBody.CallGroupIds">
+            <summary>
+            Gets or sets the call group ids.
+            </summary>
+            <value>
+            The call group ids.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CallGroupsRequestBody.MsgText">
+            <summary>
+            Gets or sets the message text.
+            </summary>
+            <value>
+            The message text.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CallGroupsRequestBody.MsgNum">
+            <summary>
+            Gets or sets the message numeric.
+            </summary>
+            <value>
+            The message numeric.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CallGroupsRequestBody.MsgAudio">
+            <summary>
+            Gets or sets the message audio.
+            </summary>
+            <value>
+            The message audio.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CallGroupsRequestBody.MsgFile">
+            <summary>
+            Gets or sets the message file.
+            </summary>
+            <value>
+            The message file.
+            </value>
+        </member>
+        <member name="T:Alert.Api.Remote.REST.Entities.CallUsersRequestBody">
+            <summary>
+            Represents a Call User Request
+            </summary>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CallUsersRequestBody.UserIds">
+            <summary>
+            Gets or sets the user ids.
+            </summary>
+            <value>
+            The user ids.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CallUsersRequestBody.MsgText">
+            <summary>
+            Gets or sets the message text.
+            </summary>
+            <value>
+            The message text.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CallUsersRequestBody.MsgNum">
+            <summary>
+            Gets or sets the message numeric.
+            </summary>
+            <value>
+            The message numeric.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CallUsersRequestBody.MsgAudio">
+            <summary>
+            Gets or sets the message audio.
+            </summary>
+            <value>
+            The message audio.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CallUsersRequestBody.MsgFile">
+            <summary>
+            Gets or sets the message file.
+            </summary>
+            <value>
+            The message file.
+            </value>
+        </member>
+        <member name="T:Alert.Api.Remote.REST.Entities.CreateAlarmRequestBody">
+            <summary>
+            Create alarm request body
+            </summary>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CreateAlarmRequestBody.StationId">
+            <summary>
+            Gets or sets the station identifier.
+            </summary>
+            <value>
+            The station identifier.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CreateAlarmRequestBody.DataServerId">
+            <summary>
+            Gets or sets the data server identifier.
+            </summary>
+            <value>
+            The data server identifier.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CreateAlarmRequestBody.Path">
+            <summary>
+            Gets or sets the tag path.
+            </summary>
+            <value>
+            The tag path.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CreateAlarmRequestBody.Raised">
+            <summary>
+            Gets or sets a value indicating whether alarm is raised.
+            </summary>
+            <value>
+              <c>true</c> if alarm must be raised; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CreateAlarmRequestBody.TagGroupId">
+            <summary>
+            Gets or sets the tag group identifier.
+            </summary>
+            <value>
+            The tag group identifier.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CreateAlarmRequestBody.Priority">
+            <summary>
+            Gets or sets the priority.
+            </summary>
+            <value>
+            The priority.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CreateAlarmRequestBody.EventCondition">
+            <summary>
+            Gets or sets the condition.
+            </summary>
+            <value>
+            The condition.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CreateAlarmRequestBody.Value">
+            <summary>
+            Gets or sets the value.
+            </summary>
+            <value>
+            The value.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CreateAlarmRequestBody.Location">
+            <summary>
+            Gets or sets the location.
+            </summary>
+            <value>
+            The location.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CreateAlarmRequestBody.AlarmDelay">
+            <summary>Gets or sets the alarm delay.</summary>
+            <value>The alarm delay.</value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CreateAlarmRequestBody.AlarmMessage">
+            <summary>
+            Gets or sets the message.
+            </summary>
+            <value>
+            The message.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CreateAlarmRequestBody.AlarmFormat">
+            <summary>
+            Gets or sets the message format.
+            </summary>
+            <value>
+            The message format.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CreateAlarmRequestBody.AlarmShortMessage">
+            <summary>
+            Gets or sets the alarm short message.
+            </summary>
+            <value>
+            The alarm short message.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CreateAlarmRequestBody.AlarmVocalMessageFile">
+            <summary>
+            Gets or sets the alarm audio file.
+            </summary>
+            <value>
+            The alarm vocal message file.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CreateAlarmRequestBody.AlarmAttachedFile">
+            <summary>
+            Gets or sets the alarm attached file.
+            </summary>
+            <value>
+            The alarm attached file.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CreateAlarmRequestBody.AlarmActions">
+            <summary>
+            Gets or sets the alarm actions.
+            </summary>
+            <value>
+            The alarm actions.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CreateAlarmRequestBody.ResetMessage">
+            <summary>
+            Gets or sets the reset message.
+            </summary>
+            <value>
+            The reset message.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CreateAlarmRequestBody.ResetFormat">
+            <summary>
+            Gets or sets the reset format.
+            </summary>
+            <value>
+            The reset format.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CreateAlarmRequestBody.ResetShortMessage">
+            <summary>
+            Gets or sets the reset short message.
+            </summary>
+            <value>
+            The reset short message.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CreateAlarmRequestBody.ResetVocalMessageFile">
+            <summary>
+            Gets or sets the reset vocal message file.
+            </summary>
+            <value>
+            The reset vocal message file.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CreateAlarmRequestBody.ResetAttachedFile">
+            <summary>
+            Gets or sets the reset attached file.
+            </summary>
+            <value>
+            The reset attached file.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CreateAlarmRequestBody.ResetActions">
+            <summary>
+            Gets or sets the reset actions.
+            </summary>
+            <value>
+            The reset actions.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CreateAlarmRequestBody.AckMessage">
+            <summary>
+            Gets or sets the ack message.
+            </summary>
+            <value>
+            The ack message.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CreateAlarmRequestBody.AckFormat">
+            <summary>
+            Gets or sets the ack format.
+            </summary>
+            <value>
+            The ack format.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CreateAlarmRequestBody.AckShortMessage">
+            <summary>
+            Gets or sets the ack short message.
+            </summary>
+            <value>
+            The ack short message.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CreateAlarmRequestBody.AckVocalMessageFile">
+            <summary>
+            Gets or sets the ack vocal message file.
+            </summary>
+            <value>
+            The ack vocal message file.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CreateAlarmRequestBody.AckAttachedFile">
+            <summary>
+            Gets or sets the ack attached file.
+            </summary>
+            <value>
+            The ack attached file.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.CreateAlarmRequestBody.AckActions">
+            <summary>
+            Gets or sets the acknowledge actions.
+            </summary>
+            <value>
+            The acknowledge actions.
+            </value>
+        </member>
+        <member name="T:Alert.Api.Remote.REST.Entities.FileResponseBody">
+            <summary>
+            Respresents a File response
+            </summary>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.FileResponseBody.FileNames">
+            <summary>
+            Gets or sets the file names.
+            </summary>
+            <value>
+            The file names.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.FileResponseBody.CreatedTimestamp">
+            <summary>
+            Gets or sets the created timestamp.
+            </summary>
+            <value>
+            The created timestamp.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.FileResponseBody.UpdatedTimestamp">
+            <summary>
+            Gets or sets the updated timestamp.
+            </summary>
+            <value>
+            The updated timestamp.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.FileResponseBody.ContentTypes">
+            <summary>
+            Gets or sets the content types.
+            </summary>
+            <value>
+            The content types.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.FileResponseBody.Names">
+            <summary>
+            Gets or sets the names.
+            </summary>
+            <value>
+            The names.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.LoginRequestBody.GrantType">
+            <summary>
+            Gets or sets the type of the grant.
+            </summary>
+            <value>
+            The type of the grant by default "password".
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.LoginRequestBody.Username">
+            <summary>
+            Gets or sets the username.
+            </summary>
+            <value>
+            The username.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.LoginRequestBody.Password">
+            <summary>
+            Gets or sets the password.
+            </summary>
+            <value>
+            The password.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.LoginResponseBody.AccessToken">
+            <summary>
+            Gets or sets the access token.
+            </summary>
+            <value>
+            The access token.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.LoginResponseBody.TokenType">
+            <summary>
+            Gets or sets the type of the token.
+            </summary>
+            <value>
+            The type of the token.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.LoginResponseBody.ExpiresIn">
+            <summary>
+            Gets or sets the expires in.
+            </summary>
+            <value>
+            The expires in.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.LoginResponseBody.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+            <value>
+            The identifier.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.LoginResponseBody.Name">
+            <summary>
+            Gets or sets the name.
+            </summary>
+            <value>
+            The name.
+            </value>
+        </member>
+        <member name="P:Alert.Api.Remote.REST.Entities.SetPasswordRequestBody.Password">
+            <summary>
+            Gets or sets the password.
+            </summary>
+            <value>
+            The password.
+            </value>
+        </member>
+    </members>
+</doc>
