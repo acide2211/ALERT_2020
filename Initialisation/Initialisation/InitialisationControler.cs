@@ -58,6 +58,7 @@ namespace Initialisation
 
 
 
+
         /// <summary>
         /// Liste des Roles qui sont dans la DB
         /// </summary>
@@ -751,52 +752,55 @@ namespace Initialisation
                     }
                 }
             }
-            if(trouverUser == false)
+            if (trouverUser == false)
             {
                 _logger.Error("Aucun user trouver");
             }
-          
-            teamDTOs[0].Members = membersNew;
-           
-            _managerAlert.ManagerMemberByCallGroup(membersDelete, callGroups[0], EnumHTMLVerbe.DELETE);
-           
-            _managerAlert.ManagerTeams(teamDTOs, EnumHTMLVerbe.PUT);
-        
 
-       
+            teamDTOs[0].Members = membersNew;
+
+            _managerAlert.ManagerMemberByCallGroup(membersDelete, callGroups[0], EnumHTMLVerbe.DELETE);
+
+            _managerAlert.ManagerTeams(teamDTOs, EnumHTMLVerbe.PUT);
+
+
+
 
         }
 
-        public void LiaisonMemberToTeam()
+
+
+       public void LiaisonMemberToTeam()
         {
             callGroups = _managerAlert.GETCallGroup().Items.ToList();
             //LiaisonMemberToTeamCallGroup(callGroups[0]);
             foreach (CallGroupDTO itemCallGroup in callGroups)
             {
                 Console.WriteLine("Debut :" + itemCallGroup.Name);
-                
-                
+
+
                 //Debug
                 if (itemCallGroup.Name.Equals("DIRECTION") || itemCallGroup.Name.Equals("NON-AVERTI"))
                 {
                     Console.WriteLine("Debug :" + itemCallGroup.Name);
                     LiaisonMemberToTeamCallGroup(itemCallGroup);
-                }else
+                }
+                else
                 {
                     LiaisonMemberToTeamCallGroup(itemCallGroup);
                 }
-               
+
                 Console.WriteLine("FIN : " + itemCallGroup.Name);
             }
         }
 
         public void LiaisonMemberToTeamCallGroup(CallGroupDTO callGroup)
-        {           
+        {
             List<TeamDTO> teamDTOs;
             List<MemberDTO> membersDelete = new List<MemberDTO>();
             List<MemberDTO> membersNew = new List<MemberDTO>();
             string teamDTOName;
-           
+
 
             users = _managerAlert.GETUsers().Items.ToList();
             string nameSecteur = null;
@@ -804,16 +808,17 @@ namespace Initialisation
             try
             {
                 nameSecteur = callGroup.Name.Substring(0, callGroup.Name.IndexOf('_'));
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
-                if (callGroup.Name.IndexOf('_')==-1)
+                if (callGroup.Name.IndexOf('_') == -1)
                 {
                     nameSecteur = callGroup.Name;
                     nameSecteur = "PC";
 
                 }
             }
-          
+
             //Recherche Secteur
             Secteur secteur = _managerDB.GETSecteurByAbreger(nameSecteur);
 
@@ -821,15 +826,15 @@ namespace Initialisation
             teamDTOs = _managerAlert.GETTeamByCallGroup(callGroup.Id).Items.ToList();
 
 
-            for(int indexTeamDTO = 0; indexTeamDTO < teamDTOs.Count; indexTeamDTO++)
+            for (int indexTeamDTO = 0; indexTeamDTO < teamDTOs.Count; indexTeamDTO++)
             {
-                membersNew = new List<MemberDTO>();
+               // membersNew = new List<MemberDTO>();
                 membersDelete = new List<MemberDTO>();
-                
+
                 //Recherche le RoleDB par TeamDB
 
                 Role role = _managerDB.GETListRoleByTeamName(teamDTOs[indexTeamDTO].Name);
-               
+
                 // Récuperation des personnes par la prioriter qui sont dans le bon role et le bon secteur
 
 
@@ -847,7 +852,7 @@ namespace Initialisation
                 Team teamDB = _managerDB.GETTeamByTeamNames(teamDTOName);
 
                 //Permet de mettre le spo en premier si il y a besoin
-                if(teamDB.ActifSPOPosition == 1)
+                if (teamDB.ActifSPOPosition == 1)
                 {
                     // Rechercher l'utilisateur SPO
 
@@ -860,18 +865,18 @@ namespace Initialisation
                 foreach (Prioriter itemPropriter in prioriters)
                 {
                     membersNew.Add(searchMemberDTOByUserNameAndFirstName(itemPropriter.Personne.Nom, itemPropriter.Personne.Prenom, users));
-                    
+
                     //Permet de mettre les personnes en repli
-                    if(teamDB.ActifSPOPosition == 1 || itemPropriter.Prioriter1 != 1)
+                    if (teamDB.ActifSPOPosition == 1 || itemPropriter.Prioriter1 != 1)
                     {
                         membersNew.Last().Relief = true;
-                       
+
                     }
 
 
                 }
 
-                
+
                 //Permet de mettre le spo en dernier si il y a besoin
                 if (teamDB.ActifSPOPosition == 2)
                 {
@@ -886,22 +891,22 @@ namespace Initialisation
 
                 }
                 teamDTOs[indexTeamDTO].Members = membersNew;
-                _managerAlert.ManagerTeams(teamDTOs, EnumHTMLVerbe.PUT);             
-                
+                _managerAlert.ManagerTeams(teamDTOs, EnumHTMLVerbe.PUT);
+
 
             }
 
 
         }
 
-        public MemberDTO searchMemberDTOByUserNameAndFirstName ( string name, string firstName , List<UserDTO> users = null)
+        public MemberDTO searchMemberDTOByUserNameAndFirstName(string name, string firstName, List<UserDTO> users = null)
         {
             // Si on ne passe pas la liste des users ou que celle-ci est vide alors on va la récupérer
-            if(users == null || users.Count == 0)
+            if (users == null || users.Count == 0)
             {
                 users = _managerAlert.GETUsers().Items.ToList();
 
-                if(users.Count == 0)
+                if (users.Count == 0)
                 {
                     throw new Exception("Impossible de chercher un user dans la liste d'alert car celle-ci est vide");
                 }
@@ -912,24 +917,24 @@ namespace Initialisation
 
             for (int i = 0; trouverUser == false && i < users.Count; i++)
             {
-        
-                    userDTO = users[i];
 
-                    if (name == userDTO.Name && firstName == userDTO.FirstName)
-                    {
-                        trouverUser = true;
-                        MemberDTO memberNew = new MemberDTO();
-                        memberNew.Id = userDTO.Id;
-                        return memberNew;
-                    }
-           
+                userDTO = users[i];
+
+                if (name == userDTO.Name && firstName == userDTO.FirstName)
+                {
+                    trouverUser = true;
+                    MemberDTO memberNew = new MemberDTO();
+                    memberNew.Id = userDTO.Id;
+                    return memberNew;
+                }
+
             }
 
-            if(trouverUser== false)
+            if (trouverUser == false)
             {
                 throw new Exception("Impossible de trouver un user dans alert qui porte le nom et prenom suivant veuilliez controller qu'il existe" + name + " " + firstName);
             }
-            
+
             return null;
 
         }
