@@ -62,7 +62,7 @@ namespace Initialisation
               // initialisationControler.LiaisonTeamPersonne();
 
                initialisationControler.LiaisonMemberToTeam();
-                Logger.Info("FIN :  Creation des user teams");
+               Logger.Info("FIN :  Creation des user teams");
 
                 Logger.Info("FIN : Initialisation");
                 Thread.Sleep(5000);
