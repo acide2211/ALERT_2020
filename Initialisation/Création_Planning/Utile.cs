@@ -22,5 +22,11 @@ namespace Création_Planning
         {
 
         }
+
+        public void CopyModelToTranche()
+        {
+            List
+
+        }
     }
 }

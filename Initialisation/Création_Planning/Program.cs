@@ -19,6 +19,9 @@ namespace Création_Planning
            
             managerDB = ManagerDB.getInstance(Logger);
             Utile utile = new Utile(managerDB, Logger);
+
+            utile.CreateJour();
+            Console.ReadKey();
         }
     }
 }
