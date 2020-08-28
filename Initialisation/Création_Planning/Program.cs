@@ -20,7 +20,8 @@ namespace Création_Planning
             managerDB = ManagerDB.getInstance(Logger);
             Utile utile = new Utile(managerDB, Logger);
 
-            utile.CreateJour();
+            Console.WriteLine("Jour : " + utile.CalculJourByDate(2019, 07, 4));
+            //utile.CreateJour();
             Console.ReadKey();
         }
     }

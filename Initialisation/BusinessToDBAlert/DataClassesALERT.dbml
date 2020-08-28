@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="ALERT" Class="DataClassesALERTDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=192.168.87.128;Initial Catalog=ALERT;User ID=sa" SettingsObjectName="BusinessToDBAlert.Properties.Settings" SettingsPropertyName="ALERTConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="AppSettings" ConnectionString="Data Source=192.168.240.128;Initial Catalog=ALERT;User ID=sa" SettingsObjectName="BusinessToDBAlert.Properties.Settings" SettingsPropertyName="ALERTConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Alarme" Member="Alarme">
     <Type Name="Alarme">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -101,6 +101,7 @@
       <Column Name="Jour" Type="System.String" DbType="VarChar(128)" CanBeNull="true" />
       <Column Name="Numero" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="JourSemaine_Jour" Member="Jour1" ThisKey="Id" OtherKey="JourSemaineId" Type="Jour" />
+      <Association Name="JourSemaine_Model_Planning" Member="Model_Planning" ThisKey="Id" OtherKey="JourSemaineId" Type="Model_Planning" />
     </Type>
   </Table>
   <Table Name="dbo.ModeIntervention" Member="ModeIntervention">
@@ -112,6 +113,23 @@
       <Column Name="StationId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="Personne_ModeIntervention" Member="Personne" ThisKey="PersonneId" OtherKey="Id" Type="Personne" IsForeignKey="true" />
       <Association Name="Station_ModeIntervention" Member="Station" ThisKey="StationId" OtherKey="Id" Type="Station" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Model_Planning" Member="Model_Planning">
+    <Type Name="Model_Planning">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NumeroTranche" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Heure" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Minute" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Repli" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="RoleId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TeamId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TypeId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="JourSemaineId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="JourSemaine_Model_Planning" Member="JourSemaine" ThisKey="JourSemaineId" OtherKey="Id" Type="JourSemaine" IsForeignKey="true" />
+      <Association Name="Role_Model_Planning" Member="Role" ThisKey="RoleId" OtherKey="Id" Type="Role" IsForeignKey="true" />
+      <Association Name="Team_Model_Planning" Member="Team" ThisKey="TeamId" OtherKey="Id" Type="Team" IsForeignKey="true" />
+      <Association Name="Team_Model_Planning1" Member="Team1" ThisKey="TypeId" OtherKey="Id" Type="Team" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Mois" Member="Mois">
@@ -128,7 +146,6 @@
     <Type Name="Periode">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Nom" Type="System.String" DbType="VarChar(128)" CanBeNull="true" />
-      <Association Name="Periode_Tranche" Member="Tranche" ThisKey="Id" OtherKey="PeriodeId" Type="Tranche" />
     </Type>
   </Table>
   <Table Name="dbo.Personne" Member="Personne">
@@ -169,9 +186,11 @@
       <Column Name="ActifAlert" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="NumeroSequence" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="NumeroGroupe" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Role_Model_Planning" Member="Model_Planning" ThisKey="Id" OtherKey="RoleId" Type="Model_Planning" />
       <Association Name="Role_Personne" Member="Personne" ThisKey="Id" OtherKey="RoleId" Type="Personne" />
       <Association Name="Role_Prioriter" Member="Prioriter" ThisKey="Id" OtherKey="RoleId" Type="Prioriter" />
       <Association Name="Role_Team" Member="Team" ThisKey="Id" OtherKey="RoleId" Type="Team" />
+      <Association Name="Role_Tranche" Member="Tranche" ThisKey="Id" OtherKey="RoleId" Type="Tranche" />
     </Type>
   </Table>
   <Table Name="dbo.Secteur" Member="Secteur">
@@ -245,19 +264,25 @@
       <Column Name="ActifSPOPosition" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="ColorTeam" Type="System.String" DbType="VarChar(128) NOT NULL" CanBeNull="false" />
       <Column Name="RoleId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Team_Model_Planning" Member="Model_Planning" ThisKey="Id" OtherKey="TeamId" Type="Model_Planning" />
+      <Association Name="Team_Model_Planning1" Member="Model_Planning1" ThisKey="Id" OtherKey="TypeId" Type="Model_Planning" />
       <Association Name="Team_Prioriter" Member="Prioriter" ThisKey="Id" OtherKey="TeamId" Type="Prioriter" />
+      <Association Name="Team_Tranche" Member="Tranche" ThisKey="Id" OtherKey="TeamId" Type="Tranche" />
       <Association Name="Role_Team" Member="Role" ThisKey="RoleId" OtherKey="Id" Type="Role" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Tranche" Member="Tranche">
     <Type Name="Tranche">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Numero" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NumeroTranche" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Repli" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="JourId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="PeriodeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="TypeAlarmeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RoleId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TeamId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TypeAlarmeId" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="Jour_Tranche" Member="Jour" ThisKey="JourId" OtherKey="Id" Type="Jour" IsForeignKey="true" />
-      <Association Name="Periode_Tranche" Member="Periode" ThisKey="PeriodeId" OtherKey="Id" Type="Periode" IsForeignKey="true" />
+      <Association Name="Role_Tranche" Member="Role" ThisKey="RoleId" OtherKey="Id" Type="Role" IsForeignKey="true" />
+      <Association Name="Team_Tranche" Member="Team" ThisKey="TeamId" OtherKey="Id" Type="Team" IsForeignKey="true" />
       <Association Name="TypeAlarme_Tranche" Member="TypeAlarme" ThisKey="TypeAlarmeId" OtherKey="Id" Type="TypeAlarme" IsForeignKey="true" />
     </Type>
   </Table>

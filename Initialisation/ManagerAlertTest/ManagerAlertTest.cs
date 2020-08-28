@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using Alert.Api.Remote.Entities;
 using BusinessToAlert;
 using BusinessToDBAlert;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

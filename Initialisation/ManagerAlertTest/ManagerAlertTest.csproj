@@ -39,14 +39,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Alert.Api.Remote.Entities">
-      <HintPath>D:\ALAIN\TRAVAIL\One drive\OneDrive - AIDE\Procedure\Procédure ranger\09 Alert Nouvelle Organnisation\Programmation\API\Alert.Api.Remote.Entities.dll</HintPath>
+    <Reference Include="Alert.Api.Remote.Entities, Version=2.0.37.695, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Librairie Externe\Alert.Api.Remote.Entities.dll</HintPath>
     </Reference>
-    <Reference Include="Alert.Api.Remote.REST.Clients">
-      <HintPath>D:\ALAIN\TRAVAIL\One drive\OneDrive - AIDE\Procedure\Procédure ranger\09 Alert Nouvelle Organnisation\Programmation\API\Alert.Api.Remote.REST.Clients.dll</HintPath>
+    <Reference Include="Alert.Api.Remote.REST.Clients, Version=1.0.21.695, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Librairie Externe\Alert.Api.Remote.REST.Clients.dll</HintPath>
     </Reference>
-    <Reference Include="Alert.Api.Remote.REST.Entities">
-      <HintPath>D:\ALAIN\TRAVAIL\One drive\OneDrive - AIDE\Procedure\Procédure ranger\09 Alert Nouvelle Organnisation\Programmation\API\Alert.Api.Remote.REST.Entities.dll</HintPath>
+    <Reference Include="Alert.Api.Remote.REST.Entities, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Librairie Externe\Alert.Api.Remote.REST.Entities.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">

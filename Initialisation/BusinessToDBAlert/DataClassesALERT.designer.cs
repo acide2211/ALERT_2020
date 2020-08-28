@@ -63,6 +63,9 @@ namespace BusinessToDBAlert
     partial void InsertModeIntervention(ModeIntervention instance);
     partial void UpdateModeIntervention(ModeIntervention instance);
     partial void DeleteModeIntervention(ModeIntervention instance);
+    partial void InsertModel_Planning(Model_Planning instance);
+    partial void UpdateModel_Planning(Model_Planning instance);
+    partial void DeleteModel_Planning(Model_Planning instance);
     partial void InsertMois(Mois instance);
     partial void UpdateMois(Mois instance);
     partial void DeleteMois(Mois instance);
@@ -222,6 +225,14 @@ namespace BusinessToDBAlert
 			get
 			{
 				return this.GetTable<ModeIntervention>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Model_Planning> Model_Planning
+		{
+			get
+			{
+				return this.GetTable<Model_Planning>();
 			}
 		}
 		
@@ -2300,6 +2311,8 @@ namespace BusinessToDBAlert
 		
 		private EntitySet<Jour> _Jour1;
 		
+		private EntitySet<Model_Planning> _Model_Planning;
+		
     #region Définitions de méthodes d'extensibilité
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -2315,6 +2328,7 @@ namespace BusinessToDBAlert
 		public JourSemaine()
 		{
 			this._Jour1 = new EntitySet<Jour>(new Action<Jour>(this.attach_Jour1), new Action<Jour>(this.detach_Jour1));
+			this._Model_Planning = new EntitySet<Model_Planning>(new Action<Model_Planning>(this.attach_Model_Planning), new Action<Model_Planning>(this.detach_Model_Planning));
 			OnCreated();
 		}
 		
@@ -2391,6 +2405,19 @@ namespace BusinessToDBAlert
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="JourSemaine_Model_Planning", Storage="_Model_Planning", ThisKey="Id", OtherKey="JourSemaineId")]
+		public EntitySet<Model_Planning> Model_Planning
+		{
+			get
+			{
+				return this._Model_Planning;
+			}
+			set
+			{
+				this._Model_Planning.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -2418,6 +2445,18 @@ namespace BusinessToDBAlert
 		}
 		
 		private void detach_Jour1(Jour entity)
+		{
+			this.SendPropertyChanging();
+			entity.JourSemaine = null;
+		}
+		
+		private void attach_Model_Planning(Model_Planning entity)
+		{
+			this.SendPropertyChanging();
+			entity.JourSemaine = this;
+		}
+		
+		private void detach_Model_Planning(Model_Planning entity)
 		{
 			this.SendPropertyChanging();
 			entity.JourSemaine = null;
@@ -2664,6 +2703,424 @@ namespace BusinessToDBAlert
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Model_Planning")]
+	public partial class Model_Planning : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private System.Nullable<int> _NumeroTranche;
+		
+		private System.Nullable<int> _Heure;
+		
+		private System.Nullable<int> _Minute;
+		
+		private System.Nullable<bool> _Repli;
+		
+		private int _RoleId;
+		
+		private int _TeamId;
+		
+		private System.Nullable<int> _TypeId;
+		
+		private int _JourSemaineId;
+		
+		private EntityRef<JourSemaine> _JourSemaine;
+		
+		private EntityRef<Role> _Role;
+		
+		private EntityRef<Team> _Team;
+		
+		private EntityRef<Team> _Team1;
+		
+    #region Définitions de méthodes d'extensibilité
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnNumeroTrancheChanging(System.Nullable<int> value);
+    partial void OnNumeroTrancheChanged();
+    partial void OnHeureChanging(System.Nullable<int> value);
+    partial void OnHeureChanged();
+    partial void OnMinuteChanging(System.Nullable<int> value);
+    partial void OnMinuteChanged();
+    partial void OnRepliChanging(System.Nullable<bool> value);
+    partial void OnRepliChanged();
+    partial void OnRoleIdChanging(int value);
+    partial void OnRoleIdChanged();
+    partial void OnTeamIdChanging(int value);
+    partial void OnTeamIdChanged();
+    partial void OnTypeIdChanging(System.Nullable<int> value);
+    partial void OnTypeIdChanged();
+    partial void OnJourSemaineIdChanging(int value);
+    partial void OnJourSemaineIdChanged();
+    #endregion
+		
+		public Model_Planning()
+		{
+			this._JourSemaine = default(EntityRef<JourSemaine>);
+			this._Role = default(EntityRef<Role>);
+			this._Team = default(EntityRef<Team>);
+			this._Team1 = default(EntityRef<Team>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NumeroTranche", DbType="Int")]
+		public System.Nullable<int> NumeroTranche
+		{
+			get
+			{
+				return this._NumeroTranche;
+			}
+			set
+			{
+				if ((this._NumeroTranche != value))
+				{
+					this.OnNumeroTrancheChanging(value);
+					this.SendPropertyChanging();
+					this._NumeroTranche = value;
+					this.SendPropertyChanged("NumeroTranche");
+					this.OnNumeroTrancheChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Heure", DbType="Int")]
+		public System.Nullable<int> Heure
+		{
+			get
+			{
+				return this._Heure;
+			}
+			set
+			{
+				if ((this._Heure != value))
+				{
+					this.OnHeureChanging(value);
+					this.SendPropertyChanging();
+					this._Heure = value;
+					this.SendPropertyChanged("Heure");
+					this.OnHeureChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Minute", DbType="Int")]
+		public System.Nullable<int> Minute
+		{
+			get
+			{
+				return this._Minute;
+			}
+			set
+			{
+				if ((this._Minute != value))
+				{
+					this.OnMinuteChanging(value);
+					this.SendPropertyChanging();
+					this._Minute = value;
+					this.SendPropertyChanged("Minute");
+					this.OnMinuteChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Repli", DbType="Bit")]
+		public System.Nullable<bool> Repli
+		{
+			get
+			{
+				return this._Repli;
+			}
+			set
+			{
+				if ((this._Repli != value))
+				{
+					this.OnRepliChanging(value);
+					this.SendPropertyChanging();
+					this._Repli = value;
+					this.SendPropertyChanged("Repli");
+					this.OnRepliChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RoleId", DbType="Int NOT NULL")]
+		public int RoleId
+		{
+			get
+			{
+				return this._RoleId;
+			}
+			set
+			{
+				if ((this._RoleId != value))
+				{
+					if (this._Role.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnRoleIdChanging(value);
+					this.SendPropertyChanging();
+					this._RoleId = value;
+					this.SendPropertyChanged("RoleId");
+					this.OnRoleIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TeamId", DbType="Int NOT NULL")]
+		public int TeamId
+		{
+			get
+			{
+				return this._TeamId;
+			}
+			set
+			{
+				if ((this._TeamId != value))
+				{
+					if (this._Team.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTeamIdChanging(value);
+					this.SendPropertyChanging();
+					this._TeamId = value;
+					this.SendPropertyChanged("TeamId");
+					this.OnTeamIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypeId", DbType="Int")]
+		public System.Nullable<int> TypeId
+		{
+			get
+			{
+				return this._TypeId;
+			}
+			set
+			{
+				if ((this._TypeId != value))
+				{
+					if (this._Team1.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTypeIdChanging(value);
+					this.SendPropertyChanging();
+					this._TypeId = value;
+					this.SendPropertyChanged("TypeId");
+					this.OnTypeIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JourSemaineId", DbType="Int NOT NULL")]
+		public int JourSemaineId
+		{
+			get
+			{
+				return this._JourSemaineId;
+			}
+			set
+			{
+				if ((this._JourSemaineId != value))
+				{
+					if (this._JourSemaine.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnJourSemaineIdChanging(value);
+					this.SendPropertyChanging();
+					this._JourSemaineId = value;
+					this.SendPropertyChanged("JourSemaineId");
+					this.OnJourSemaineIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="JourSemaine_Model_Planning", Storage="_JourSemaine", ThisKey="JourSemaineId", OtherKey="Id", IsForeignKey=true)]
+		public JourSemaine JourSemaine
+		{
+			get
+			{
+				return this._JourSemaine.Entity;
+			}
+			set
+			{
+				JourSemaine previousValue = this._JourSemaine.Entity;
+				if (((previousValue != value) 
+							|| (this._JourSemaine.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._JourSemaine.Entity = null;
+						previousValue.Model_Planning.Remove(this);
+					}
+					this._JourSemaine.Entity = value;
+					if ((value != null))
+					{
+						value.Model_Planning.Add(this);
+						this._JourSemaineId = value.Id;
+					}
+					else
+					{
+						this._JourSemaineId = default(int);
+					}
+					this.SendPropertyChanged("JourSemaine");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Role_Model_Planning", Storage="_Role", ThisKey="RoleId", OtherKey="Id", IsForeignKey=true)]
+		public Role Role
+		{
+			get
+			{
+				return this._Role.Entity;
+			}
+			set
+			{
+				Role previousValue = this._Role.Entity;
+				if (((previousValue != value) 
+							|| (this._Role.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Role.Entity = null;
+						previousValue.Model_Planning.Remove(this);
+					}
+					this._Role.Entity = value;
+					if ((value != null))
+					{
+						value.Model_Planning.Add(this);
+						this._RoleId = value.Id;
+					}
+					else
+					{
+						this._RoleId = default(int);
+					}
+					this.SendPropertyChanged("Role");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Team_Model_Planning", Storage="_Team", ThisKey="TeamId", OtherKey="Id", IsForeignKey=true)]
+		public Team Team
+		{
+			get
+			{
+				return this._Team.Entity;
+			}
+			set
+			{
+				Team previousValue = this._Team.Entity;
+				if (((previousValue != value) 
+							|| (this._Team.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Team.Entity = null;
+						previousValue.Model_Planning.Remove(this);
+					}
+					this._Team.Entity = value;
+					if ((value != null))
+					{
+						value.Model_Planning.Add(this);
+						this._TeamId = value.Id;
+					}
+					else
+					{
+						this._TeamId = default(int);
+					}
+					this.SendPropertyChanged("Team");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Team_Model_Planning1", Storage="_Team1", ThisKey="TypeId", OtherKey="Id", IsForeignKey=true)]
+		public Team Team1
+		{
+			get
+			{
+				return this._Team1.Entity;
+			}
+			set
+			{
+				Team previousValue = this._Team1.Entity;
+				if (((previousValue != value) 
+							|| (this._Team1.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Team1.Entity = null;
+						previousValue.Model_Planning1.Remove(this);
+					}
+					this._Team1.Entity = value;
+					if ((value != null))
+					{
+						value.Model_Planning1.Add(this);
+						this._TypeId = value.Id;
+					}
+					else
+					{
+						this._TypeId = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Team1");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Mois")]
 	public partial class Mois : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -2877,8 +3334,6 @@ namespace BusinessToDBAlert
 		
 		private string _Nom;
 		
-		private EntitySet<Tranche> _Tranche;
-		
     #region Définitions de méthodes d'extensibilité
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -2891,7 +3346,6 @@ namespace BusinessToDBAlert
 		
 		public Periode()
 		{
-			this._Tranche = new EntitySet<Tranche>(new Action<Tranche>(this.attach_Tranche), new Action<Tranche>(this.detach_Tranche));
 			OnCreated();
 		}
 		
@@ -2935,19 +3389,6 @@ namespace BusinessToDBAlert
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Periode_Tranche", Storage="_Tranche", ThisKey="Id", OtherKey="PeriodeId")]
-		public EntitySet<Tranche> Tranche
-		{
-			get
-			{
-				return this._Tranche;
-			}
-			set
-			{
-				this._Tranche.Assign(value);
-			}
-		}
-		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -2966,18 +3407,6 @@ namespace BusinessToDBAlert
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-		
-		private void attach_Tranche(Tranche entity)
-		{
-			this.SendPropertyChanging();
-			entity.Periode = this;
-		}
-		
-		private void detach_Tranche(Tranche entity)
-		{
-			this.SendPropertyChanging();
-			entity.Periode = null;
 		}
 	}
 	
@@ -3738,11 +4167,15 @@ namespace BusinessToDBAlert
 		
 		private System.Nullable<int> _NumeroGroupe;
 		
+		private EntitySet<Model_Planning> _Model_Planning;
+		
 		private EntitySet<Personne> _Personne;
 		
 		private EntitySet<Prioriter> _Prioriter;
 		
 		private EntitySet<Team> _Team;
+		
+		private EntitySet<Tranche> _Tranche;
 		
     #region Définitions de méthodes d'extensibilité
     partial void OnLoaded();
@@ -3762,9 +4195,11 @@ namespace BusinessToDBAlert
 		
 		public Role()
 		{
+			this._Model_Planning = new EntitySet<Model_Planning>(new Action<Model_Planning>(this.attach_Model_Planning), new Action<Model_Planning>(this.detach_Model_Planning));
 			this._Personne = new EntitySet<Personne>(new Action<Personne>(this.attach_Personne), new Action<Personne>(this.detach_Personne));
 			this._Prioriter = new EntitySet<Prioriter>(new Action<Prioriter>(this.attach_Prioriter), new Action<Prioriter>(this.detach_Prioriter));
 			this._Team = new EntitySet<Team>(new Action<Team>(this.attach_Team), new Action<Team>(this.detach_Team));
+			this._Tranche = new EntitySet<Tranche>(new Action<Tranche>(this.attach_Tranche), new Action<Tranche>(this.detach_Tranche));
 			OnCreated();
 		}
 		
@@ -3868,6 +4303,19 @@ namespace BusinessToDBAlert
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Role_Model_Planning", Storage="_Model_Planning", ThisKey="Id", OtherKey="RoleId")]
+		public EntitySet<Model_Planning> Model_Planning
+		{
+			get
+			{
+				return this._Model_Planning;
+			}
+			set
+			{
+				this._Model_Planning.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Role_Personne", Storage="_Personne", ThisKey="Id", OtherKey="RoleId")]
 		public EntitySet<Personne> Personne
 		{
@@ -3907,6 +4355,19 @@ namespace BusinessToDBAlert
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Role_Tranche", Storage="_Tranche", ThisKey="Id", OtherKey="RoleId")]
+		public EntitySet<Tranche> Tranche
+		{
+			get
+			{
+				return this._Tranche;
+			}
+			set
+			{
+				this._Tranche.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -3925,6 +4386,18 @@ namespace BusinessToDBAlert
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+		
+		private void attach_Model_Planning(Model_Planning entity)
+		{
+			this.SendPropertyChanging();
+			entity.Role = this;
+		}
+		
+		private void detach_Model_Planning(Model_Planning entity)
+		{
+			this.SendPropertyChanging();
+			entity.Role = null;
 		}
 		
 		private void attach_Personne(Personne entity)
@@ -3958,6 +4431,18 @@ namespace BusinessToDBAlert
 		}
 		
 		private void detach_Team(Team entity)
+		{
+			this.SendPropertyChanging();
+			entity.Role = null;
+		}
+		
+		private void attach_Tranche(Tranche entity)
+		{
+			this.SendPropertyChanging();
+			entity.Role = this;
+		}
+		
+		private void detach_Tranche(Tranche entity)
 		{
 			this.SendPropertyChanging();
 			entity.Role = null;
@@ -5351,7 +5836,13 @@ namespace BusinessToDBAlert
 		
 		private int _RoleId;
 		
+		private EntitySet<Model_Planning> _Model_Planning;
+		
+		private EntitySet<Model_Planning> _Model_Planning1;
+		
 		private EntitySet<Prioriter> _Prioriter;
+		
+		private EntitySet<Tranche> _Tranche;
 		
 		private EntityRef<Role> _Role;
 		
@@ -5375,7 +5866,10 @@ namespace BusinessToDBAlert
 		
 		public Team()
 		{
+			this._Model_Planning = new EntitySet<Model_Planning>(new Action<Model_Planning>(this.attach_Model_Planning), new Action<Model_Planning>(this.detach_Model_Planning));
+			this._Model_Planning1 = new EntitySet<Model_Planning>(new Action<Model_Planning>(this.attach_Model_Planning1), new Action<Model_Planning>(this.detach_Model_Planning1));
 			this._Prioriter = new EntitySet<Prioriter>(new Action<Prioriter>(this.attach_Prioriter), new Action<Prioriter>(this.detach_Prioriter));
+			this._Tranche = new EntitySet<Tranche>(new Action<Tranche>(this.attach_Tranche), new Action<Tranche>(this.detach_Tranche));
 			this._Role = default(EntityRef<Role>);
 			OnCreated();
 		}
@@ -5504,6 +5998,32 @@ namespace BusinessToDBAlert
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Team_Model_Planning", Storage="_Model_Planning", ThisKey="Id", OtherKey="TeamId")]
+		public EntitySet<Model_Planning> Model_Planning
+		{
+			get
+			{
+				return this._Model_Planning;
+			}
+			set
+			{
+				this._Model_Planning.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Team_Model_Planning1", Storage="_Model_Planning1", ThisKey="Id", OtherKey="TypeId")]
+		public EntitySet<Model_Planning> Model_Planning1
+		{
+			get
+			{
+				return this._Model_Planning1;
+			}
+			set
+			{
+				this._Model_Planning1.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Team_Prioriter", Storage="_Prioriter", ThisKey="Id", OtherKey="TeamId")]
 		public EntitySet<Prioriter> Prioriter
 		{
@@ -5514,6 +6034,19 @@ namespace BusinessToDBAlert
 			set
 			{
 				this._Prioriter.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Team_Tranche", Storage="_Tranche", ThisKey="Id", OtherKey="TeamId")]
+		public EntitySet<Tranche> Tranche
+		{
+			get
+			{
+				return this._Tranche;
+			}
+			set
+			{
+				this._Tranche.Assign(value);
 			}
 		}
 		
@@ -5571,6 +6104,30 @@ namespace BusinessToDBAlert
 			}
 		}
 		
+		private void attach_Model_Planning(Model_Planning entity)
+		{
+			this.SendPropertyChanging();
+			entity.Team = this;
+		}
+		
+		private void detach_Model_Planning(Model_Planning entity)
+		{
+			this.SendPropertyChanging();
+			entity.Team = null;
+		}
+		
+		private void attach_Model_Planning1(Model_Planning entity)
+		{
+			this.SendPropertyChanging();
+			entity.Team1 = this;
+		}
+		
+		private void detach_Model_Planning1(Model_Planning entity)
+		{
+			this.SendPropertyChanging();
+			entity.Team1 = null;
+		}
+		
 		private void attach_Prioriter(Prioriter entity)
 		{
 			this.SendPropertyChanging();
@@ -5578,6 +6135,18 @@ namespace BusinessToDBAlert
 		}
 		
 		private void detach_Prioriter(Prioriter entity)
+		{
+			this.SendPropertyChanging();
+			entity.Team = null;
+		}
+		
+		private void attach_Tranche(Tranche entity)
+		{
+			this.SendPropertyChanging();
+			entity.Team = this;
+		}
+		
+		private void detach_Tranche(Tranche entity)
 		{
 			this.SendPropertyChanging();
 			entity.Team = null;
@@ -5592,17 +6161,23 @@ namespace BusinessToDBAlert
 		
 		private int _Id;
 		
-		private System.Nullable<int> _Numero;
+		private System.Nullable<int> _NumeroTranche;
+		
+		private System.Nullable<bool> _Repli;
 		
 		private int _JourId;
 		
-		private int _PeriodeId;
+		private int _RoleId;
 		
-		private int _TypeAlarmeId;
+		private System.Nullable<int> _TeamId;
+		
+		private System.Nullable<int> _TypeAlarmeId;
 		
 		private EntityRef<Jour> _Jour;
 		
-		private EntityRef<Periode> _Periode;
+		private EntityRef<Role> _Role;
+		
+		private EntityRef<Team> _Team;
 		
 		private EntityRef<TypeAlarme> _TypeAlarme;
 		
@@ -5612,20 +6187,25 @@ namespace BusinessToDBAlert
     partial void OnCreated();
     partial void OnIdChanging(int value);
     partial void OnIdChanged();
-    partial void OnNumeroChanging(System.Nullable<int> value);
-    partial void OnNumeroChanged();
+    partial void OnNumeroTrancheChanging(System.Nullable<int> value);
+    partial void OnNumeroTrancheChanged();
+    partial void OnRepliChanging(System.Nullable<bool> value);
+    partial void OnRepliChanged();
     partial void OnJourIdChanging(int value);
     partial void OnJourIdChanged();
-    partial void OnPeriodeIdChanging(int value);
-    partial void OnPeriodeIdChanged();
-    partial void OnTypeAlarmeIdChanging(int value);
+    partial void OnRoleIdChanging(int value);
+    partial void OnRoleIdChanged();
+    partial void OnTeamIdChanging(System.Nullable<int> value);
+    partial void OnTeamIdChanged();
+    partial void OnTypeAlarmeIdChanging(System.Nullable<int> value);
     partial void OnTypeAlarmeIdChanged();
     #endregion
 		
 		public Tranche()
 		{
 			this._Jour = default(EntityRef<Jour>);
-			this._Periode = default(EntityRef<Periode>);
+			this._Role = default(EntityRef<Role>);
+			this._Team = default(EntityRef<Team>);
 			this._TypeAlarme = default(EntityRef<TypeAlarme>);
 			OnCreated();
 		}
@@ -5650,22 +6230,42 @@ namespace BusinessToDBAlert
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Numero", DbType="Int")]
-		public System.Nullable<int> Numero
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NumeroTranche", DbType="Int")]
+		public System.Nullable<int> NumeroTranche
 		{
 			get
 			{
-				return this._Numero;
+				return this._NumeroTranche;
 			}
 			set
 			{
-				if ((this._Numero != value))
+				if ((this._NumeroTranche != value))
 				{
-					this.OnNumeroChanging(value);
+					this.OnNumeroTrancheChanging(value);
 					this.SendPropertyChanging();
-					this._Numero = value;
-					this.SendPropertyChanged("Numero");
-					this.OnNumeroChanged();
+					this._NumeroTranche = value;
+					this.SendPropertyChanged("NumeroTranche");
+					this.OnNumeroTrancheChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Repli", DbType="Bit")]
+		public System.Nullable<bool> Repli
+		{
+			get
+			{
+				return this._Repli;
+			}
+			set
+			{
+				if ((this._Repli != value))
+				{
+					this.OnRepliChanging(value);
+					this.SendPropertyChanging();
+					this._Repli = value;
+					this.SendPropertyChanged("Repli");
+					this.OnRepliChanged();
 				}
 			}
 		}
@@ -5694,32 +6294,56 @@ namespace BusinessToDBAlert
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PeriodeId", DbType="Int NOT NULL")]
-		public int PeriodeId
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RoleId", DbType="Int NOT NULL")]
+		public int RoleId
 		{
 			get
 			{
-				return this._PeriodeId;
+				return this._RoleId;
 			}
 			set
 			{
-				if ((this._PeriodeId != value))
+				if ((this._RoleId != value))
 				{
-					if (this._Periode.HasLoadedOrAssignedValue)
+					if (this._Role.HasLoadedOrAssignedValue)
 					{
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 					}
-					this.OnPeriodeIdChanging(value);
+					this.OnRoleIdChanging(value);
 					this.SendPropertyChanging();
-					this._PeriodeId = value;
-					this.SendPropertyChanged("PeriodeId");
-					this.OnPeriodeIdChanged();
+					this._RoleId = value;
+					this.SendPropertyChanged("RoleId");
+					this.OnRoleIdChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypeAlarmeId", DbType="Int NOT NULL")]
-		public int TypeAlarmeId
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TeamId", DbType="Int")]
+		public System.Nullable<int> TeamId
+		{
+			get
+			{
+				return this._TeamId;
+			}
+			set
+			{
+				if ((this._TeamId != value))
+				{
+					if (this._Team.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTeamIdChanging(value);
+					this.SendPropertyChanging();
+					this._TeamId = value;
+					this.SendPropertyChanged("TeamId");
+					this.OnTeamIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypeAlarmeId", DbType="Int")]
+		public System.Nullable<int> TypeAlarmeId
 		{
 			get
 			{
@@ -5776,36 +6400,70 @@ namespace BusinessToDBAlert
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Periode_Tranche", Storage="_Periode", ThisKey="PeriodeId", OtherKey="Id", IsForeignKey=true)]
-		public Periode Periode
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Role_Tranche", Storage="_Role", ThisKey="RoleId", OtherKey="Id", IsForeignKey=true)]
+		public Role Role
 		{
 			get
 			{
-				return this._Periode.Entity;
+				return this._Role.Entity;
 			}
 			set
 			{
-				Periode previousValue = this._Periode.Entity;
+				Role previousValue = this._Role.Entity;
 				if (((previousValue != value) 
-							|| (this._Periode.HasLoadedOrAssignedValue == false)))
+							|| (this._Role.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if ((previousValue != null))
 					{
-						this._Periode.Entity = null;
+						this._Role.Entity = null;
 						previousValue.Tranche.Remove(this);
 					}
-					this._Periode.Entity = value;
+					this._Role.Entity = value;
 					if ((value != null))
 					{
 						value.Tranche.Add(this);
-						this._PeriodeId = value.Id;
+						this._RoleId = value.Id;
 					}
 					else
 					{
-						this._PeriodeId = default(int);
+						this._RoleId = default(int);
 					}
-					this.SendPropertyChanged("Periode");
+					this.SendPropertyChanged("Role");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Team_Tranche", Storage="_Team", ThisKey="TeamId", OtherKey="Id", IsForeignKey=true)]
+		public Team Team
+		{
+			get
+			{
+				return this._Team.Entity;
+			}
+			set
+			{
+				Team previousValue = this._Team.Entity;
+				if (((previousValue != value) 
+							|| (this._Team.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Team.Entity = null;
+						previousValue.Tranche.Remove(this);
+					}
+					this._Team.Entity = value;
+					if ((value != null))
+					{
+						value.Tranche.Add(this);
+						this._TeamId = value.Id;
+					}
+					else
+					{
+						this._TeamId = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Team");
 				}
 			}
 		}
@@ -5837,7 +6495,7 @@ namespace BusinessToDBAlert
 					}
 					else
 					{
-						this._TypeAlarmeId = default(int);
+						this._TypeAlarmeId = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("TypeAlarme");
 				}

@@ -20,10 +20,20 @@ namespace BusinessToDBAlert
         private static readonly object _padlock = new object();
         //Variable qui permet de faire la connexions a la base de données
         private DataClassesALERTDataContext _alertDBContext;
+
+
+
         //dictionaire qui contient les informations de configuration
         public Dictionary<String, String> _configurations { get; private set; }
 
         private NLog.Logger Logger { get; set; }
+
+        public List<JourSemaine> GETListJourSeamaine()
+        {
+            Table<JourSemaine> jourSemaineRole = _alertDBContext.GetTable<JourSemaine>();
+            List<JourSemaine> jourSemaines = (from jourSemaine in jourSemaineRole select jourSemaine).ToList();
+            return jourSemaines;
+        }
         #endregion
 
         #region Constructeur
@@ -222,6 +232,11 @@ namespace BusinessToDBAlert
             return Roles;
         }
 
+        public List<Role> GETListRoles()
+        {
+            List<Role> Roles = this.GETRoles();
+            return Roles;
+        }
         #endregion
 
         #region Gestion Type d'alarme
@@ -357,6 +372,27 @@ namespace BusinessToDBAlert
 
         #endregion
 
+        #region Annee
+
+        public List<Annee> GETListAnnee()
+        {
+            Table<Annee> tableAnnee = _alertDBContext.GetTable<Annee>();
+            List<Annee> annnees = (from annee in tableAnnee select annee).ToList();
+            return annnees;
+        }
+
+        public void InsertMois(Mois mois)
+        {
+            _alertDBContext.Mois.InsertOnSubmit(mois);
+            _alertDBContext.SubmitChanges();
+        }
+
+        public void SubmitChangesDB()
+        {
+            
+            _alertDBContext.SubmitChanges();
+        }
+        #endregion
 
     }
 }

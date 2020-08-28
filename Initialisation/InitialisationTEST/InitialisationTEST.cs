@@ -79,7 +79,7 @@ namespace InitialisationTEST
 
         public void testLiaisonMembreToTeamOpti()
         {
-            initialisationControler.LiaisonMemberToTeamOpti();
+          //  initialisationControler.LiaisonMemberToTeamOpti();
         }
 
     }
